@@ -25,9 +25,13 @@ else
   Plug 'mhinz/vim-signify', { 'tag': 'legacy' }
 endif
 Plug 'akinsho/toggleterm.nvim', {'tag' : '*'}
+Plug 'lervag/vimtex'
 call plug#end()
 
 colorscheme gruvbox
+
+set number                     " Show current line number
+set relativenumber             " Show relative line numbers
 
 set number
 
