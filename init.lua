@@ -25,6 +25,7 @@ require('packer').startup(function(use)
   use 'lewis6991/gitsigns.nvim'
   use 'neovim/nvim-lspconfig'
   use 'feline-nvim/feline.nvim'
+  use 'nvim-tree/nvim-tree.lua'
 
   if packer_bootstrap then
     require('packer').sync()
@@ -33,6 +34,9 @@ end)
 
 -- settings
 vim.g.mapleader = ' '
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
 vim.opt.hlsearch = false
 vim.opt.breakindent = true
 vim.opt.tabstop = 2
@@ -50,7 +54,7 @@ vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
 vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
 vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
-require('telescope').setup{}
+require('telescope').setup()
 
 -- toggleterm
 require('toggleterm').setup{
@@ -59,7 +63,7 @@ require('toggleterm').setup{
 }
 
 -- gitsigns
-require('gitsigns').setup{}
+require('gitsigns').setup()
 
 -- lspconfig
 local opts = { noremap=true, silent=true }
@@ -95,4 +99,24 @@ local on_attach = function(client, bufnr)
 end
 
 -- feline
-require('feline').setup{}
+require('feline').setup()
+
+-- nvim-tree
+require("nvim-tree").setup({
+  renderer={
+    icons={
+      show={
+        file=false,
+        folder=false,
+        git=false,
+        folder_arrow=false,
+      }
+    }
+  }
+})
+-- require('nvim-tree').setup({
+--   renderer.icons.show.file=0,
+--   renderer.icons.show.folder=0,
+--   renderer.icons.show.git=0,
+--   renderer.icons.show.folder_arrow=0,
+-- })
