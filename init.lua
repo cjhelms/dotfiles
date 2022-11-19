@@ -16,7 +16,7 @@ require('packer').startup(function(use)
   use {
     'nvim-telescope/telescope.nvim',
     tag='0.1.0',
-    requires={{'nvim-lua/plenary.nvim'}}
+    requires='nvim-lua/plenary.nvim'
   }
   use {
     "akinsho/toggleterm.nvim",
@@ -24,6 +24,7 @@ require('packer').startup(function(use)
   }
   use 'lewis6991/gitsigns.nvim'
   use 'neovim/nvim-lspconfig'
+  use 'feline-nvim/feline.nvim'
 
   if packer_bootstrap then
     require('packer').sync()
@@ -41,6 +42,7 @@ vim.opt.ignorecase = true
 vim.opt.smartcase = true
 vim.opt.number = true
 vim.opt.relativenumber = true
+vim.opt.termguicolors = true
 
 -- telescope 
 local builtin = require('telescope.builtin')
@@ -91,3 +93,6 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
   vim.keymap.set('n', '<leader>f', function() vim.lsp.buf.format { async = true } end, bufopts)
 end
+
+-- feline
+require('feline').setup{}
