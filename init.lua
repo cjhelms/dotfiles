@@ -97,6 +97,8 @@ end
 require('feline').setup()
 
 -- nvim-tree
+vim.keymap.set('n', 'tt', ':NvimTreeToggle<cr>')
+vim.keymap.set('n', 'tf', ':NvimTreeFocus<cr>')
 require("nvim-tree").setup({
   renderer={
     icons={
@@ -109,9 +111,3 @@ require("nvim-tree").setup({
     }
   }
 })
--- require('nvim-tree').setup({
---   renderer.icons.show.file=0,
---   renderer.icons.show.folder=0,
---   renderer.icons.show.git=0,
---   renderer.icons.show.folder_arrow=0,
--- })
