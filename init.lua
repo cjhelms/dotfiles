@@ -93,6 +93,10 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', '<leader>f', function() vim.lsp.buf.format { async = true } end, bufopts)
 end
 
+require('lspconfig')['clangd'].setup({
+  cmd={'clangd-10'}
+})
+
 -- feline
 require('feline').setup()
 
