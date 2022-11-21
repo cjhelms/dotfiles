@@ -26,6 +26,10 @@ require('packer').startup(function(use)
   use 'neovim/nvim-lspconfig'
   use 'feline-nvim/feline.nvim'
   use 'nvim-tree/nvim-tree.lua'
+  use {
+    "L3MON4D3/LuaSnip",
+    tag = "v<CurrentMajor>.*"
+  }
 
   if packer_bootstrap then
     require('packer').sync()
@@ -65,6 +69,9 @@ require('toggleterm').setup{
 -- gitsigns
 require('gitsigns').setup()
 
+-- luansip
+require("luasnip.loaders.from_vscode").lazy_load()
+
 -- lspconfig
 local opts = { noremap=true, silent=true }
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, opts)
@@ -94,7 +101,8 @@ local on_attach = function(client, bufnr)
 end
 
 require('lspconfig')['clangd'].setup({
-  cmd={'clangd-10'}
+  on_attach=on_attach,
+  cmd={'clangd-10'},
 })
 
 -- feline
