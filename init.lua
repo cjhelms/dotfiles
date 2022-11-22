@@ -159,7 +159,7 @@ local capabilities = require('cmp_nvim_lsp').default_capabilities()
 require('lspconfig')['clangd'].setup({
   capabilities=capabilities,
   on_attach=on_attach,
-  cmd={'clangd'},
+  cmd={'clangd-10'},
 })
 
 -- feline
@@ -182,7 +182,7 @@ require("nvim-tree").setup({
 })
 
 -- neoformat
-vim.keymap.set('n', '<leader>e', ':Neoformat')
+vim.keymap.set('n', '<leader>e', ':Neoformat<cr>')
 
 -- ack.vim
 vim.keymap.set('n', '<c-f>', ':Ack! ')
