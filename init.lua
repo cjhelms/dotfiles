@@ -60,6 +60,9 @@ vim.opt.relativenumber = true
 vim.opt.termguicolors = true
 vim.opt.completeopt = {'menu', 'menuone', 'noselect'}
 
+-- general
+vim.keymap.set('n', '<leader>w', ':w<cr>')
+
 -- telescope 
 local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
@@ -160,3 +163,6 @@ require("nvim-tree").setup({
     }
   }
 })
+
+-- neoformat
+vim.keymap.set('n', '<leader>e', ':Neoformat')
