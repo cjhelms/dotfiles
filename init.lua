@@ -37,6 +37,7 @@ require('packer').startup(function(use)
   use 'hrsh7th/nvim-cmp'
   use 'saadparwaiz1/cmp_luasnip'
   use 'sbdchd/neoformat'
+  use 'mileszs/ack.vim'
 
   if packer_bootstrap then
     require('packer').sync()
@@ -142,7 +143,7 @@ local capabilities = require('cmp_nvim_lsp').default_capabilities()
 require('lspconfig')['clangd'].setup({
   capabilities=capabilities,
   on_attach=on_attach,
-  cmd={'clangd-10'},
+  cmd={'clangd'},
 })
 
 -- feline
@@ -166,3 +167,6 @@ require("nvim-tree").setup({
 
 -- neoformat
 vim.keymap.set('n', '<leader>e', ':Neoformat')
+
+-- ack.vim
+vim.keymap.set('n', '<c-f>', ':Ack! ')
