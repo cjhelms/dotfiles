@@ -143,16 +143,11 @@ vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
--- Keymap for quick saving
-vim.keymap.set('n', "<leader>wf", ":write<cr>", { silent = true, desc = "[W]rite [F]ile" })
-
--- Keymap for quick exits
-vim.keymap.set('n', "<leader>xp", ":quit<cr>", { silent = true, desc = "E[X]it [P]ane" })
-vim.keymap.set('n', "<leader>xwp", ":wq<cr>", { silent = true, desc = "Write then E[X]it [P]ane" })
-vim.keymap.set('n', "<leader>xfp", ":quit!<cr>", { silent = true, desc = "Write then E[X]it [P]ane" })
-vim.keymap.set('n', "<leader>xa", ":qall<cr>", { silent = true, desc = "E[X]it [A]ll" })
-vim.keymap.set('n', "<leader>xwa", ":wqall<cr>", { silent = true, desc = "E[X]it [A]ll" })
-vim.keymap.set('n', "<leader>xfa", ":qall!<cr>", { silent = true, desc = "E[X]it [A]ll" })
+-- Keymap for quick saving and exiting
+vim.keymap.set('n', "<leader>wb", ":w<cr>", { silent = true, desc = "[W]rite [B]uffer" })
+vim.keymap.set('n', "<leader>wq", ":wq<cr>", { silent = true, desc = "[W]rite buffer and [Q]uit" })
+vim.keymap.set('n', "<leader>bq", ":q<cr>", { silent = true, desc = "[B]uffer [Q]uit" })
+vim.keymap.set('n', "<leader>aq", ":qall<cr>", { silent = true, desc = "[A]ll [Q]uit" })
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
