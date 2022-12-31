@@ -11,6 +11,11 @@ require('packer').startup(function(use)
   -- Package manager
   use 'wbthomason/packer.nvim'
 
+  -- Built-in terminal
+  use { 'akinsho/toggleterm.nvim', tag = '2.3.0', config = function() 
+    require('toggleterm').setup()
+  end}
+
   use { -- LSP Configuration & Plugins
     'neovim/nvim-lspconfig',
     requires = {
@@ -128,6 +133,9 @@ vim.cmd [[colorscheme onedark]]
 -- Set completeopt to have a better completion experience
 vim.o.completeopt = 'menuone,noselect'
 
+-- Set column ruler at line 100
+vim.o.colorcolumn = "101"
+
 -- [[ Basic Keymaps ]]
 -- Set <space> as the leader key
 -- See `:help mapleader`
@@ -159,6 +167,24 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   group = highlight_group,
   pattern = '*',
 })
+
+
+-- Enable toggleterm.nvim
+require('toggleterm').setup {
+  size = 20,
+  open_mapping = [[<c-\>]],
+  autochdir = false,
+  shade_terminals = true,
+  start_in_insert = true,
+  insert_mappings = false,
+  terminal_mappings = true,
+  persist_size = true,
+  persist_mode = true,
+  direction = 'horizontal',
+  close_on_exit = true,
+  shell = vim.o.shell,
+  auto_scroll = true,
+}
 
 -- Set lualine as statusline
 -- See `:help lualine.txt`
