@@ -11,11 +11,6 @@ require('packer').startup(function(use)
   -- Package manager
   use 'wbthomason/packer.nvim'
 
-  -- Built-in terminal
-  use { 'akinsho/toggleterm.nvim', tag = '2.3.0', config = function() 
-    require('toggleterm').setup()
-  end}
-
   use { -- LSP Configuration & Plugins
     'neovim/nvim-lspconfig',
     requires = {
@@ -58,6 +53,7 @@ require('packer').startup(function(use)
   use 'lukas-reineke/indent-blankline.nvim' -- Add indentation guides even on blank lines
   use 'numToStr/Comment.nvim' -- "gc" to comment visual regions/lines
   use 'tpope/vim-sleuth' -- Detect tabstop and shiftwidth automatically
+  use 'jose-elias-alvarez/null-ls.nvim' -- Code formatting
 
   -- Fuzzy Finder (files, lsp, etc)
   use { 'nvim-telescope/telescope.nvim', branch = '0.1.x', requires = { 'nvim-lua/plenary.nvim' } }
@@ -157,6 +153,9 @@ vim.keymap.set('n', "<leader>wq", ":wq<cr>", { silent = true, desc = "[W]rite bu
 vim.keymap.set('n', "<leader>bq", ":q<cr>", { silent = true, desc = "[B]uffer [Q]uit" })
 vim.keymap.set('n', "<leader>aq", ":qall<cr>", { silent = true, desc = "[A]ll [Q]uit" })
 
+-- Keymap for formatting
+vim.keymap.set('n', "<leader>f", ":Format<cr>", { silent = true, desc = "[F]ormat" })
+
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
@@ -167,24 +166,6 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   group = highlight_group,
   pattern = '*',
 })
-
-
--- Enable toggleterm.nvim
-require('toggleterm').setup {
-  size = 20,
-  open_mapping = [[<c-\>]],
-  autochdir = false,
-  shade_terminals = true,
-  start_in_insert = true,
-  insert_mappings = false,
-  terminal_mappings = true,
-  persist_size = true,
-  persist_mode = true,
-  direction = 'horizontal',
-  close_on_exit = true,
-  shell = vim.o.shell,
-  auto_scroll = true,
-}
 
 -- Set lualine as statusline
 -- See `:help lualine.txt`
@@ -199,6 +180,14 @@ require('lualine').setup {
 
 -- Enable Comment.nvim
 require('Comment').setup()
+
+-- Enable formatter.nvim
+local null_ls = require('null-ls')
+null_ls.setup {
+  sources = {
+    null_ls.builtins.formatting.black,
+  }
+}
 
 -- Enable `lukas-reineke/indent-blankline.nvim`
 -- See `:help indent_blankline.txt`
