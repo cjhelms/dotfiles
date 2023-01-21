@@ -103,6 +103,10 @@ vim.api.nvim_create_autocmd('BufWritePost', {
 -- [[ Setting options ]]
 -- See `:help vim.o`
 
+vim.o.tabstop = 2
+vim.o.shiftwidth = 2
+vim.o.expandtab = true
+
 -- Use relative line numbers
 vim.o.relativenumber = true
 
@@ -216,7 +220,11 @@ require('gitsigns').setup {
 }
 
 -- mind.nvim
-require('mind').setup()
+require('mind').setup({
+  edit = {
+    data_extension = ".txt"
+  }
+})
 vim.keymap.set('n', '<leader>m', ':MindOpenMain<cr>', { silent = true })
 
 -- venn.nvim
