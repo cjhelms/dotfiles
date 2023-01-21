@@ -43,12 +43,16 @@ require('packer').startup(function(use)
     after = 'nvim-treesitter',
   }
 
+  -- Note-taking
   use {
     'phaazon/mind.nvim',
     branch = 'v2.2',
     requires = { 'nvim-lua/plenary.nvim' },
   }
   use 'jbyuki/venn.nvim'
+
+  -- Fuzzy-search file browser
+  use 'nvim-telescope/telescope-file-browser.nvim'
 
   -- Git related plugins
   use 'tpope/vim-fugitive'
@@ -261,6 +265,9 @@ require('telescope').setup {
     },
   },
 }
+
+require('telescope').load_extension('file_browser')
+vim.keymap.set('n', '<leader>fb', ':Telescope file_browser<cr>', { noremap = true })
 
 -- Enable telescope fzf native, if installed
 pcall(require('telescope').load_extension, 'fzf')
