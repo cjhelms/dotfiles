@@ -1,5 +1,6 @@
 -- File explorer pane
 require("nvim-tree").setup({
+  sync_root_with_cwd = true,
   view = {
     side = "right",
   },

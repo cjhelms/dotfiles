@@ -72,6 +72,7 @@ local servers = {
   lua_ls = {},
   clangd = {},
   pyright = {},
+  texlab = {},
 }
 
 -- Ensure the servers above are installed

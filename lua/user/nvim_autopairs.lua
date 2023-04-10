@@ -1,7 +1,7 @@
 -- Autocomplete pairs e.g. () or {}
 require("nvim-autopairs").setup({
     fast_wrap = {
-        map = "<c-w>",
+        map = "<c-e>",
         chars = { "{", "[", "(", '"', "'" },
         pattern = string.gsub([[ [%'%"%)%>%]%)%}%,] ]], "%s+", ""),
         offset = 0, -- Offset from pattern match

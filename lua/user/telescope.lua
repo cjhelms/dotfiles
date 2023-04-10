@@ -13,11 +13,13 @@ require("telescope").setup({
 -- Enable telescope fzf native, if installed (i.e. implement fuzzy search algorithm)
 pcall(require("telescope").load_extension, "fzf")
 
--- Register fuzzy search file browser with telescope
+-- Load extensions
 require("telescope").load_extension("file_browser")
+require("telescope").load_extension("projects")
 
 -- Add keymaps for opening the various fuzzy searches
 vim.keymap.set("n", "<leader>fb", ":Telescope file_browser<cr>", { noremap = true, desc = "[F]ile [B]rowser" })
+vim.keymap.set("n", "<leader>sp", ":Telescope projects<cr>", { noremap = true, desc = "[S]earch [P]roject" })
 vim.keymap.set("n", "<leader>?", require("telescope.builtin").oldfiles, { desc = "[?] Find recently opened files" })
 vim.keymap.set("n", "<leader><space>", require("telescope.builtin").buffers, { desc = "[ ] Find existing buffers" })
 vim.keymap.set("n", "<leader>sf", require("telescope.builtin").find_files, { desc = "[S]earch [F]iles" })

@@ -67,6 +67,16 @@ require("packer").startup(function(use)
     cond = vim.fn.executable("make") == 1,
   })
 
+  -- Preview markdown files
+  use({
+    "iamcco/markdown-preview.nvim",
+    run = function() vim.fn["mkdp#util#install"]() end,
+  })
+
+  use("ThePrimeagen/harpoon")                       -- Navigate files faster
+  use("m-demare/hlargs.nvim")                       -- Highlight arguments
+  use("ahmedkhalf/project.nvim")                    -- Project navigation
+  use("lervag/vimtex")                              -- LaTeX support
   use("goolord/alpha-nvim")                         -- Cool welcome screen
   use("windwp/nvim-autopairs")                      -- Autocomplete pairs e.g. () or {}
   use("simrat39/symbols-outline.nvim")              -- Show outline of symbols in current file
