@@ -7,7 +7,6 @@ require("mason-tool-installer").setup({
     "stylua",
     "misspell",
     "shellcheck",
-    "shfmt",
     "latexindent",
   },
   -- if set to true this will check each tool for updates. If updates

@@ -1,6 +1,9 @@
 -- Fuzzy finder (files, lsp, etc)
 require("telescope").setup({
   defaults = {
+    path_display = {
+      "truncate",
+    },
     mappings = {
       i = {
         ["<C-u>"] = false,

@@ -20,6 +20,9 @@ vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist)
 vim.keymap.set("n", "<leader>f", ":Format<cr>", { silent = true, desc = "[F]ormat" })
 
 -- General settings
+vim.o.spell = true
+vim.o.list = true
+vim.o.listchars = "trail:~"
 vim.o.shell = "/usr/bin/bash"          -- Specify shell to use
 vim.o.tabstop = 2                      -- Number of spaces per tab
 vim.o.shiftwidth = 2                   -- Number of spaces per auto-indentation
@@ -37,6 +40,8 @@ vim.o.termguicolors = true             -- Better colors
 vim.cmd([[colorscheme gruvbox]])       -- Super rad theme
 vim.o.completeopt = "menuone,noselect" -- Set completeopt to have a better completion experience
 vim.o.colorcolumn = "101"              -- Set column ruler at line 100
+vim.o.cursorline = true                -- Highlight line cursor is on
+vim.o.cursorcolumn = true              -- Highlight column cursor is on
 
 -- Highlight on yank (copy) for better visibility
 local highlight_group = vim.api.nvim_create_augroup("YankHighlight", { clear = true })

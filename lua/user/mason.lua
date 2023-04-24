@@ -83,10 +83,32 @@ mason_lspconfig.setup({
 
 mason_lspconfig.setup_handlers({
   function(server_name)
-    require("lspconfig")[server_name].setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
-      settings = servers[server_name],
-    })
+    if server_name == "pyright" then
+      -- Special configuration to get Pyright to ignore setup.py files as root of project
+      require("lspconfig")[server_name].setup({
+        capabilities = capabilities,
+        on_attach = on_attach,
+        root_dir = function(fname)
+          local util = require("lspconfig/util")
+          local root_files = {
+            "pyproject.toml",
+            "setup.cfg",
+            "requirements.txt",
+            "Pipfile",
+            "pyrightconfig.json",
+          }
+          return util.root_pattern(unpack(root_files))(fname)
+              or util.find_git_ancestor(fname)
+              or util.path.dirname(fname)
+        end,
+        settings = servers[server_name],
+      })
+    else
+      require("lspconfig")[server_name].setup({
+        capabilities = capabilities,
+        on_attach = on_attach,
+        settings = servers[server_name],
+      })
+    end
   end,
 })
