@@ -22,10 +22,10 @@ require("packer").startup(function(use)
   use({
     "neovim/nvim-lspconfig",
     requires = {
-      "williamboman/mason.nvim",           -- Installer for LSP servers
-      "williamboman/mason-lspconfig.nvim", -- Hook up Mason and lspconfig
-      "j-hui/fidget.nvim",                 -- Useful status updates for LSP
-      "folke/neodev.nvim",                 -- Extra lua configuration, makes nvim stuff amazing
+      "williamboman/mason.nvim",               -- Installer for LSP servers
+      "williamboman/mason-lspconfig.nvim",     -- Hook up Mason and lspconfig
+      { "j-hui/fidget.nvim", tag = "legacy" }, -- Useful status updates for LSP
+      "folke/neodev.nvim",                     -- Extra lua configuration, makes nvim stuff amazing
     },
   })
 
@@ -67,23 +67,12 @@ require("packer").startup(function(use)
     cond = vim.fn.executable("make") == 1,
   })
 
-  -- Preview markdown files
-  use({
-    "iamcco/markdown-preview.nvim",
-    run = function() vim.fn["mkdp#util#install"]() end,
-  })
-
-  use("ThePrimeagen/harpoon")                       -- Navigate files faster
   use("m-demare/hlargs.nvim")                       -- Highlight arguments
-  use("ahmedkhalf/project.nvim")                    -- Project navigation
   use("lervag/vimtex")                              -- LaTeX support
   use("goolord/alpha-nvim")                         -- Cool welcome screen
   use("windwp/nvim-autopairs")                      -- Autocomplete pairs e.g. () or {}
-  use("simrat39/symbols-outline.nvim")              -- Show outline of symbols in current file
-  use("nvim-tree/nvim-tree.lua")                    -- File explorer pane
   use("akinsho/toggleterm.nvim")                    -- Floating terminal
   use("WhoIsSethDaniel/mason-tool-installer.nvim")  -- Auto-install LSP servers, formatters, etc.
-  use("jbyuki/venn.nvim")                           -- ASCII art
   use("nvim-telescope/telescope-file-browser.nvim") -- Fuzzy search file browser
   use("lewis6991/gitsigns.nvim")                    -- Git symbols in symbol column
   use("morhetz/gruvbox")                            -- Theme
@@ -92,6 +81,10 @@ require("packer").startup(function(use)
   use("numToStr/Comment.nvim")                      -- "gc" to comment visual regions/lines
   use("tpope/vim-sleuth")                           -- Detect tabstop and shiftwidth automatically
   use("jose-elias-alvarez/null-ls.nvim")            -- Code formatting
+  use("nvim-treesitter/nvim-treesitter-context")    -- Sticky scroll
+  use("ptzz/lf.vim")                                -- LF file browser
+  use("voldikss/vim-floaterm")                      -- Floating terminal for LF file browser
+  use("kdheepak/lazygit.nvim")                      -- Lazygit floating terminal
 
   -- Add custom plugins to packer from ~/.config/nvim/lua/custom/plugins.lua
   local has_plugins, plugins = pcall(require, "custom.plugins")

@@ -4,7 +4,12 @@ vim.g.maplocalleader = " "
 vim.keymap.set({ "n", "v" }, "<Space>", "<Nop>", { silent = true })
 
 -- Set current working directory to active buffer
-vim.keymap.set("n", "<leader>wd", ":cd %:p:h<cr>", { silent = true, desc = "Set [W]orking [D]irectory to active buffer" })
+vim.keymap.set(
+  "n",
+  "<leader>wd",
+  ":cd %:p:h<cr>",
+  { silent = true, desc = "Set [W]orking [D]irectory to active buffer" }
+)
 
 -- Deal with word wrapping better
 vim.keymap.set("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
@@ -18,6 +23,10 @@ vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist)
 
 -- Formatting using LSP
 vim.keymap.set("n", "<leader>f", ":Format<cr>", { silent = true, desc = "[F]ormat" })
+
+-- Other keybinds
+vim.keymap.set("n", "<leader>fb", ":Lfcd<cr>", { silent = true, desc = "[F]ile [B]rowser" })
+vim.keymap.set("n", "<leader>lg", ":LazyGit<cr>", { silent = true, desc = "[L]azy[G]it" })
 
 -- General settings
 vim.o.spell = true
@@ -42,6 +51,7 @@ vim.o.completeopt = "menuone,noselect" -- Set completeopt to have a better compl
 vim.o.colorcolumn = "101"              -- Set column ruler at line 100
 vim.o.cursorline = true                -- Highlight line cursor is on
 vim.o.cursorcolumn = true              -- Highlight column cursor is on
+vim.cmd([[let g:lf_map_keys = 0]])     -- Remove LF keybind
 
 -- Highlight on yank (copy) for better visibility
 local highlight_group = vim.api.nvim_create_augroup("YankHighlight", { clear = true })
