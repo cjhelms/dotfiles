@@ -1,0 +1,4 @@
+i3-wm.mod: Mod1
+i3-wm.alt: Mod4
+regolith.look.path: /usr/share/regolith-look/gruvbox
+regolith.wallpaper.file: /home/chris/.config/regolith2/282828.png
