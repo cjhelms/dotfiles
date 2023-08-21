@@ -85,6 +85,7 @@ require("packer").startup(function(use)
   use("ptzz/lf.vim")                                -- LF file browser
   use("voldikss/vim-floaterm")                      -- Floating terminal for LF file browser
   use("kdheepak/lazygit.nvim")                      -- Lazygit floating terminal
+  use {"shortcuts/no-neck-pain.nvim", tag = "*" }   -- Center text on screen
 
   -- Add custom plugins to packer from ~/.config/nvim/lua/custom/plugins.lua
   local has_plugins, plugins = pcall(require, "custom.plugins")
