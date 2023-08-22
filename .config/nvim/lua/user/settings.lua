@@ -46,7 +46,7 @@ vim.o.smartcase = true                 -- Override ignorecase if capital letter 
 vim.o.updatetime = 250                 -- Decrease update time
 vim.wo.signcolumn = "yes"              -- Column where e.g. git symbols show up
 vim.o.termguicolors = true             -- Better colors
-vim.cmd([[colorscheme gruvbox]])       -- Super rad theme
+vim.cmd([[colorscheme dracula]])       -- Super rad theme
 vim.o.completeopt = "menuone,noselect" -- Set completeopt to have a better completion experience
 vim.o.colorcolumn = "101"              -- Set column ruler at line 100
 vim.o.cursorline = true                -- Highlight line cursor is on
