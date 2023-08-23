@@ -1,7 +1,3 @@
-sudo apt update
-sudo apt upgrade -y
-sudo apt autoremove
-
 # Miscellaneous tools
 sudo apt install git fzf stow xclip npm -y
 
