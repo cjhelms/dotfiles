@@ -75,7 +75,7 @@ require("packer").startup(function(use)
   use("WhoIsSethDaniel/mason-tool-installer.nvim")  -- Auto-install LSP servers, formatters, etc.
   use("nvim-telescope/telescope-file-browser.nvim") -- Fuzzy search file browser
   use("lewis6991/gitsigns.nvim")                    -- Git symbols in symbol column
-  use("Mofiqul/dracula.nvim")                       -- Theme
+  use("folke/tokyonight.nvim")                      -- Theme
   use("nvim-lualine/lualine.nvim")                  -- Fancier statusline
   use("lukas-reineke/indent-blankline.nvim")        -- Add indentation guides even on blank lines
   use("numToStr/Comment.nvim")                      -- "gc" to comment visual regions/lines
@@ -85,7 +85,7 @@ require("packer").startup(function(use)
   use("ptzz/lf.vim")                                -- LF file browser
   use("voldikss/vim-floaterm")                      -- Floating terminal for LF file browser
   use("kdheepak/lazygit.nvim")                      -- Lazygit floating terminal
-  use {"shortcuts/no-neck-pain.nvim", tag = "*" }   -- Center text on screen
+  use({ "shortcuts/no-neck-pain.nvim", tag = "*" }) -- Center text on screen
 
   -- Add custom plugins to packer from ~/.config/nvim/lua/custom/plugins.lua
   local has_plugins, plugins = pcall(require, "custom.plugins")
