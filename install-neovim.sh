@@ -1,0 +1,11 @@
+sudo apt update
+sudo apt upgrade -y
+sudo apt autoremove
+
+# Miscellaneous tools
+sudo apt install git fzf stow xclip npm -y
+
+# Install neovim
+wget https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.deb
+sudo apt install nvim-linux64.deb
+rm install nvim-linux64.deb
