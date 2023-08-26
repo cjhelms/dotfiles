@@ -14,6 +14,7 @@ require("mason-tool-installer").setup({
     "latexindent",
     "mypy",
     "flake8",
+    "black",
   },
   -- if set to true this will check each tool for updates. If updates
   -- are available the tool will be updated. This setting does not
