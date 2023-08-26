@@ -43,4 +43,13 @@ RUN \
   cd .dotfiles && \
   stow .
 
+# Download and install Neovim plugins, tools, and LSP providers
+RUN \
+  git clone \
+  --depth 1 \
+  https://github.com/wbthomason/packer.nvim \
+  /root/.local/share/nvim/site/pack/packer/start/packer.nvim && \
+  nvim --headless -c "autocmd User PackerComplete quitall" -c "PackerSync" && \
+  nvim --headless -c "autocmd User MasonToolsUpdateCompleted quitall" -c "MasonToolsUpdate"
+
 CMD ["/bin/bash"]
