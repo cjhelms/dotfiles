@@ -4,6 +4,11 @@ require("mason-tool-installer").setup({
   -- a list of all tools you want to ensure are installed upon
   -- start; they should be the names Mason uses for each tool
   ensure_installed = {
+    "bash-language-server",
+    "lua-language-server",
+    "clangd",
+    "pyright",
+    "texlab",
     "stylua",
     "shellcheck",
     "latexindent",
