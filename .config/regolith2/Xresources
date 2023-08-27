@@ -1,2 +1,2 @@
-!regolith.look.path: /usr/share/regolith-look/dracula
 regolith.look.path: /usr/share/regolith-look/dracula
+i3-wm.gaps.inner.size: 15
