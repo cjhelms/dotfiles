@@ -41,7 +41,8 @@ ARG DOTFILES_VER=unknown
 RUN \
   git clone https://github.com/cjhelms/dotfiles.git .dotfiles && \
   cd .dotfiles && \
-  stow .
+  stow . && \
+  echo "source ~/.dotfiles/.bashrc" >> ~/.bashrc
 
 # Download and install Neovim plugins, tools, and LSP providers
 RUN \
