@@ -22,9 +22,8 @@ RUN wget https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.
   mv nvim-linux64 /opt && \
   ln -s /opt/nvim-linux64/bin/nvim /bin/nvim
 ARG DOTFILES_CHECKOUT=master
-RUN git clone https://github.com/cjhelms/dotfiles.git .dotfiles && \
+RUN git clone --depth 1 https://github.com/cjhelms/dotfiles.git .dotfiles && \
   cd .dotfiles && \
-  git checkout $DOTFILES_CHECKOUT && \
   stow . && \
   echo "source ~/.dotfiles/.bashrc" >> ~/.bashrc
 RUN git clone \
