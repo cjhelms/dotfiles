@@ -1,7 +1,7 @@
 #!/bin/bash
 BASE_IMAGE="ubuntu"
 BASE_TAG="latest"
-DOTFILES_CHECKOUT="master"
+DOTFILES_CHECKOUT="6da61b6facec86c4596b06668cff889b6dc613cb"
 if [ -n "${1}" ]; then
 	BASE_IMAGE="${1}"
 fi
