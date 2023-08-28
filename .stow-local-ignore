@@ -3,3 +3,4 @@
 docker_build.sh
 .bashrc
 Dockerfile
+install.sh
