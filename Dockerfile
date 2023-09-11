@@ -2,6 +2,7 @@ ARG BASE_IMAGE=ubuntu
 ARG BASE_TAG=latest
 FROM $BASE_IMAGE:$BASE_TAG
 WORKDIR /root
+ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get -yqq install \
   curl \
   unzip \
