@@ -25,6 +25,12 @@ RUN apt-get update && \
     tee /etc/apt/sources.list.d/nodesource.list && \
   apt-get update && apt-get -yqq install nodejs
 
+RUN mkdir lazygit && cd lazygit && \
+  wget "https://github.com/jesseduffield/lazygit/releases/download/v0.40.2/lazygit_0.40.2_Linux_32-bit.tar.gz" && \
+  tar -xvf lazygit_0.40.2_Linux_32-bit.tar.gz && \
+  mv lazygit /bin && \
+  cd .. && rm -rf lazygit
+
 RUN wget https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz && \
   tar -xvf nvim-linux64.tar.gz && \
   rm nvim-linux64.tar.gz && \
