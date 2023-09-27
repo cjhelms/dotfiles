@@ -75,7 +75,7 @@ require("packer").startup(function(use)
   use("WhoIsSethDaniel/mason-tool-installer.nvim")  -- Auto-install LSP servers, formatters, etc.
   use("nvim-telescope/telescope-file-browser.nvim") -- Fuzzy search file browser
   use("lewis6991/gitsigns.nvim")                    -- Git symbols in symbol column
-  use("folke/tokyonight.nvim")                      -- Theme
+  use("ellisonleao/gruvbox.nvim")                   -- Theme
   use("nvim-lualine/lualine.nvim")                  -- Fancier statusline
   use("lukas-reineke/indent-blankline.nvim")        -- Add indentation guides even on blank lines
   use("numToStr/Comment.nvim")                      -- "gc" to comment visual regions/lines
