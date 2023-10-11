@@ -7,5 +7,6 @@ null_ls.setup({
     null_ls.builtins.formatting.stylua,                                                  -- Use stylua as Lua formatter
     null_ls.builtins.formatting.shfmt,                                                   -- Use shfmt as Bash script formatter
     null_ls.builtins.formatting.gofumpt,                                                 -- Use gofumpt as Golang formatter
+    null_ls.builtins.formatting.gdformat,                                                -- Use gdformat as gdscript formatter
   },
 })
