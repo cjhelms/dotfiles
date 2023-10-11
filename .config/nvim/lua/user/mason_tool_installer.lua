@@ -15,6 +15,7 @@ require("mason-tool-installer").setup({
     "mypy",
     "flake8",
     "black",
+    "gdtoolkit",
   },
   -- if set to true this will check each tool for updates. If updates
   -- are available the tool will be updated. This setting does not
