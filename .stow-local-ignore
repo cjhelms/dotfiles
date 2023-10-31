@@ -1,6 +1,8 @@
 .git
 .gitignore
 docker_build.sh
+docker_run.sh
+docker_run_no_cuda.sh
 .bashrc
 Dockerfile
 install.sh
