@@ -86,6 +86,7 @@ require("packer").startup(function(use)
   use("voldikss/vim-floaterm")                      -- Floating terminal for LF file browser
   use("kdheepak/lazygit.nvim")                      -- Lazygit floating terminal
   use({ "shortcuts/no-neck-pain.nvim", tag = "*" }) -- Center text on screen
+  use("sindrets/diffview.nvim")                     -- Git diff viewer
   use("jbyuki/venn.nvim")                           -- ASCII art
 
   -- Add custom plugins to packer from ~/.config/nvim/lua/custom/plugins.lua
