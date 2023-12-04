@@ -2,7 +2,7 @@
 local cmp = require("cmp")
 local luasnip = require("luasnip")
 cmp.setup({
-            -- Autocompletion (black magic)
+  -- Autocompletion (black magic)
   snippet = {
     expand = function(args) luasnip.lsp_expand(args.body) end,
   },

@@ -16,6 +16,8 @@ require("mason-tool-installer").setup({
     "flake8",
     "black",
     "gdtoolkit",
+    "shfmt",
+    "isort",
   },
   -- if set to true this will check each tool for updates. If updates
   -- are available the tool will be updated. This setting does not
