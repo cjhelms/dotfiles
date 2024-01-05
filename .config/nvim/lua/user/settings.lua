@@ -48,7 +48,7 @@ vim.wo.signcolumn = "yes"              -- Column where e.g. git symbols show up
 vim.o.termguicolors = true             -- Better colors
 vim.cmd([[colorscheme gruvbox]])       -- Super rad theme
 vim.o.completeopt = "menuone,noselect" -- Set completeopt to have a better completion experience
-vim.o.colorcolumn = "80"              -- Set column ruler at line 100
+vim.o.colorcolumn = "81,101"           -- Set column rulers
 vim.o.cursorline = true                -- Highlight line cursor is on
 vim.o.cursorcolumn = true              -- Highlight column cursor is on
 vim.cmd([[let g:lf_map_keys = 0]])     -- Remove LF keybind
