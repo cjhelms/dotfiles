@@ -9,3 +9,8 @@ require("gitsigns").setup({
     changedelete = { text = "~" },
   },
 })
+
+vim.keymap.set("n", "<leader>gt", ":Gitsigns toggle_signs<cr>", {
+  silent = true,
+  desc = "[G]itsigns [T]oggle",
+})
