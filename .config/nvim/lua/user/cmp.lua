@@ -1,4 +1,3 @@
--- Configure autocompletion
 local cmp = require("cmp")
 local luasnip = require("luasnip")
 cmp.setup({

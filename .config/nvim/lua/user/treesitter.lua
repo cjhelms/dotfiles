@@ -1,8 +1,7 @@
--- Highlight, edit, and navigate code
 -- Note this plugin is not the same as LSP, there is no inference on the meaning of the code
 -- This plugin just highlights text and provides simple editor tools based on language grammar
 require("nvim-treesitter.configs").setup({
-  ignore_install= { "help" },
+  ignore_install = { "help" },
   -- Add languages to be installed here that you want installed for treesitter
   ensure_installed = {
     "c",
