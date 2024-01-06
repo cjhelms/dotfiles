@@ -48,11 +48,24 @@ require("packer").startup(function(use)
   use("stevearc/conform.nvim") -- Code formatter
   use({ "andythigpen/nvim-coverage", requires = "nvim-lua/plenary.nvim" }) -- Code coverage report
 
+  -- Test runner
+  use({
+    "nvim-neotest/neotest",
+    requires = {
+      "nvim-lua/plenary.nvim", -- Common utility functions for plugins
+      -- See also: https://github.com/antoinemadec/FixCursorHold.nvim/issues/13
+      "antoinemadec/FixCursorHold.nvim",
+      "nvim-treesitter/nvim-treesitter", -- Used by some runners for syntax tree
+      "nvim-neotest/neotest-python", -- Python test runner (pytest, unittest)
+      "alfaix/neotest-gtest", -- C++ test runner (gtest)
+    },
+  })
+
   -- Text highlighting
-  -- Post-install function is to run ':TSUpdate' on first install
-  -- See also: https://github.com/nvim-treesitter/nvim-treesitter/wiki/Installation#packernvim
   use({
     "nvim-treesitter/nvim-treesitter",
+    -- Post-install function is to run ':TSUpdate' on first install
+    -- See also: https://github.com/nvim-treesitter/nvim-treesitter/wiki/Installation#packernvim
     run = function() pcall(require("nvim-treesitter.install").update({ with_sync = true })) end,
   })
 
