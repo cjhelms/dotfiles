@@ -4,3 +4,8 @@ require("no-neck-pain").setup({
 		enableOnVimEnter = true,
 	}
 })
+
+vim.keymap.set("n", "<leader>nn", ":NoNeckPain<cr>", {
+  silent = true,
+  desc = "[N]o [N]eck pain",
+})
