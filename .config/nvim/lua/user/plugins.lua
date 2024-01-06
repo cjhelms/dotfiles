@@ -46,6 +46,7 @@ require("packer").startup(function(use)
   use("jbyuki/venn.nvim") -- ASCII art
   use("mfussenegger/nvim-lint") -- Linter support (i.e. non-LSP linters)
   use("stevearc/conform.nvim") -- Code formatter
+  use({ "andythigpen/nvim-coverage", requires = "nvim-lua/plenary.nvim" }) -- Code coverage report
 
   -- Text highlighting
   -- Post-install function is to run ':TSUpdate' on first install
@@ -56,10 +57,7 @@ require("packer").startup(function(use)
   })
 
   -- Additional text objects via treesitter
-  use({
-    "nvim-treesitter/nvim-treesitter-textobjects",
-    after = "nvim-treesitter",
-  })
+  use({ "nvim-treesitter/nvim-treesitter-textobjects", after = "nvim-treesitter" })
 
   -- Fuzzy finder (files, LSP, etc)
   use({
