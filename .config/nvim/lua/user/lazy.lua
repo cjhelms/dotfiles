@@ -19,10 +19,17 @@ local function load()
   vim.opt.rtp:prepend(absolute_path_to_installation)
 end
 
+local function make_import_table()
+  return {
+    {import = "user.plugins"},
+    {import = "user.plugins.lsp"},
+  }
+end
+
 local function load_plugins()
   local lazy = require("lazy")
-  local relative_path_to_plugin_lua_files = "user.plugins"
-  lazy.setup(relative_path_to_plugin_lua_files)
+  local import_table = make_import_table()
+  lazy.setup(import_table)
 end
 
 load()

@@ -48,7 +48,13 @@ local function set_keymaps()
   )
 end
 
-local function make_setup_options()
+local function configure()
+  local telescope = require("telescope")
+  telescope.load_extension("fzf")
+  set_keymaps()
+end
+
+local function make_opts()
   local actions = require("telescope.actions")
   return {
     defaults = {
@@ -65,19 +71,14 @@ local function make_setup_options()
   }
 end
 
-local function configure()
-  local telescope = require("telescope")
-  telescope.setup(make_setup_options())
-  telescope.load_extension("fzf")
-  set_keymaps()
-end
-
 return {
   "nvim-telescope/telescope.nvim",
   branch = "0.1.x",
   dependencies = {
     "nvim-lua/plenary.nvim",
-    { "nvim-telescope/telescope-fzf-native.nvim", build = "make" }
+    { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+    "nvim-tree/nvim-web-devicons",
   },
+  opts = make_opts(),
   config = configure
 }
