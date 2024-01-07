@@ -9,5 +9,5 @@ end
 
 return {
   "nvim-lualine/lualine.nvim",
-  opts = make_opts()
+  config = function() require("lualine").setup(make_opts()) end
 }
