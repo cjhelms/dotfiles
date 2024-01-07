@@ -22,17 +22,9 @@ local function configure()
   vim.opt.rtp:prepend(absolute_path_to_installation)
 end
 
-local function make_import_table()
-  return {
-    { import = "user.plugins" },
-    { import = "user.plugins.lsp" },
-  }
-end
-
 local function load_plugins()
   local lazy = require("lazy")
-  local import_table = make_import_table
-  lazy.setup({ spec = make_import_table() })
+  lazy.setup("user.plugins")
 end
 
 maybe_bootstrap()
