@@ -1,40 +1,4 @@
-local function set_keymaps()
-  vim.keymap.set("n", "<leader>?", require("telescope.builtin").oldfiles, {
-    desc = "[?] Find recently opened files",
-  })
-
-  vim.keymap.set("n", "<leader><space>", require("telescope.builtin").buffers, {
-    desc = "[ ] Find existing buffers",
-  })
-
-  vim.keymap.set("n", "<leader>sf", require("telescope.builtin").find_files, {
-    desc = "[S]earch [F]iles",
-  })
-
-  vim.keymap.set("n", "<leader>sh", require("telescope.builtin").help_tags, {
-    desc = "[S]earch [H]elp",
-  })
-
-  vim.keymap.set("n", "<leader>sw", require("telescope.builtin").grep_string, {
-    desc = "[S]earch current [W]ord",
-  })
-
-  vim.keymap.set("n", "<leader>sg", require("telescope.builtin").live_grep, {
-    desc = "[S]earch by [G]rep",
-  })
-
-  vim.keymap.set("n", "<leader>sd", require("telescope.builtin").diagnostics, {
-    desc = "[S]earch [D]iagnostics",
-  })
-
-  vim.keymap.set("n", "<leader>sk", require("telescope.builtin").keymaps, {
-    desc = "[S]earch [K]eymaps",
-  })
-
-  vim.keymap.set("n", "<leader>ss", require("telescope.builtin").grep_string, {
-    desc = "[S]earch [S]tring",
-  })
-
+local function set_current_buffer_search_keymap()
   vim.keymap.set(
     "n",
     "<leader>/",
@@ -48,7 +12,24 @@ local function set_keymaps()
   )
 end
 
-local function make_setup_options()
+local function set_keymaps()
+  local function map(keybind, action, description)
+    vim.keymap.set("n", keybind, "<cmd>Telescope " .. action .. "<cr>", { desc = description })
+  end
+
+  map("<leader>?", "oldfiles", "[?] Find recently opened files")
+  map("<leader><space>", "buffers", "[ ] Find existing buffers")
+  map("<leader>sf", "find_files", "[S]earch [F]iles")
+  map("<leader>sh", "help_tags", "[S]earch [H]elp")
+  map("<leader>sw", "grep_string", "[S]earch current [W]ord")
+  map("<leader>sg", "live_grep", "[S]earch by [G]rep")
+  map("<leader>sd", "diagnostics", "[S]earch [D]iagnostics")
+  map("<leader>sk", "keymaps", "[S]earch [K]eymaps")
+  map("<leader>ss", "grep_string", "[S]earch [S]tring")
+  set_current_buffer_search_keymap()
+end
+
+local function make_opts()
   local actions = require("telescope.actions")
   return {
     defaults = {
@@ -67,7 +48,7 @@ end
 
 local function configure()
   local telescope = require("telescope")
-  telescope.setup(make_setup_options())
+  telescope.setup(make_opts())
   telescope.load_extension("fzf")
   set_keymaps()
 end
@@ -77,7 +58,8 @@ return {
   branch = "0.1.x",
   dependencies = {
     "nvim-lua/plenary.nvim",
-    { "nvim-telescope/telescope-fzf-native.nvim", build = "make" }
+    { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+    "nvim-tree/nvim-web-devicons",
   },
   config = configure
 }
