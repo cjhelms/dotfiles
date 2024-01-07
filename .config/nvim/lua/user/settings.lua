@@ -21,10 +21,6 @@ vim.keymap.set("n", "]d", vim.diagnostic.goto_next)
 vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float)
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist)
 
--- Other keybinds
-vim.keymap.set("n", "<leader>fb", ":Lfcd<cr>", { silent = true, desc = "[F]ile [B]rowser" })
-vim.keymap.set("n", "<leader>lg", ":LazyGit<cr>", { silent = true, desc = "[L]azy[G]it" })
-
 -- General settings
 vim.o.spell = true
 vim.o.list = true
