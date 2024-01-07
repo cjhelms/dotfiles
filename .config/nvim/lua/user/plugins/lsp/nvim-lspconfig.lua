@@ -47,17 +47,41 @@ local function setup_servers()
   local lspconfig = require("lspconfig")
   local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-  local function setup(name)
-    lspconfig[name].setup({
+  local function make_opts_table()
+    return {
       capabilities = capabilities,
       on_attach = on_attach,
-    })
+    }
   end
 
-  setup("pyright")
-  setup("bashls")
-  setup("lua_ls")
-  setup("clangd")
+  local function make_pyright_opts_table()
+    local function make_root_dir_function()
+      return function(fname)
+        local util = require("lspconfig/util")
+        local root_files = {
+          "pyproject.toml",
+          "setup.cfg",
+          "requirements.txt",
+          "Pipfile",
+          "pyrightconfig.json",
+        }
+        return util.root_pattern(unpack(root_files))(fname)
+            or util.find_git_ancestor(fname)
+            or util.path.dirname(fname)
+      end
+    end
+
+    return table.insert(make_opts_table(), {root_dir = make_root_dir_function()})
+  end
+
+  local function setup(name, opts_table)
+    lspconfig[name].setup({opts_table})
+  end
+
+  setup("pyright", make_pyright_opts_table())
+  setup("bashls", make_opts_table())
+  setup("lua_ls", make_opts_table())
+  setup("clangd", make_opts_table())
 end
 
 local function configure()
