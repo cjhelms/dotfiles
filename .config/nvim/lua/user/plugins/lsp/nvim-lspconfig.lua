@@ -44,11 +44,12 @@ local on_attach = function(_, bufnr)
 end
 
 local function setup_servers()
-  lspconfig = require("lspconfig")
-  -- local cmp_nvim_lsp = require("cmp_nvim_lsp")
+  local lspconfig = require("lspconfig")
+  local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
   local function setup(name)
     lspconfig[name].setup({
+      capabilities = capabilities,
       on_attach = on_attach,
     })
   end
@@ -69,7 +70,7 @@ return {
   dependencies = {
     "williamboman/mason.nvim",
     "williamboman/mason-lspconfig.nvim",
-  --   "hrsh7th/cmp-nvim-lsp",
+    "hrsh7th/cmp-nvim-lsp",
   },
   config = configure
 }
