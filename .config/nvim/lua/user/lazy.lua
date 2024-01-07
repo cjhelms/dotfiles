@@ -14,16 +14,27 @@ local function bootstrap()
   })
 end
 
-local function load()
+local function maybe_bootstrap()
   if not is_installed() then bootstrap() end
+end
+
+local function configure()
   vim.opt.rtp:prepend(absolute_path_to_installation)
+end
+
+local function make_import_table()
+  return {
+    { import = "user.plugins" },
+    { import = "user.plugins.lsp" },
+  }
 end
 
 local function load_plugins()
   local lazy = require("lazy")
-  local relative_path_to_plugin_lua_files = "user.plugins"
-  lazy.setup(relative_path_to_plugin_lua_files)
+  local import_table = make_import_table
+  lazy.setup({ spec = make_import_table() })
 end
 
-load()
+maybe_bootstrap()
+configure()
 load_plugins()
