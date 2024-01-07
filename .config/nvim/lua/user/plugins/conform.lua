@@ -1,13 +1,13 @@
-local function make_opts()
-  return {
-    formatters_by_ft = {
-      lua = { "stylua" },
-      python = { "isort", "black" },
-    },
-  }
-end
-
 local function configure()
+  local function make_opts()
+    return {
+      formatters_by_ft = {
+        lua = { "stylua" },
+        python = { "isort", "black" },
+      },
+    }
+  end
+
   local function make_format_action()
     return function(args)
       local range = nil
@@ -22,12 +22,12 @@ local function configure()
     end
   end
 
+  require("conform").setup(make_opts())
   vim.api.nvim_create_user_command("Format", make_format_action(), { range = true })
   vim.keymap.set("n", "<leader>f", ":Format<cr>", { silent = true, desc = "[F]ormat" })
 end
 
 return {
   "stevearc/conform.nvim",
-  opts = make_opts(),
   config = configure,
 }
