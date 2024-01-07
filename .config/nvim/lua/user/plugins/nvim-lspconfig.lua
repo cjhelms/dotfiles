@@ -45,7 +45,8 @@ end
 
 local function setup_servers()
   local lspconfig = require("lspconfig")
-  local capabilities = require("cmp_nvim_lsp").default_capabilities()
+  local capabilities = vim.lsp.protocol.make_client_capabilities()
+  capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 
   local function make_opts_table()
     return {
@@ -71,15 +72,19 @@ local function setup_servers()
       end
     end
 
-    return table.insert(make_opts_table(), { root_dir = make_root_dir_function() })
+    local opts_table = make_opts_table()
+    table.insert(opts_table, { root_dir = make_root_dir_function() })
+    return opts_table
   end
 
   local function make_gdscript_opts_table()
-    return table.insert(make_opts_table(), { filetypes = { "gd", "gdscript", "gdscript3" } })
+    local opts_table = make_opts_table()
+    table.insert(opts_table, { filetypes = { "gd", "gdscript", "gdscript3" } })
+    return opts_table
   end
 
   local function setup(name, opts_table)
-    lspconfig[name].setup({opts_table})
+    lspconfig[name].setup(opts_table)
   end
 
   setup("pyright", make_pyright_opts_table())
