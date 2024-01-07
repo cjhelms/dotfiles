@@ -55,6 +55,9 @@ local function setup_servers()
   end
 
   setup("pyright")
+  setup("bashls")
+  setup("lua_ls")
+  setup("clangd")
 end
 
 local function configure()
