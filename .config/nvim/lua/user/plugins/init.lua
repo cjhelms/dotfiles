@@ -4,4 +4,5 @@ return {
   "j-hui/fidget.nvim",
   "nvim-treesitter/nvim-treesitter-context",
   "folke/neodev.nvim",
+  "stevearc/dressing.nvim",
 }
