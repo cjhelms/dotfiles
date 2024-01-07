@@ -71,7 +71,11 @@ local function setup_servers()
       end
     end
 
-    return table.insert(make_opts_table(), {root_dir = make_root_dir_function()})
+    return table.insert(make_opts_table(), { root_dir = make_root_dir_function() })
+  end
+
+  local function make_gdscript_opts_table()
+    return table.insert(make_opts_table(), { filetypes = { "gd", "gdscript", "gdscript3" } })
   end
 
   local function setup(name, opts_table)
@@ -82,21 +86,20 @@ local function setup_servers()
   setup("bashls", make_opts_table())
   setup("lua_ls", make_opts_table())
   setup("clangd", make_opts_table())
+  setup("gdscript", make_gdscript_opts_table())
 end
 
 local function configure()
-  require("mason-lspconfig").setup({
-    automatic_installation = true,
-  })
+  require("mason-lspconfig").setup({ automatic_installation = true })
   setup_servers()
 end
 
 return {
   "neovim/nvim-lspconfig",
-  event = { "BufReadPre", "BufNewFile" },
   dependencies = {
     "williamboman/mason.nvim",
     "williamboman/mason-lspconfig.nvim",
+    "WhoIsSethDaniel/mason-tool-installer.nvim",
     "hrsh7th/cmp-nvim-lsp",
   },
   config = configure
