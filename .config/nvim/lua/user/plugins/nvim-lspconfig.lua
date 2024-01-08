@@ -71,7 +71,7 @@ local function configure()
       end
 
       local opts_table = make_opts_table()
-      table.insert(opts_table, { root_dir = make_root_dir_function() })
+      opts_table["root_dir"] = make_root_dir_function()
       return opts_table
     end
 
@@ -105,7 +105,7 @@ local function configure()
 
     local function make_gdscript_opts_table()
       local opts_table = make_opts_table()
-      table.insert(opts_table, { filetypes = { "gd", "gdscript", "gdscript3" } })
+      opts_table["filetypes"] = { "gd", "gdscript", "gdscript3" }
       return opts_table
     end
 
