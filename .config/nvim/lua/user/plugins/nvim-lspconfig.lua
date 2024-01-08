@@ -19,6 +19,7 @@ local function configure()
     map("<leader>wa", vim.lsp.buf.add_workspace_folder, "[W]orkspace [A]dd Folder")
     map("<leader>wr", vim.lsp.buf.remove_workspace_folder, "[W]orkspace [R]emove Folder")
     map("<leader>ws", builtin.lsp_dynamic_workspace_symbols, "[W]orkspace [S]ymbols")
+    map("<leader>sr", ":LspRestart<cr>", "[S]erver [R]estart")
     map(
       "<leader>wl",
       function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end,
