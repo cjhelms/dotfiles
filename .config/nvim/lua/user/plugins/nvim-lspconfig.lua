@@ -75,6 +75,34 @@ local function configure()
       return opts_table
     end
 
+    local function make_lua_ls_opts_table()
+      local function make_diagnostics_table()
+        -- Acknowledge the 'vim' global variable
+        return { globals = { "vim" } }
+      end
+
+      local function make_workspace_table()
+        -- Make language server aware of runtime files
+        return {
+          library = {
+            [vim.fn.expand("$VIMRUNTIME/lua")] = true,
+            [vim.fn.stdpath("config") .. "/lua"] = true,
+          },
+        }
+      end
+
+      local function make_lua_settings_table()
+        return {
+          diagnostics = make_diagnostics_table(),
+          workspace = make_workspace_table(),
+        }
+      end
+
+      local opts_table = make_opts_table()
+      opts_table["settings"] = { Lua = make_lua_settings_table() }
+      return opts_table
+    end
+
     local function make_gdscript_opts_table()
       local opts_table = make_opts_table()
       table.insert(opts_table, { filetypes = { "gd", "gdscript", "gdscript3" } })
@@ -85,7 +113,7 @@ local function configure()
 
     setup("pyright", make_pyright_opts_table())
     setup("bashls", make_opts_table())
-    setup("lua_ls", make_opts_table())
+    setup("lua_ls", make_lua_ls_opts_table())
     setup("clangd", make_opts_table())
     setup("gdscript", make_gdscript_opts_table())
   end
