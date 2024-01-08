@@ -25,6 +25,7 @@ end
 
 return {
   "andythigpen/nvim-coverage",
+  event = "BufEnter",
   dependencies = { "nvim-lua/plenary.nvim" },
   config = configure,
 }

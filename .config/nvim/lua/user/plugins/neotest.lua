@@ -33,6 +33,7 @@ end
 
 return {
   "nvim-neotest/neotest",
+  event = "BufEnter",
   dependencies = {
     "nvim-lua/plenary.nvim",
     -- See: https://github.com/antoinemadec/FixCursorHold.nvim/issues/13

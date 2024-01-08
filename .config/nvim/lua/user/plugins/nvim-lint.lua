@@ -17,5 +17,6 @@ end
 
 return {
   "mfussenegger/nvim-lint",
+  event = "BufEnter",
   config = configure,
 }

@@ -39,5 +39,6 @@ end
 
 return {
   "jbyuki/venn.nvim",
+  event = "BufEnter",
   config = configure,
 }

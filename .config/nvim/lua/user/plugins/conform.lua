@@ -29,5 +29,6 @@ end
 
 return {
   "stevearc/conform.nvim",
+  event = "BufEnter",
   config = configure,
 }
