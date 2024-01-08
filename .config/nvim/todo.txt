@@ -1,3 +1,2 @@
-- Add nvim-surround
 - Add neotree
 - Add nvim-lsp-file-operations
