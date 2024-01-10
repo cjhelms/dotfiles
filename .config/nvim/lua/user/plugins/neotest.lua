@@ -23,7 +23,8 @@ local function configure()
     end
 
     map("<leader>ts", "summary", "[T]est [S]ummary")
-    map("<leader>to", "output-panel", "[T]est [O]output")
+    map("<leader>to", "output", "[T]est [O]output")
+    map("<leader>tp", "output-panel", "[T]est output [P]anel")
     map("<leader>tr", "run", "[T]est [R]un")
   end
 
