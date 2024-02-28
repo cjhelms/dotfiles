@@ -1,7 +1,7 @@
 local function configure()
   local function make_linters_table()
     return {
-      python = { "mypy", "flake8" },
+      python = { "flake8" },
     }
   end
 

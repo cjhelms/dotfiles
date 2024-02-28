@@ -3,12 +3,8 @@ local function configure()
     return {
       "c",
       "cpp",
-      "go",
       "lua",
       "python",
-      "rust",
-      "typescript",
-      "gdscript",
     }
   end
 
