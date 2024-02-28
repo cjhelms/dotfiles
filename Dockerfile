@@ -50,15 +50,9 @@ RUN git clone --depth 1 https://github.com/cjhelms/dotfiles.git .dotfiles && \
   echo "source ~/.dotfiles/.bashrc" >> ~/.bashrc
 
 # Run through first-time Neovim setup
-RUN git clone \
-  --depth 1 \
-  https://github.com/wbthomason/packer.nvim \
-  /root/.local/share/nvim/site/pack/packer/start/packer.nvim && \
-  nvim --headless \
-  -c "autocmd User PackerComplete quitall" \
-  -c "PackerSync" && \
-  nvim --headless \
+RUN nvim --headless \
   -c "autocmd User MasonToolsUpdateCompleted quitall" \
+  -c "Lazy sync" \
   -c "MasonToolsUpdate"
 
 CMD ["/bin/bash"]
