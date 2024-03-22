@@ -1,20 +1,15 @@
 local function configure()
   local function make_ensure_installed_table()
     return {
-      "c",
-      "cpp",
       "lua",
-      "python",
+      "vimdoc",
+      "cpp",
     }
   end
 
-  local function make_highlight_table()
-    return { enable = true }
-  end
+  local function make_highlight_table() return { enable = true } end
 
-  local function make_indent_table()
-    return { enable = true, disable = { "python" } }
-  end
+  local function make_indent_table() return { enable = true, disable = { "python" } } end
 
   local function make_incremental_selection_table()
     return {
@@ -98,5 +93,5 @@ end
 return {
   "nvim-treesitter/nvim-treesitter",
   event = "BufEnter",
-  config = configure
+  config = configure,
 }

@@ -1,37 +1,3 @@
-local function configure()
-  local function make_adapters_table()
-    local function make_python_entry()
-      local python = require("neotest-python")
-      return python({ args = { "--cov", "--cov-report", "json" } })
-    end
-
-    local function make_cpp_entry()
-      local gtest = require("neotest-gtest")
-      return gtest.setup({})
-    end
-
-    return {
-      make_python_entry(),
-      make_cpp_entry(),
-    }
-  end
-
-  local function set_keymaps()
-    local function map(keybind, action, description)
-      local opts = { silent = true, desc = description }
-      vim.keymap.set("n", keybind, ":Neotest " .. action .. "<cr>", opts)
-    end
-
-    map("<leader>ts", "summary", "[T]est [S]ummary")
-    map("<leader>to", "output", "[T]est [O]output")
-    map("<leader>tp", "output-panel", "[T]est output [P]anel")
-    map("<leader>tr", "run", "[T]est [R]un")
-  end
-
-  require("neotest").setup({ adapters = make_adapters_table() })
-  set_keymaps()
-end
-
 return {
   "nvim-neotest/neotest",
   event = "BufEnter",
@@ -43,5 +9,24 @@ return {
     "nvim-neotest/neotest-python",
     "alfaix/neotest-gtest",
   },
-  config = configure,
+  config = function()
+    require("neotest").setup({
+      adapters = {
+        require("neotest-python")({
+          args = { "--cov", "--cov-report", "json" },
+        }),
+      },
+      require("neotest-gtest").setup({}),
+    })
+
+    local function map(keybind, action, description)
+      local opts = { silent = true, desc = description }
+      vim.keymap.set("n", keybind, ":Neotest " .. action .. "<cr>", opts)
+    end
+
+    map("<leader>ts", "summary", "[T]est [S]ummary")
+    map("<leader>to", "output", "[T]est [O]output")
+    map("<leader>tp", "output-panel", "[T]est output [P]anel")
+    map("<leader>tr", "run", "[T]est [R]un")
+  end,
 }
