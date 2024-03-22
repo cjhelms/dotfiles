@@ -1,5 +1,23 @@
+# Short & sweet terminal prompt
 export PS1="\[\033[01;34m\]\w\[\033[00m\]\$ "
 PROMPT_DIRTRIM=1
-source ~/.fzf/shell/key-bindings.bash
+
+# Enable fzf for command line fuzzy search, if installed
+if test -d ~/.fzf; then
+    [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+    source ~/.fzf/shell/key-bindings.bash
+fi
+
+# Aliases
 alias lg='lazygit'
-alias nv='nvim'
+
+# Save path on cd
+function cd {
+    builtin cd $@
+    pwd > ~/.last_dir
+}
+
+# Restore last saved path when open bash
+if [ -f ~/.last_dir ]
+    then cd `cat ~/.last_dir`
+fi
