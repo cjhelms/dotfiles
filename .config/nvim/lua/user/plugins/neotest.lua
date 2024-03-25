@@ -8,6 +8,7 @@ return {
     "nvim-treesitter/nvim-treesitter",
     "nvim-neotest/neotest-python",
     "alfaix/neotest-gtest",
+    "nvim-neotest/nvim-nio"
   },
   config = function()
     require("neotest").setup({
