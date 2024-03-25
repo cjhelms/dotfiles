@@ -25,3 +25,8 @@ echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
   ${SCRIPT_DIR}/install_regolith.sh
 fi
+read -p "Install Node 20.x? [y/N] " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+  ${SCRIPT_DIR}/install_node.sh
+fi
