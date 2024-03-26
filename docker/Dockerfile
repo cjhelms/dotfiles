@@ -1,4 +1,8 @@
-FROM ubuntu:latest
+ARG IMAGE_ID
+
+FROM ${IMAGE_ID}:latest
+
+USER root
 
 # Install minimal system dependencies
 ARG DEBIAN_FRONTEND=noninteractive

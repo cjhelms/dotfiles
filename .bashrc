@@ -13,12 +13,20 @@ alias lg='lazygit'
 
 # Launch dev container
 function dev {
-docker run --rm -it \
-   --workdir=/app \
-   --volume="$PWD":/app \
-   --volume="$HOME"/.gitconfig:/root/.gitconfig \
-   --volume="$HOME"/.ssh:/root/.ssh \
-   development-container:latest
+    IMAGE_ID="$(ls -id . | grep -Eo '[0-9]{1,}')"
+    if ! docker build . -t ${IMAGE_ID}; then
+      echo "No Dockerfile for base image found! Using 'ubuntu' instead..."
+      IMAGE_ID="ubuntu"
+    fi
+    cd ~/.dotfiles/docker
+    docker build --build-arg IMAGE_ID=${IMAGE_ID} -t ${IMAGE_ID}-dev .
+    cd - > /dev/null 2>&1
+    docker run --rm -it \
+       --workdir=/app \
+       --volume="$1":/app \
+       --volume="$HOME"/.gitconfig:/root/.gitconfig \
+       --volume="$HOME"/.ssh:/root/.ssh \
+       ${IMAGE_ID}-dev:latest
 }
 
 # Save path on cd
