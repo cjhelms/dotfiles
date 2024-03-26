@@ -21,3 +21,6 @@ function cd {
 if [ -f ~/.last_dir ]
     then cd `cat ~/.last_dir`
 fi
+
+# Add custom installs to PATH
+export PATH=~/bin:$PATH
