@@ -30,15 +30,31 @@ RUN ~/bin/nvim --headless \
   -c "autocmd User LazySync quitall" \
   -c "Lazy sync"
 
+# Install treesitter parsers
+RUN ~/bin/nvim --headless \
+  -c "TSInstallSync vimdoc" \
+  -c "TSInstallSync lua" \
+  -c "TSInstallSync python" \
+  -c "TSInstallSync cpp" \
+  -c "quitall"
+
 # Install LSP servers
 RUN ~/bin/nvim --headless \
-  -c "MasonInstall lua_ls" \
-  -c "MasonInstall stylua" \
+  -c "MasonInstall lua-language-server" \
   -c "MasonInstall pyright" \
-  -c "MasonInstall flake8" \
-  -c "MasonInstall isort" \
-  -c "MasonInstall black" \
   -c "MasonInstall clangd" \
+  -c "quitall"
+
+# Install formatters
+RUN ~/bin/nvim --headless \
+  -c "MasonInstall stylua" \
+  -c "MasonInstall black" \
+  -c "MasonInstall isort" \
+  -c "quitall"
+
+# Install linters
+RUN ~/bin/nvim --headless \
+  -c "MasonInstall flake8" \
   -c "quitall"
 
 CMD ["/bin/bash"]
