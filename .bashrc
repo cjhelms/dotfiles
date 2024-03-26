@@ -11,6 +11,16 @@ fi
 # Aliases
 alias lg='lazygit'
 
+# Launch dev container
+function dev {
+docker run --rm -it \
+   --workdir=/app \
+   --volume="$PWD":/app \
+   --volume="$HOME"/.gitconfig:/root/.gitconfig \
+   --volume="$HOME"/.ssh:/root/.ssh \
+   development-container:latest
+}
+
 # Save path on cd
 function cd {
     builtin cd $@

@@ -1,58 +1,44 @@
-ARG BASE_IMAGE=ubuntu
-ARG BASE_TAG=latest
-FROM $BASE_IMAGE:$BASE_TAG
+FROM ubuntu:latest
 
-WORKDIR /root
-
-# Base setup (basic system dependencies via apt)
+# Install minimal system dependencies
 ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get -yqq install \
-  curl \
-  unzip \
-  wget \
+  sudo \
   git \
   stow \
-  xclip \
-  python-is-python3 \
-  python3 \
+  build-essential \
+  ripgrep \
+  unzip \
   python3-pip \
   python3-venv
-RUN git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && ~/.fzf/install
 
-# Install NodeJS (required for pyright)
-RUN apt-get update && \
-  apt-get install -y ca-certificates curl gnupg && \
-  mkdir -p /etc/apt/keyrings && \
-  curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | \
-    gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg && \
-  echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_18.x nodistro main" | \
-    tee /etc/apt/sources.list.d/nodesource.list && \
-  apt-get update && apt-get -yqq install nodejs
+# Install dotfiles
+RUN git clone https://github.com/cjhelms/dotfiles.git ~/.dotfiles
+RUN cd ~/.dotfiles && stow . && cd -
 
-# Install Lazygit
-RUN mkdir lazygit && cd lazygit && \
-  wget "https://github.com/jesseduffield/lazygit/releases/download/v0.40.2/lazygit_0.40.2_Linux_32-bit.tar.gz" && \
-  tar -xvf lazygit_0.40.2_Linux_32-bit.tar.gz && \
-  mv lazygit /bin && \
-  cd .. && rm -rf lazygit
+# Run install scripts
+RUN bash ~/.dotfiles/scripts/install_fzf.sh
+RUN bash ~/.dotfiles/scripts/install_node.sh
+RUN bash ~/.dotfiles/scripts/install_lazygit.sh
+RUN bash ~/.dotfiles/scripts/install_neovim.sh
 
-# Install Neovim
-RUN wget https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz && \
-  tar -xvf nvim-linux64.tar.gz && \
-  rm nvim-linux64.tar.gz && \
-  mv nvim-linux64 /opt && \
-  ln -s /opt/nvim-linux64/bin/nvim /bin/nvim
+# Source .bashrc
+RUN echo "source ~/.dotfiles/.bashrc" > ~/.bashrc
 
-# Clone down my dotfiles repository
-RUN git clone --depth 1 https://github.com/cjhelms/dotfiles.git .dotfiles && \
-  cd .dotfiles && \
-  stow . && \
-  echo "source ~/.dotfiles/.bashrc" >> ~/.bashrc
+# Run through first-time Lazy install
+RUN ~/bin/nvim --headless \
+  -c "autocmd User LazySync quitall" \
+  -c "Lazy sync"
 
-# Run through first-time Neovim setup
-RUN nvim --headless \
-  -c "autocmd User MasonToolsUpdateCompleted quitall" \
-  -c "Lazy sync" \
-  -c "MasonToolsUpdate"
+# Install LSP servers
+RUN ~/bin/nvim --headless \
+  -c "MasonInstall lua_ls" \
+  -c "MasonInstall stylua" \
+  -c "MasonInstall pyright" \
+  -c "MasonInstall flake8" \
+  -c "MasonInstall isort" \
+  -c "MasonInstall black" \
+  -c "MasonInstall clangd" \
+  -c "quitall"
 
 CMD ["/bin/bash"]
