@@ -3,14 +3,6 @@ return {
   event = "BufEnter",
   config = function()
     require("nvim-treesitter.configs").setup({
-      ensure_installed = {
-        "lua",
-        "vimdoc",
-        "cpp",
-      },
-      ignore_install = {},
-      auto_install = true,
-      sync_install = false,
       highlight = { enable = true },
       indent = { enable = true, disable = { "python" } },
       incremental_selection = {
