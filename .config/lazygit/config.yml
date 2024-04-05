@@ -5,3 +5,13 @@ gui:
 git:
   log:
     showGraph: 'always'
+customCommands:
+  - key: '<c-g>'
+    command: "git push origin HEAD:refs/for/{{.CheckedOutBranch.Name}}"
+    showOutput: true
+    context: 'global'
+    loadingText: 'pushing'
+    prompts:
+    - type: 'confirm'
+      title: 'Push to origin/{{.CheckedOutBranch.Name}}'
+      body: "Are you sure you want to push to origin/{{.CheckedOutBranch.Name}}?\n('enter' to push, else 'esc' to cancel)"

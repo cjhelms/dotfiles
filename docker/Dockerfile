@@ -14,6 +14,7 @@ RUN apt-get update && apt-get -yqq install \
   ripgrep \
   unzip \
   python3-pip \
+  clang-format \
   python3-venv
 
 # Install dotfiles
@@ -54,6 +55,7 @@ RUN ~/bin/nvim --headless \
   -c "MasonInstall stylua" \
   -c "MasonInstall black" \
   -c "MasonInstall isort" \
+  -c "MasonInstall clang-format" \
   -c "quitall"
 
 # Install linters

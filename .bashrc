@@ -25,6 +25,7 @@ function dev {
        --workdir=/app \
        --volume="$1":/app \
        --volume="$HOME"/.gitconfig:/root/.gitconfig \
+       --volume="$HOME"/git-hooks:/root/git-hooks \
        --volume="$HOME"/.ssh:/root/.ssh \
        ${IMAGE_ID}-dev:latest
 }
