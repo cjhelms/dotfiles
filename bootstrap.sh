@@ -25,7 +25,7 @@ bash ${PATH_TO_BOOTSTRAP_SCRIPT}/scripts/install_lazygit.sh
 bash ${PATH_TO_BOOTSTRAP_SCRIPT}/scripts/install_neovim.sh
 
 # Source bash configuration file
-echo "source ~/.dotfiles/.bashrc" > ~/.bashrc
+echo "source ${PATH_TO_BOOTSTRAP_SCRIPT}/.bashrc" > ~/.bashrc
 
 # Install Neovim plugins
 ~/bin/nvim --headless \
