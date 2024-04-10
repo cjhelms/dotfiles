@@ -2,6 +2,11 @@
 
 PATH_TO_BOOTSTRAP_SCRIPT=$(dirname $(realpath -s "$0"))
 
+# Ensure sudo is installed (but of a hack in case container runs as root)
+if ! dpkg -s sudo; then
+  apt-get update && apt-get install sudo
+fi
+
 # Install system dependencies
 sudo apt-get update && sudo apt-get -yqq install \
   git \

@@ -3,3 +3,4 @@
 docker
 scripts
 .bashrc
+bootstrap.sh
