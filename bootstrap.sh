@@ -3,7 +3,7 @@
 PATH_TO_BOOTSTRAP_SCRIPT=$(realpath -s "$0")
 
 # Install system dependencies
-apt-get update && apt-get -yqq install \
+sudo apt-get update && apt-get -yqq install \
   git \
   stow \
   build-essential \
@@ -13,11 +13,16 @@ apt-get update && apt-get -yqq install \
   clang-format \
   python3-venv
 
+# Install dot files
+cd ${PATH_TO_BOOTSTRAP_SCRIPT}
+stow .
+cd ..
+
 # Run other install scripts
-bash PATH_TO_BOOTSTRAP_SCRIPT/scripts/install_fzf.sh
-bash PATH_TO_BOOTSTRAP_SCRIPT/scripts/install_node.sh
-bash PATH_TO_BOOTSTRAP_SCRIPT/scripts/install_lazygit.sh
-bash PATH_TO_BOOTSTRAP_SCRIPT/scripts/install_neovim.sh
+bash ${PATH_TO_BOOTSTRAP_SCRIPT}/scripts/install_fzf.sh
+bash ${PATH_TO_BOOTSTRAP_SCRIPT}/scripts/install_node.sh
+bash ${PATH_TO_BOOTSTRAP_SCRIPT}/scripts/install_lazygit.sh
+bash ${PATH_TO_BOOTSTRAP_SCRIPT}/scripts/install_neovim.sh
 
 # Source bash configuration file
 echo "source ~/.dotfiles/.bashrc" > ~/.bashrc
