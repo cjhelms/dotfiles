@@ -1,9 +1,9 @@
 #!/usr/bin/bash
 
-PATH_TO_BOOTSTRAP_SCRIPT=$(realpath -s "$0")
+PATH_TO_BOOTSTRAP_SCRIPT=$(dirname $(realpath -s "$0"))
 
 # Install system dependencies
-sudo apt-get update && apt-get -yqq install \
+sudo apt-get update && sudo apt-get -yqq install \
   git \
   stow \
   build-essential \
@@ -15,7 +15,7 @@ sudo apt-get update && apt-get -yqq install \
 
 # Install dot files
 cd ${PATH_TO_BOOTSTRAP_SCRIPT}
-stow .
+stow . --ignore=.docker
 cd ..
 
 # Run other install scripts
