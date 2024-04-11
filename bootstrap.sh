@@ -64,3 +64,6 @@ echo "source ${PATH_TO_BOOTSTRAP_SCRIPT}/.bashrc" > ~/.bashrc
 ~/bin/nvim --headless \
   -c "MasonInstall flake8" \
   -c "quitall"
+
+# Install pytest and pytest-cov (for Neotest)
+pip3 install pytest pytest-cov
