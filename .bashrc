@@ -1,7 +1,6 @@
 # Short & sweet terminal prompt
 export PS1="\[\033[01;34m\]\w\[\033[00m\]\$ "
 PROMPT_DIRTRIM=1
-DOTFILES_DIR=$(dirname "$(realpath -s "$0")")
 
 # Enable fzf for command line fuzzy search, if installed
 if test -d ~/.fzf; then
@@ -39,7 +38,7 @@ function cd {
 
 # cd to dotfiles directory
 function dot {
-    cd "${DOTFILES_DIR}" || exit 1
+    cd ~/.dotfiles || exit 1
 }
 
 # Restore last saved path when open bash
