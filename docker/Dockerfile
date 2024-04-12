@@ -23,7 +23,6 @@ RUN cd ~/.dotfiles && stow . && cd -
 
 # Run install scripts
 RUN bash ~/.dotfiles/scripts/install_fzf.sh
-RUN bash ~/.dotfiles/scripts/install_node.sh
 RUN bash ~/.dotfiles/scripts/install_lazygit.sh
 RUN bash ~/.dotfiles/scripts/install_neovim.sh
 
