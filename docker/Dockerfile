@@ -35,32 +35,14 @@ RUN ~/bin/nvim --headless \
   -c "autocmd User LazySync quitall" \
   -c "Lazy sync"
 
+# Install common language tooling
+RUN ~/bin/nvim --headless \
+  -c "MasonToolsInstallSync" \
+  -c "quitall"
+
 # Install treesitter parsers
 RUN ~/bin/nvim --headless \
-  -c "TSInstallSync vimdoc" \
-  -c "TSInstallSync lua" \
-  -c "TSInstallSync python" \
-  -c "TSInstallSync cpp" \
-  -c "quitall"
-
-# Install LSP servers
-RUN ~/bin/nvim --headless \
-  -c "MasonInstall lua-language-server" \
-  -c "MasonInstall pyright" \
-  -c "MasonInstall clangd" \
-  -c "quitall"
-
-# Install formatters
-RUN ~/bin/nvim --headless \
-  -c "MasonInstall stylua" \
-  -c "MasonInstall black" \
-  -c "MasonInstall isort" \
-  -c "MasonInstall clang-format" \
-  -c "quitall"
-
-# Install linters
-RUN ~/bin/nvim --headless \
-  -c "MasonInstall flake8" \
+  -c "TSUpdateSync" \
   -c "quitall"
 
 CMD ["/bin/bash"]

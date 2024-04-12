@@ -1,8 +1,8 @@
 #!/usr/bin/bash
 
-PATH_TO_BOOTSTRAP_SCRIPT=$(dirname $(realpath -s "$0"))
+PATH_TO_BOOTSTRAP_SCRIPT=$(dirname "$(realpath -s "$0")")
 
-# Ensure sudo is installed (but of a hack in case container runs as root)
+# Ensure sudo is installed (bit of a hack in case container runs as root)
 if ! dpkg -s sudo; then
   apt-get update && apt-get install sudo
 fi
@@ -15,19 +15,16 @@ sudo apt-get update && sudo apt-get -yqq install \
   ripgrep \
   unzip \
   python3-pip \
-  clang-format \
   python3-venv
 
 # Install dot files
-cd ${PATH_TO_BOOTSTRAP_SCRIPT}
-stow . --ignore=.docker
-cd ..
+cd "${PATH_TO_BOOTSTRAP_SCRIPT}" && stow . --ignore=.docker && cd ..
 
 # Run other install scripts
-bash ${PATH_TO_BOOTSTRAP_SCRIPT}/scripts/install_fzf.sh
-bash ${PATH_TO_BOOTSTRAP_SCRIPT}/scripts/install_node.sh
-bash ${PATH_TO_BOOTSTRAP_SCRIPT}/scripts/install_lazygit.sh
-bash ${PATH_TO_BOOTSTRAP_SCRIPT}/scripts/install_neovim.sh
+bash "${PATH_TO_BOOTSTRAP_SCRIPT}"/scripts/install_fzf.sh
+bash "${PATH_TO_BOOTSTRAP_SCRIPT}"/scripts/install_node.sh
+bash "${PATH_TO_BOOTSTRAP_SCRIPT}"/scripts/install_lazygit.sh
+bash "${PATH_TO_BOOTSTRAP_SCRIPT}"/scripts/install_neovim.sh
 
 # Source bash configuration file
 echo "source ${PATH_TO_BOOTSTRAP_SCRIPT}/.bashrc" > ~/.bashrc
@@ -48,21 +45,18 @@ echo "source ${PATH_TO_BOOTSTRAP_SCRIPT}/.bashrc" > ~/.bashrc
 # Install LSP servers
 ~/bin/nvim --headless \
   -c "MasonInstall lua-language-server" \
-  -c "MasonInstall pyright" \
-  -c "MasonInstall clangd" \
+  -c "MasonInstall bash-language-server" \
   -c "quitall"
 
 # Install formatters
 ~/bin/nvim --headless \
   -c "MasonInstall stylua" \
-  -c "MasonInstall black" \
-  -c "MasonInstall isort" \
   -c "MasonInstall clang-format" \
   -c "quitall"
 
 # Install linters
 ~/bin/nvim --headless \
-  -c "MasonInstall flake8" \
+  -c "MasonInstall shellcheck" \
   -c "quitall"
 
 # Install pytest and pytest-cov (for Neotest)
