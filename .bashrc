@@ -28,6 +28,7 @@ function dev {
        --volume="$HOME"/git-hooks:/root/git-hooks \
        --volume="$HOME"/.ssh:/root/.ssh \
        "${IMAGE_ID}"-dev:latest
+    docker exec -it "${IMAGE_ID}":latest
 }
 
 # Save path on cd
