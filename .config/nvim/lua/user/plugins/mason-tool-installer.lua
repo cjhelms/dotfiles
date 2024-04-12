@@ -5,7 +5,6 @@ return {
       ensure_installed = {
         "lua-language-server",
         "stylua",
-        "bash-language-server",
         "shellcheck",
         "shfmt",
       },
