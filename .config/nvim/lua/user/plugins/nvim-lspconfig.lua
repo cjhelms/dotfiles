@@ -65,5 +65,17 @@ return {
         })
       end,
     })
+
+    local servers = {
+      "pyright",
+      "clangd",
+    }
+
+    for _, s in ipairs(servers) do
+      require("lspconfig")[s].setup({
+        capabilities = capabilities,
+        on_attach = on_attach,
+      })
+    end
   end,
 }
