@@ -44,7 +44,7 @@ vim.o.cursorcolumn = true
 
 -- UI settings
 vim.o.colorcolumn = "81,101"
-vim.wo.signcolumn = "yes"
+vim.wo.signcolumn = "auto"
 vim.o.termguicolors = true
 
 -- Miscellaneous settings
