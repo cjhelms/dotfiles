@@ -18,45 +18,29 @@ sudo apt-get update && sudo apt-get -yqq install \
   python3-venv
 
 # Install dot files
-cd "${PATH_TO_BOOTSTRAP_SCRIPT}" && stow . --ignore=.docker && cd ..
+cd "${PATH_TO_BOOTSTRAP_SCRIPT}" && stow . --ignore=.docker && cd - || exit 1
 
 # Run other install scripts
 bash "${PATH_TO_BOOTSTRAP_SCRIPT}"/scripts/install_fzf.sh
-bash "${PATH_TO_BOOTSTRAP_SCRIPT}"/scripts/install_node.sh
 bash "${PATH_TO_BOOTSTRAP_SCRIPT}"/scripts/install_lazygit.sh
 bash "${PATH_TO_BOOTSTRAP_SCRIPT}"/scripts/install_neovim.sh
 
 # Source bash configuration file
 echo "source ${PATH_TO_BOOTSTRAP_SCRIPT}/.bashrc" > ~/.bashrc
 
-# Install Neovim plugins
+# Run through first-time Lazy install
 ~/bin/nvim --headless \
   -c "autocmd User LazySync quitall" \
   -c "Lazy sync"
 
+# Install common language tooling
+~/bin/nvim --headless \
+  -c "MasonToolsInstallSync" \
+  -c "quitall"
+
 # Install treesitter parsers
 ~/bin/nvim --headless \
-  -c "TSInstallSync vimdoc" \
-  -c "TSInstallSync lua" \
-  -c "TSInstallSync python" \
-  -c "TSInstallSync cpp" \
-  -c "quitall"
-
-# Install LSP servers
-~/bin/nvim --headless \
-  -c "MasonInstall lua-language-server" \
-  -c "MasonInstall bash-language-server" \
-  -c "quitall"
-
-# Install formatters
-~/bin/nvim --headless \
-  -c "MasonInstall stylua" \
-  -c "MasonInstall clang-format" \
-  -c "quitall"
-
-# Install linters
-~/bin/nvim --headless \
-  -c "MasonInstall shellcheck" \
+  -c "TSUpdateSync" \
   -c "quitall"
 
 # Install pytest and pytest-cov (for Neotest)
