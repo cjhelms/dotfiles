@@ -4,7 +4,7 @@ if [ -f /usr/bin/python3.10 ]; then
     exit 0
 fi
 sudo apt update
-sudo apt install -y -q software-properties-common
-sudo add-apt-repository ppa:deadsnakes/ppa
+sudo apt install -y -q software-properties-common python3-launchpadlib
+sudo add-apt-repository -y ppa:deadsnakes/ppa
 sudo apt update
 sudo apt install python3.10 python3.10-venv python3.10-dev
