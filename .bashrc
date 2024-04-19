@@ -4,8 +4,8 @@ PROMPT_DIRTRIM=1
 
 # Enable fzf for command line fuzzy search, if installed
 if test -d ~/.fzf; then
-    [ -f ~/.fzf.bash ] && source ~/.fzf.bash
-    source ~/.fzf/shell/key-bindings.bash
+    [ -f ~/.fzf.bash ] && source "${HOME}/.fzf.bash"
+    source "${HOME}/.fzf/shell/key-bindings.bash"
 fi
 
 # Aliases
@@ -18,9 +18,9 @@ function dev {
       echo "No Dockerfile for base image found! Using 'ubuntu' instead..."
       IMAGE_ID="ubuntu"
     fi
-    cd ~/.dotfiles/docker || exit 1
+    cd ~/.dotfiles/docker || return
     docker build --build-arg IMAGE_ID="${IMAGE_ID}" -t "${IMAGE_ID}"-dev .
-    cd - > /dev/null 2>&1 || exit 1
+    cd - > /dev/null 2>&1 || return
     docker run --rm -it \
        --workdir=/app \
        --volume="$1":/app \
@@ -33,18 +33,18 @@ function dev {
 
 # Save path on cd
 function cd {
-    builtin cd "$@" || exit 1
+    builtin cd "$@" || return
     pwd > ~/.last_dir
 }
 
 # cd to dotfiles directory
 function dot {
-    cd ~/.dotfiles || exit 1
+    cd ~/.dotfiles || return
 }
 
 # Restore last saved path when open bash
 if [ -f ~/.last_dir ]; then
-    cd "$(cat ~/.last_dir)" || exit 1
+    cd "$(cat ~/.last_dir)" || exit 
 fi
 
 # Add custom installs to PATH

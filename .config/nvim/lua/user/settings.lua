@@ -1,3 +1,6 @@
+-- Set Python version (assumes Python 3.10 is installed on system)
+vim.g.python3_host_prog = "/usr/bin/python3.10"
+
 -- Remap leader to space bar
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "

@@ -15,6 +15,11 @@ echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
   ${SCRIPT_DIR}/install_lazygit.sh
 fi
+read -p "Install Python 3.10? [y/N] " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+  ${SCRIPT_DIR}/install_python310.sh
+fi
 read -p "Install Neovim? [y/N] " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
