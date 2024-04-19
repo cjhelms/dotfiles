@@ -6,7 +6,7 @@ USER root
 
 # Install dotfiles
 ARG DEBIAN_FRONTEND=noninteractive
-RUN apt-get update && apt-get -yqq install git
+RUN apt-get update && apt-get -y -q install git
 RUN git clone https://github.com/cjhelms/dotfiles.git ~/.dotfiles
 
 # Run bootstrap script
