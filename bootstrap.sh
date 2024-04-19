@@ -8,7 +8,7 @@ if ! dpkg -s sudo; then
 fi
 
 # Install system dependencies
-sudo apt-get update && sudo apt-get -yqq install \
+sudo apt-get update && sudo apt-get -y -q install \
   git \
   stow \
   build-essential \

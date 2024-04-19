@@ -44,7 +44,7 @@ function dot {
 
 # Restore last saved path when open bash
 if [ -f ~/.last_dir ]; then
-    cd "$(cat ~/.last_dir)" || exit 
+    cd "$(cat ~/.last_dir)" || return
 fi
 
 # Add custom installs to PATH
