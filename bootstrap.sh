@@ -23,7 +23,7 @@ cd "${PATH_TO_BOOTSTRAP_SCRIPT}" && stow . --ignore=.docker && cd - || exit 1
 # Run other install scripts
 bash "${PATH_TO_BOOTSTRAP_SCRIPT}"/scripts/install_fzf.sh
 bash "${PATH_TO_BOOTSTRAP_SCRIPT}"/scripts/install_lazygit.sh
-# bash "${PATH_TO_BOOTSTRAP_SCRIPT}"/scripts/install_python310.sh
+bash "${PATH_TO_BOOTSTRAP_SCRIPT}"/scripts/install_python310.sh
 bash "${PATH_TO_BOOTSTRAP_SCRIPT}"/scripts/install_neovim.sh
 
 # Source bash configuration file
