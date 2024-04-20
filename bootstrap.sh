@@ -41,7 +41,11 @@ echo "source ${PATH_TO_BOOTSTRAP_SCRIPT}/.bashrc" > ~/.bashrc
 
 # Install treesitter parsers
 ~/bin/nvim --headless \
-  -c "TSUpdateSync" \
+  -c "TSInstallSync cpp" \
+  -c "TSInstallSync python" \
+  -c "TSInstallSync markdown" \
+  -c "TSInstallSync diff" \
+  -c "TSInstallSync vimdoc" \
   -c "quitall"
 
 # Install pytest and pytest-cov (for Neotest)
