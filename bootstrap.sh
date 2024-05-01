@@ -37,11 +37,8 @@ echo "source ${PATH_TO_BOOTSTRAP_SCRIPT}/.bashrc" > ~/.bashrc
 
 # Install common language tooling
 ~/bin/nvim --headless \
-  -c "TSInstallSync cpp" \
-  -c "TSInstallSync python" \
   -c "TSInstallSync markdown" \
   -c "TSInstallSync diff" \
-  -c "TSInstallSync vimdoc" \
   -c "MasonToolsInstallSync" \
   -c "quitall"
 
