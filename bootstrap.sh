@@ -23,29 +23,26 @@ cd "${PATH_TO_BOOTSTRAP_SCRIPT}" && stow . --ignore=.docker && cd - || exit 1
 # Run other install scripts
 bash "${PATH_TO_BOOTSTRAP_SCRIPT}"/scripts/install_fzf.sh
 bash "${PATH_TO_BOOTSTRAP_SCRIPT}"/scripts/install_lazygit.sh
+bash "${PATH_TO_BOOTSTRAP_SCRIPT}"/scripts/install_node.sh
 bash "${PATH_TO_BOOTSTRAP_SCRIPT}"/scripts/install_python310.sh
 bash "${PATH_TO_BOOTSTRAP_SCRIPT}"/scripts/install_neovim.sh
 
 # Source bash configuration file
 echo "source ${PATH_TO_BOOTSTRAP_SCRIPT}/.bashrc" > ~/.bashrc
 
-# Run through first-time Lazy install
+# Install Neovim and Lazy plugins
 ~/bin/nvim --headless \
   -c "autocmd User LazySync quitall" \
   -c "Lazy sync"
 
 # Install common language tooling
 ~/bin/nvim --headless \
-  -c "MasonToolsInstallSync" \
-  -c "quitall"
-
-# Install treesitter parsers
-~/bin/nvim --headless \
   -c "TSInstallSync cpp" \
   -c "TSInstallSync python" \
   -c "TSInstallSync markdown" \
   -c "TSInstallSync diff" \
   -c "TSInstallSync vimdoc" \
+  -c "MasonToolsInstallSync" \
   -c "quitall"
 
 # Install pytest and pytest-cov (for Neotest)
