@@ -19,7 +19,7 @@ function dev {
       IMAGE_ID="ubuntu"
     fi
     cd ~/.dotfiles/docker || return
-    docker build --build-arg IMAGE_ID="${IMAGE_ID}" -t "${IMAGE_ID}"-dev .
+    docker build --build-arg IMAGE_ID="${IMAGE_ID}" -t "${IMAGE_ID}"-dev . 2>&1 | tee ~/.dotfiles/build-"${IMAGE_ID}".log
     cd - > /dev/null 2>&1 || return
     docker run --rm -it \
        --workdir=/app \

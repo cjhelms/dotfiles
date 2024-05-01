@@ -2,4 +2,4 @@
 .config/lazygit/state.yml
 .fonts/.uuid
 .docker
-
+build-*
