@@ -51,4 +51,4 @@ echo "source ${PATH_TO_BOOTSTRAP_SCRIPT}/.bashrc" > ~/.bashrc
   -c "quitall"
 
 # Install pytest and pytest-cov (for Neotest)
-python3 -m pip install --user pytest pytest-cov
+python3 -m pip install pytest pytest-cov
