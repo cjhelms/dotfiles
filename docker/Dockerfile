@@ -5,7 +5,7 @@ FROM ${IMAGE_ID}:latest
 USER root
 
 # Install dotfiles
-ARG DEBIAN_FRONTEND=noninteractive
+ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get -y -q install git
 RUN git clone https://github.com/cjhelms/dotfiles.git ~/.dotfiles
 
