@@ -33,6 +33,12 @@ if [ "$COMPARISON_RESULT" != "3.10" ]; then
   echo "Python version is less than 3.10, found ${COMPARISON_RESULT}"
   echo "Installing 3.10..."
   bash "${PATH_TO_BOOTSTRAP_SCRIPT}"/scripts/install_python310.sh
+
+  # Extra install for Neovim
+  /usr/bin/python3.10 -m pip install pynvim
+else
+  # Extra install for Neovim
+  python3 -m pip install pynvim
 fi
 
 # Source bash configuration file
