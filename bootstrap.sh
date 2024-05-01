@@ -15,7 +15,11 @@ sudo apt-get update && sudo apt-get -y -q install \
   ripgrep \
   unzip \
   python3-pip \
+  curl \
   python3-venv
+
+# Update pip
+curl -sSL https://bootstrap.pypa.io/get-pip.py -o get-pip.py && python3 get-pip.py
 
 # Install dot files
 cd "${PATH_TO_BOOTSTRAP_SCRIPT}" && stow . --ignore=.docker && cd - || exit 1
