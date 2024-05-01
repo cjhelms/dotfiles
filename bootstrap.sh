@@ -30,9 +30,9 @@ bash "${PATH_TO_BOOTSTRAP_SCRIPT}"/scripts/install_neovim.sh
 PYTHON_VERSION=$(python3 -c "import sys; print('.'.join(map(str, sys.version_info[:2])))")
 COMPARISON_RESULT=$(printf '%s\n' "3.10" "$PYTHON_VERSION" | sort -V | head -n 1)
 if [ "$COMPARISON_RESULT" != "3.10" ]; then
-    echo "Python version is less than 3.10"
-else
-    echo "Python 3.10 or greater is installed"
+  echo "Python version is less than 3.10, found ${COMPARISON_RESULT}"
+  echo "Installing 3.10..."
+  bash "${PATH_TO_BOOTSTRAP_SCRIPT}"/scripts/install_python310.sh
 fi
 
 # Source bash configuration file
