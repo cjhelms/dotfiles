@@ -24,8 +24,16 @@ cd "${PATH_TO_BOOTSTRAP_SCRIPT}" && stow . --ignore=.docker && cd - || exit 1
 bash "${PATH_TO_BOOTSTRAP_SCRIPT}"/scripts/install_fzf.sh
 bash "${PATH_TO_BOOTSTRAP_SCRIPT}"/scripts/install_lazygit.sh
 bash "${PATH_TO_BOOTSTRAP_SCRIPT}"/scripts/install_node.sh
-bash "${PATH_TO_BOOTSTRAP_SCRIPT}"/scripts/install_python310.sh
 bash "${PATH_TO_BOOTSTRAP_SCRIPT}"/scripts/install_neovim.sh
+
+# Check if need to update Python
+PYTHON_VERSION=$(python3 -c "import sys; print('.'.join(map(str, sys.version_info[:2])))")
+COMPARISON_RESULT=$(printf '%s\n' "3.10" "$PYTHON_VERSION" | sort -V | head -n 1)
+if [ "$COMPARISON_RESULT" != "3.10" ]; then
+    echo "Python version is less than 3.10"
+else
+    echo "Python 3.10 or greater is installed"
+fi
 
 # Source bash configuration file
 echo "source ${PATH_TO_BOOTSTRAP_SCRIPT}/.bashrc" > ~/.bashrc
@@ -43,4 +51,4 @@ echo "source ${PATH_TO_BOOTSTRAP_SCRIPT}/.bashrc" > ~/.bashrc
   -c "quitall"
 
 # Install pytest and pytest-cov (for Neotest)
-pip3 install pytest pytest-cov
+python3 -m pip install pytest pytest-cov

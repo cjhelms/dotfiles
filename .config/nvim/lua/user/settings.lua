@@ -1,5 +1,18 @@
--- Set Python version (assumes Python 3.10 is installed on system)
-vim.g.python3_host_prog = "/usr/bin/python3.10"
+-- Function to check if Python version is less than 3.10
+local function is_python_version_less_than_3_10()
+  local python_version = vim.fn.system("python3 --version 2>&1")
+  local version_number = string.match(python_version, "Python (%d+%.%d+)")
+  if version_number then
+    local major, minor = string.match(version_number, "(%d+)%.(%d+)")
+    major = tonumber(major)
+    minor = tonumber(minor)
+    if major < 3 or (major == 3 and minor < 10) then return true end
+  end
+  return false
+end
+
+-- Set Neovim's Python provider, assuming 3.10 is available (thanks to dev container)
+if is_python_version_less_than_3_10() then vim.g.python3_host_prog = "/usr/bin/python3.10" end
 
 -- Remap leader to space bar
 vim.g.mapleader = " "
