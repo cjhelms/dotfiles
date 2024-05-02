@@ -46,7 +46,7 @@ else
 fi
 
 # Source bash configuration file
-echo "source ${PATH_TO_BOOTSTRAP_SCRIPT}/.bashrc" > ~/.bashrc
+echo "source ${PATH_TO_BOOTSTRAP_SCRIPT}/.bashrc" >> ~/.bashrc
 
 # Install Neovim and Lazy plugins
 ~/bin/nvim --headless \
