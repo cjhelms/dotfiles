@@ -27,6 +27,7 @@ function dev {
        --volume="$HOME"/.gitconfig:/root/.gitconfig \
        --volume="$HOME"/git-hooks:/root/git-hooks \
        --volume="$HOME"/.ssh:/root/.ssh \
+       "${@:2}" \
        "${IMAGE_ID}"-dev:latest \
        bash
 }
