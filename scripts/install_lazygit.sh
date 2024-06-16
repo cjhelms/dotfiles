@@ -2,7 +2,7 @@
 VERSION="0.41.0"
 TARBALL="lazygit_${VERSION}_Linux_x86_64.tar.gz"
 mkdir -p ~/bin
-sudo apt-get update && sudo apt-get -yq install wget
+apt-get update && apt-get -yq install wget
 mkdir lazygit && cd lazygit
 wget "https://github.com/jesseduffield/lazygit/releases/download/v${VERSION}/${TARBALL}"
 tar -xzvf "${TARBALL}"

@@ -1,7 +1,7 @@
 #!/bin/bash
 mkdir -p ~/opt
 mkdir -p ~/bin
-sudo apt-get update && sudo apt-get -yq install wget
+apt-get update && apt-get -yq install wget
 wget https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz
 tar -xvf nvim-linux64.tar.gz
 rm nvim-linux64.tar.gz

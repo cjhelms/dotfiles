@@ -3,7 +3,6 @@ return {
   dependencies = {
     "williamboman/mason.nvim",
     "williamboman/mason-lspconfig.nvim",
-    "WhoIsSethDaniel/mason-tool-installer.nvim",
     "hrsh7th/cmp-nvim-lsp",
     "folke/neodev.nvim",
   },
@@ -51,9 +50,6 @@ return {
       })
     end
 
-    -- IMPORTANT: Setup neodev before lspconfig setup handlers
-    require("neodev").setup({})
-
     local capabilities = vim.lsp.protocol.make_client_capabilities()
     capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 
@@ -65,17 +61,5 @@ return {
         })
       end,
     })
-
-    local servers = {
-      "pyright",
-      "clangd",
-    }
-
-    for _, s in ipairs(servers) do
-      require("lspconfig")[s].setup({
-        capabilities = capabilities,
-        on_attach = on_attach,
-      })
-    end
   end,
 }
