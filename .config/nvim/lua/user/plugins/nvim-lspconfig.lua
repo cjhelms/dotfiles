@@ -4,7 +4,6 @@ return {
     "williamboman/mason.nvim",
     "williamboman/mason-lspconfig.nvim",
     "hrsh7th/cmp-nvim-lsp",
-    "folke/neodev.nvim",
   },
   config = function()
     local on_attach = function(_, bufnr)
