@@ -5,10 +5,15 @@ return {
     "nvim-lua/plenary.nvim",
     { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
     "nvim-tree/nvim-web-devicons",
+    {
+      "nvim-telescope/telescope-live-grep-args.nvim",
+      version = "^1.0.0",
+    },
   },
   config = function()
     local telescope = require("telescope")
     local actions = require("telescope.actions")
+    local lga_actions = require("telescope-live-grep-args.actions")
 
     telescope.setup({
       defaults = {
@@ -53,16 +58,27 @@ return {
       extensions = {
         advanced_git_search = {
           diff_plugin = "diffview",
+          keymaps = {
+            toggle_date_author = "<C-r>",
+            copy_commit_hash = "<C-o>",
+            open_commit_in_browser = "<C-y>",
+          },
         },
-        keymaps = {
-          toggle_date_author = "<C-r>",
-          copy_commit_hash = "<C-o>",
-          open_commit_in_browser = "<C-y>",
+        live_grep_args = {
+          mappings = {
+            i = {
+              ["<C-k>"] = lga_actions.quote_prompt(),
+              ["<C-i>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
+              -- freeze the current list and start a fuzzy search in the frozen list
+              ["<C-space>"] = actions.to_fuzzy_refine,
+            },
+          },
         },
       },
     })
 
     telescope.load_extension("fzf")
+    telescope.load_extension("live_grep_args")
 
     local function map(keybind, action, description)
       vim.keymap.set("n", keybind, "<cmd>Telescope " .. action .. "<cr>", { desc = description })
@@ -73,7 +89,7 @@ return {
     map("<leader>sf", "find_files", "[S]earch [F]iles")
     map("<leader>sh", "help_tags", "[S]earch [H]elp")
     map("<leader>sw", "grep_string", "[S]earch current [W]ord")
-    map("<leader>sg", "live_grep", "[S]earch by [G]rep")
+    map("<leader>sg", "live_grep_args", "[S]earch by [G]rep")
     map("<leader>sd", "diagnostics", "[S]earch [D]iagnostics")
     map("<leader>sk", "keymaps", "[S]earch [K]eymaps")
     map("<leader>ss", "grep_string", "[S]earch [S]tring")

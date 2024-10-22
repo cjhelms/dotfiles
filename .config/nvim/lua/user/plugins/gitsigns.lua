@@ -17,9 +17,9 @@ return {
       desc = "[G]itsigns [N]ext hunk",
     })
 
-    vim.keymap.set("n", "<leader>gl", ":Gitsigns prev_hunk<cr>", {
+    vim.keymap.set("n", "<leader>gp", ":Gitsigns prev_hunk<cr>", {
       silent = true,
-      desc = "[G]itsigns [L]ast hunk",
+      desc = "[G]itsigns [P]revious hunk",
     })
 
     vim.keymap.set("n", "<leader>gb", function()
