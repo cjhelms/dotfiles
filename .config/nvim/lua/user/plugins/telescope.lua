@@ -50,6 +50,16 @@ return {
           show_line = false,
         },
       },
+      extensions = {
+        advanced_git_search = {
+          diff_plugin = "diffview",
+        },
+        keymaps = {
+          toggle_date_author = "<C-r>",
+          copy_commit_hash = "<C-o>",
+          open_commit_in_browser = "<C-y>",
+        },
+      },
     })
 
     telescope.load_extension("fzf")
@@ -67,6 +77,12 @@ return {
     map("<leader>sd", "diagnostics", "[S]earch [D]iagnostics")
     map("<leader>sk", "keymaps", "[S]earch [K]eymaps")
     map("<leader>ss", "grep_string", "[S]earch [S]tring")
+
+    telescope.load_extension("advanced_git_search")
+    map("<leader>gs", "advanced_git_search search_log_content", "[G]it [S]earch log content")
+    map("<leader>gf", "advanced_git_search search_log_content_file", "[G]it search log content [F]ile")
+    map("<leader>gd", "advanced_git_search diff_commit_file", "[G]it [D]iff commit file")
+    map("<leader>gl", "advanced_git_search diff_commit_line", "[G]it diff commit [L]ine")
 
     local builtin = require("telescope.builtin")
     local themes = require("telescope.themes")
