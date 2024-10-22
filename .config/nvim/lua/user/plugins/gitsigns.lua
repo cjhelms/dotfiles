@@ -12,6 +12,16 @@ return {
       desc = "[G]itsigns [T]oggle",
     })
 
+    vim.keymap.set("n", "<leader>gn", ":Gitsigns next_hunk<cr>", {
+      silent = true,
+      desc = "[G]itsigns [N]ext hunk",
+    })
+
+    vim.keymap.set("n", "<leader>gl", ":Gitsigns prev_hunk<cr>", {
+      silent = true,
+      desc = "[G]itsigns [L]ast hunk",
+    })
+
     vim.keymap.set("n", "<leader>gb", function()
       require("gitsigns").blame_line({ full = true })
       vim.defer_fn(function() require("gitsigns").blame_line() end, 100)
