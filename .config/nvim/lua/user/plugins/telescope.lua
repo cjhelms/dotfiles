@@ -12,6 +12,11 @@ return {
 
     telescope.setup({
       defaults = {
+        layout_config = {
+          horizontal = {
+            preview_width = 0.6,
+          },
+        },
         path_display = {
           "truncate",
         },
@@ -19,7 +24,30 @@ return {
           i = {
             ["<C-k>"] = actions.move_selection_previous,
             ["<C-j>"] = actions.move_selection_next,
+            ["<C-s>"] = actions.file_vsplit,
           },
+        },
+      },
+      pickers = {
+        lsp_references = {
+          path_display = {
+            "truncate",
+          },
+          show_line = false,
+        },
+        lsp_document_symbols = {
+          layout_config = {
+            horizontal = {
+              preview_width = 0.4,
+            },
+          },
+          symbol_width = 50,
+        },
+        lsp_incoming_calls = {
+          show_line = false,
+        },
+        lsp_outgoing_calls = {
+          show_line = false,
         },
       },
     })

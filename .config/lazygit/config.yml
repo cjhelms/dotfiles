@@ -15,3 +15,7 @@ customCommands:
     - type: 'confirm'
       title: 'Push to origin/{{.CheckedOutBranch.Name}}'
       body: "Are you sure you want to push to origin/{{.CheckedOutBranch.Name}}?\n('enter' to push, else 'esc' to cancel)"
+  - key: '<c-u>'
+    command: "git submodule update --init --recursive"
+    context: 'global'
+    loadingText: 'updating'

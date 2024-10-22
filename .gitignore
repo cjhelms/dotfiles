@@ -3,3 +3,4 @@
 .fonts/.uuid
 .docker
 build-*
+.config/nvim/spell

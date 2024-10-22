@@ -3,6 +3,13 @@ return {
   event = "BufEnter",
   config = function()
     require("conform").setup({
+      formatters = {
+        clang_format = {
+          command = "/grmn/prj/fit/monaco/tools/clang-tools/clang-format",
+          args = { "-assume-filename", vim.api.nvim_buf_get_name(0) },
+          root_patterns = { ".git", ".clang-format" },
+        },
+      },
       formatters_by_ft = {
         lua = { "stylua" },
         python = { "isort", "black" },

@@ -20,6 +20,8 @@ return {
       map("gI", vim.lsp.buf.implementation, "[G]oto [I]mplementation")
       map("<leader>D", vim.lsp.buf.type_definition, "Type [D]efinition")
       map("<leader>ds", builtin.lsp_document_symbols, "[D]ocument [S]ymbols")
+      map("<leader>gi", vim.lsp.buf.incoming_calls, "[G]o-to [I]ncoming calls")
+      map("<leader>go", vim.lsp.buf.outgoing_calls, "[G]o-to [O]utgoing calls")
       map("K", vim.lsp.buf.hover, "Hover Documentation")
       map("<C-k>", vim.lsp.buf.signature_help, "Signature Documentation")
       map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")

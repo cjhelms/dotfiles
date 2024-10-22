@@ -7,7 +7,6 @@ return {
   },
   config = function()
     require("CopilotChat").setup({
-      debug = true,
       window = {
         layout = "float",
         relative = "cursor",
