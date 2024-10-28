@@ -1,6 +1,6 @@
 return {
   "mfussenegger/nvim-dap",
-  dependencies = { "ldelossa/nvim-dap-projects" },
+  dependencies = { "ldelossa/nvim-dap-projects", "mfussenegger/nvim-dap-python" },
   config = function()
     local dap = require("dap")
 
@@ -16,6 +16,9 @@ return {
       name = "lldb",
     }
 
+    require("dap-python").setup("python3")
+    require("dap-python").test_runner = "pytest"
+
     local function map_key(key, cmd, desc)
       vim.api.nvim_set_keymap("n", key, cmd, { noremap = true, silent = true, desc = desc })
     end
@@ -26,5 +29,7 @@ return {
     map_key("<Leader>di", ":lua require('dap').step_into()<CR>", "[D]ebugger Step [I]nto")
     map_key("<Leader>do", ":lua require('dap').step_out()<CR>", "[D]ebugger Step [O]ut")
     map_key("<Leader>dt", ":lua require('dap').terminate()<CR>", "[D]ebugger [T]erminate")
+    map_key("<leader>df", ":lua require('dap-python').test_method()<CR>", "[D]ebug [M]ethod")
+    map_key("<leader>dl", ":lua require('dap-python').test_class()<CR>", "[D]ebug test c[L]ass")
   end,
 }
