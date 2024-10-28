@@ -5,16 +5,25 @@ return {
   config = function()
     local harpoon = require("harpoon")
     harpoon:setup()
-    vim.keymap.set("n", "<leader>hm", function() harpoon:list():add() end)
-    vim.keymap.set("n", "<leader>hq", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
-    vim.keymap.set("n", "<leader>1", function() harpoon:list():select(1) end)
-    vim.keymap.set("n", "<leader>2", function() harpoon:list():select(2) end)
-    vim.keymap.set("n", "<leader>3", function() harpoon:list():select(3) end)
-    vim.keymap.set("n", "<leader>4", function() harpoon:list():select(4) end)
-    vim.keymap.set("n", "<leader>5", function() harpoon:list():select(5) end)
-    vim.keymap.set("n", "<leader>6", function() harpoon:list():select(6) end)
-    vim.keymap.set("n", "<leader>7", function() harpoon:list():select(7) end)
-    vim.keymap.set("n", "<leader>8", function() harpoon:list():select(8) end)
-    vim.keymap.set("n", "<leader>9", function() harpoon:list():select(9) end)
+
+    local map = function(keybind, action, description)
+      vim.keymap.set("n", keybind, action, { silent = true, desc = description })
+    end
+
+    map("<leader>hm", ":lua require('harpoon'):list():add()<cr>", "[H]arpoon [M]ark")
+    map(
+      "<leader>hq",
+      ":lua require('harpoon').ui:toggle_quick_menu(require('harpoon'):list()) <cr>",
+      "[H]arpoon [Q]uick menu"
+    )
+    map("<leader>1", ":lua require('harpoon'):list():select(1)<cr>", "Harpoon mark 1")
+    map("<leader>2", ":lua require('harpoon'):list():select(2)<cr>", "Harpoon mark 2")
+    map("<leader>3", ":lua require('harpoon'):list():select(3)<cr>", "Harpoon mark 3")
+    map("<leader>4", ":lua require('harpoon'):list():select(4)<cr>", "Harpoon mark 4")
+    map("<leader>5", ":lua require('harpoon'):list():select(5)<cr>", "Harpoon mark 5")
+    map("<leader>6", ":lua require('harpoon'):list():select(6)<cr>", "Harpoon mark 6")
+    map("<leader>7", ":lua require('harpoon'):list():select(7)<cr>", "Harpoon mark 7")
+    map("<leader>8", ":lua require('harpoon'):list():select(8)<cr>", "Harpoon mark 8")
+    map("<leader>9", ":lua require('harpoon'):list():select(9)<cr>", "Harpoon mark 9")
   end,
 }
