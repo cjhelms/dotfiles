@@ -4,4 +4,5 @@ return {
   "nvim-treesitter/nvim-treesitter-context",
   "stevearc/dressing.nvim",
   "tpope/vim-sleuth",
+  "vimwiki/vimwiki",
 }

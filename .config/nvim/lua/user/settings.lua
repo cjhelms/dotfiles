@@ -14,6 +14,11 @@ end
 -- Set Neovim's Python provider, assuming 3.10 is available (thanks to dev container)
 if is_python_version_less_than_3_10() then vim.g.python3_host_prog = "/usr/bin/python3.10" end
 
+-- Vimwiki required settings
+vim.opt.compatible = false
+vim.cmd('filetype plugin on')
+vim.cmd('syntax on')
+
 -- Remap leader to space bar
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
