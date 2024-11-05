@@ -4,7 +4,7 @@ return {
   config = function()
     require("lualine").setup({
       options = {
-        theme = "gruvbox",
+        theme = "catppuccin-macchiato",
       },
       sections = {
         lualine_a = { "mode" },
@@ -13,6 +13,9 @@ return {
         lualine_x = { "encoding", "fileformat", "filetype" },
         lualine_y = { "progress" },
         lualine_z = { "location" },
+      },
+      options = {
+        disabled_filetypes = { "NvimTree" },
       },
     })
   end,
