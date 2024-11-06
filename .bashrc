@@ -1,5 +1,12 @@
 # Short & sweet terminal prompt
-export PS1="\[\033[01;34m\]\w\[\033[00m\]\$ "
+parse_git_branch() {
+    local branch=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/')
+    if [ -n "$branch" ]; then
+        echo " $branch"
+    fi
+}
+export PS1="\[\033[01;34m\]\w\[\e[91m\]\$(parse_git_branch)\[\033[00m\]\$ "
+
 PROMPT_DIRTRIM=1
 
 # Enable fzf for command line fuzzy search, if installed
