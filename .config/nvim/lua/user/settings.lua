@@ -16,8 +16,12 @@ if is_python_version_less_than_3_10() then vim.g.python3_host_prog = "/usr/bin/p
 
 -- Vimwiki required settings
 vim.opt.compatible = false
-vim.cmd('filetype plugin on')
-vim.cmd('syntax on')
+vim.cmd("filetype plugin on")
+vim.cmd("syntax on")
+
+-- Text manipulation.
+vim.api.nvim_set_keymap("n", "d", '"_d', { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "x", "d", { noremap = true, silent = true })
 
 -- Remap leader to space bar
 vim.g.mapleader = " "
@@ -25,16 +29,16 @@ vim.g.maplocalleader = " "
 vim.keymap.set({ "n", "v" }, "<Space>", "<Nop>", { silent = true })
 
 -- Copy to clipboard
-vim.api.nvim_set_keymap('v', '<leader>y', '"+y', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<leader>Y', '"+yg_', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<leader>y', '"+y', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<leader>yy', '"+yy', { noremap = true, silent = true })
+vim.api.nvim_set_keymap("v", "<leader>y", '"+y', { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>Y", '"+yg_', { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>y", '"+y', { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>yy", '"+yy', { noremap = true, silent = true })
 
 -- Paste from clipboard
-vim.api.nvim_set_keymap('n', '<leader>p', '"+p', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<leader>P', '"+P', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('v', '<leader>p', '"+p', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('v', '<leader>P', '"+P', { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>p", '"+p', { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>P", '"+P', { noremap = true, silent = true })
+vim.api.nvim_set_keymap("v", "<leader>p", '"+p', { noremap = true, silent = true })
+vim.api.nvim_set_keymap("v", "<leader>P", '"+P', { noremap = true, silent = true })
 
 -- Enable copilot
 vim.g.copilot_assume_mapped = true
