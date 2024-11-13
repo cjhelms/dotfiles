@@ -22,6 +22,7 @@ vim.cmd("syntax on")
 -- Text manipulation.
 vim.api.nvim_set_keymap("n", "d", '"_d', { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "x", "d", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "xx", "dd", { noremap = true, silent = true })
 
 -- Remap leader to space bar
 vim.g.mapleader = " "
