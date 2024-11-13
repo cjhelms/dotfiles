@@ -29,6 +29,7 @@ return {
       map("<leader>wr", vim.lsp.buf.remove_workspace_folder, "[W]orkspace [R]emove Folder")
       map("<leader>ws", builtin.lsp_dynamic_workspace_symbols, "[W]orkspace [S]ymbols")
       map("<leader>sr", ":LspRestart<cr>", "[S]erver [R]estart")
+      map("<leader>cs", ":ClangdSwitchSourceHeader<cr>", "[C]langd [S]witch source/header")
       map(
         "<leader>wl",
         function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end,

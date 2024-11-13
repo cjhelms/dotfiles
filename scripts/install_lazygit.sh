@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION="0.43.1"
+VERSION="0.44.1"
 TARBALL="lazygit_${VERSION}_Linux_x86_64.tar.gz"
 mkdir -p ~/bin
 apt-get update && apt-get -yq install wget
