@@ -17,6 +17,9 @@ return {
 
     telescope.setup({
       defaults = {
+        cache_picker = {
+          num_pickers = 20,
+        },
         layout_strategy = "vertical",
         path_display = {
           "truncate",
@@ -73,6 +76,7 @@ return {
     end
 
     map("<leader>?", "oldfiles", "[?] Find recently opened files")
+    map("<leader>/", "current_buffer_fuzzy_find", "[/] Find in current buffer")
     map("<leader><space>", "buffers", "[ ] Find existing buffers")
     map("<leader>sf", "find_files", "[S]earch [F]iles")
     map("<leader>sh", "help_tags", "[S]earch [H]elp")
@@ -81,22 +85,9 @@ return {
     map("<leader>sd", "diagnostics", "[S]earch [D]iagnostics")
     map("<leader>sk", "keymaps", "[S]earch [K]eymaps")
     map("<leader>ss", "grep_string", "[S]earch [S]tring")
-    map("<leader>swf", "find_files search_dirs=~/vimwiki/", "[S]earch [W]iki [F]iles")
-    map("<leader>swg", "live_grep_args search_dirs=~/vimwiki/", "[S]earch [W]iki by [G]rep (with args)")
-
-    local builtin = require("telescope.builtin")
-    local themes = require("telescope.themes")
-
-    vim.keymap.set(
-      "n",
-      "<leader>/",
-      function()
-        builtin.current_buffer_fuzzy_find(themes.get_dropdown({
-          winblend = 10,
-          previewer = false,
-        }))
-      end,
-      { desc = "[/] Fuzzily search in current buffer]" }
-    )
+    map("<leader>wsf", "find_files search_dirs=~/vimwiki/", "[W]iki [S]earch [F]iles")
+    map("<leader>wsg", "live_grep_args search_dirs=~/vimwiki/", "[W]iki [S]earch by [G]rep (with args)")
+    map("<leader>rp", "resume", "[R]esume last [P]icker")
+    map("<leader>sp", "pickers", "[S]earch recent [P]ickers")
   end,
 }
