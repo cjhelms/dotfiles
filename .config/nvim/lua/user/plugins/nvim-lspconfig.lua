@@ -9,7 +9,7 @@ return {
     local on_attach = function(_, bufnr)
       local map = function(keybind, action, description)
         if description then description = "LSP: " .. description end
-        vim.keymap.set("n", keybind, action, { buffer = bufnr, desc = description })
+        vim.keymap.set("n", keybind, action, { buffer = bufnr, silent = true, desc = description })
       end
 
       local builtin = require("telescope.builtin")

@@ -85,8 +85,6 @@ return {
     map("<leader>sd", "diagnostics", "[S]earch [D]iagnostics")
     map("<leader>sk", "keymaps", "[S]earch [K]eymaps")
     map("<leader>ss", "grep_string", "[S]earch [S]tring")
-    map("<leader>wsf", "find_files search_dirs=~/vimwiki/", "[W]iki [S]earch [F]iles")
-    map("<leader>wsg", "live_grep_args search_dirs=~/vimwiki/", "[W]iki [S]earch by [G]rep (with args)")
     map("<leader>rp", "resume", "[R]esume last [P]icker")
     map("<leader>sp", "pickers", "[S]earch recent [P]ickers")
   end,
