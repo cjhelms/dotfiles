@@ -7,7 +7,7 @@ git:
     showGraph: 'always'
 customCommands:
   - key: '<c-g>'
-    command: "echo git push origin HEAD:refs/for/{{.Form.Branch}}{{.Form.PushType}}"
+    command: "git push origin HEAD:refs/for/{{.Form.Branch}}{{.Form.PushType}}"
     showOutput: true
     context: 'global'
     loadingText: 'pushing'
