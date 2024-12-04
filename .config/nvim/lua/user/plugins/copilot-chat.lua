@@ -12,7 +12,7 @@ return {
         layout = "float",
         relative = "cursor",
         width = 1,
-        height = 0.4,
+        height = 0.7,
         row = 1,
       },
     })
