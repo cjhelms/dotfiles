@@ -7,14 +7,30 @@ git:
     showGraph: 'always'
 customCommands:
   - key: '<c-g>'
-    command: "git push origin HEAD:refs/for/{{.CheckedOutBranch.Name}}"
+    command: "echo git push origin HEAD:refs/for/{{.Form.Branch}}{{.Form.PushType}}"
     showOutput: true
     context: 'global'
     loadingText: 'pushing'
     prompts:
+    - type: 'input'
+      title: 'Which branch?'
+      key: 'Branch'
+      initialValue: "{{.SelectedLocalBranch.Name}}"
+      suggestions:
+        preset: 'branches'
+    - type: 'menu'
+      title: 'What kind?'
+      key: 'PushType'
+      options:
+        - name: 'Ready for review'
+          value: ''
+        - name: 'Work-in-progress'
+          value: '%wip'
+        - name: 'Private'
+          value: '%private'
     - type: 'confirm'
-      title: 'Push to origin/{{.CheckedOutBranch.Name}}'
-      body: "Are you sure you want to push to origin/{{.CheckedOutBranch.Name}}?\n('enter' to push, else 'esc' to cancel)"
+      title: 'Push to origin/{{.Form.Branch}} as {{.Form.PushType}}'
+      body: "Preview: git push origin HEAD:refs/for/{{.Form.Branch}}{{.Form.PushType}}\nAre you sure? ('enter' to push, else 'esc' to cancel)"
   - key: '<c-u>'
     command: "git submodule update --init --recursive"
     context: 'global'
