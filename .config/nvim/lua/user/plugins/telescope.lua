@@ -9,6 +9,7 @@ return {
       "nvim-telescope/telescope-live-grep-args.nvim",
       version = "^1.0.0",
     },
+    "aaronhallaert/advanced-git-search.nvim",
   },
   config = function()
     local telescope = require("telescope")
@@ -65,11 +66,15 @@ return {
             },
           },
         },
+        advanced_git_search = {
+          diff_plugin = "diffview",
+        },
       },
     })
 
     telescope.load_extension("fzf")
     telescope.load_extension("live_grep_args")
+    telescope.load_extension("advanced_git_search")
 
     local function map(keybind, action, description)
       vim.keymap.set("n", keybind, "<cmd>Telescope " .. action .. "<cr>", { desc = description })
