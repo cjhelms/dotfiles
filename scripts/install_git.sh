@@ -4,3 +4,4 @@ sudo apt update && sudo apt upgrade
 sudo apt install git -yqq
 git config --global user.email "cjhelms1428@gmail.com"
 git config --global user.name "Chris Helms"
+ssh-keygen -t ed25519 -C "cjhelms1428@gmail.com"
