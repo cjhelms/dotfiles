@@ -1,4 +1,6 @@
 #!/bin/bash
+sudo apt update && sudo apt upgrade -yqq
+sudo apt install curl -yqq
 git clone https://github.com/alacritty/alacritty.git ~/.alacritty
 cd ~/.alacritty
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
