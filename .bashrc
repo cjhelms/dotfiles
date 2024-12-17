@@ -60,3 +60,6 @@ export PATH=~/bin:$PATH
 
 # Add Mason language servers to path
 export PATH=~/.local/share/nvim/mason/bin:$PATH
+
+# Add Alacritty to path
+source ~/.alacritty/extra/completions/alacritty.bash
