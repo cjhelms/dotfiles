@@ -21,7 +21,7 @@ return {
         cache_picker = {
           num_pickers = 20,
         },
-        layout_strategy = "vertical",
+        layout_strategy = "flex",
         path_display = {
           "truncate",
         },
