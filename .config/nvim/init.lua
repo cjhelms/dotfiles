@@ -31,13 +31,6 @@ vim.api.nvim_create_autocmd("TextYankPost", {
   callback = function() vim.hl.on_yank() end,
 })
 
-vim.api.nvim_create_autocmd("QuickFixCmdPost", {
-  pattern = { "make" },
-  callback = function()
-    if #vim.fn.getqflist() > 0 then vim.cmd("copen") end
-  end,
-})
-
 local function noremap_map(modes, key, command)
   vim.keymap.set(modes, key, command, { noremap = true, silent = true })
 end
@@ -61,23 +54,10 @@ normal_map("<leader>cc", ":cclose<cr>", "[C]lose qui[C]fix")
 normal_map("<leader>qw", ":bd<cr>", "[Q]uit [W]indow")
 normal_map("<leader>qf", ":fc<cr>", "[Q]uit [F]loating window")
 normal_map("<leader>qt", ":tabc<cr>", "[Q]uit [T]ab")
-normal_map("<C-s>", ":w<cr>", "[Q]uit buffer")
+normal_map("<C-s>", ":w<cr>", "[W]rite buffer")
 normal_map("<C-w>t", ":tabonly<cr>", "[T]ab only")
-
-vim.api.nvim_create_autocmd("QuickFixCmdPre", {
-  pattern = { "make", "grep" },
-  callback = function()
-    local qflist = vim.fn.getqflist()
-    if qflist and qflist.winid ~= 0 then vim.cmd("cclose") end
-  end,
-})
-vim.api.nvim_create_autocmd("QuickFixCmdPost", {
-  pattern = { "make", "grep" },
-  callback = function()
-    if #vim.fn.getqflist() > 0 then vim.cmd("copen") end
-  end,
-})
-normal_map("<leader>m", ":make<cr>", "[M]ake")
+normal_map("<leader>li", ":LspInfo<cr>", "[L]SP [I]nfo")
+normal_map("<leader>m", ":Make<cr>", "[M]ake")
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
@@ -98,7 +78,6 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
   spec = {
-    "savq/paq-nvim",
     "ellisonleao/gruvbox.nvim",
     "mason-org/mason.nvim",
     "nvim-treesitter/nvim-treesitter",
@@ -119,6 +98,7 @@ require("lazy").setup({
     "lewis6991/gitsigns.nvim",
     "jinh0/eyeliner.nvim",
     "mfussenegger/nvim-dap",
+    "tpope/vim-dispatch",
   },
 })
 
@@ -222,18 +202,18 @@ normal_map(
   "[G]it [B]lame"
 )
 normal_map("<leader>gf", ":Gitsigns blame<cr>", "[G]it blame [F]ile")
-normal_map("<leader>gn", function() require("gitsigns").nav_hunk("next") end, "[G]it blame [F]ile")
-normal_map("<leader>gp", function() require("gitsigns").nav_hunk("prev") end, "[G]it blame [F]ile")
+normal_map("<leader>gj", function() require("gitsigns").nav_hunk("next") end, "[G]it next hunk")
+normal_map("<leader>gk", function() require("gitsigns").nav_hunk("prev") end, "[G]it previous hunk")
 normal_map("<leader>gp", ":Gitsigns preview_hunk<cr>", "[G]itsigns [P]review hunk")
 normal_map(
   "<leader>gqq",
   function() require("gitsigns").setqflist(0) end,
-  "[G]itsigns [P]review hunk"
+  "[G]itsigns [Q]uickfix (current buffer)"
 )
 normal_map(
   "<leader>gqa",
   function() require("gitsigns").setqflist("all") end,
-  "[G]itsigns [P]review hunk"
+  "[G]itsigns [Q]uickfix ([A]ll buffers)"
 )
 normal_map("<leader>gr", ":Gitsigns reset_hunk<cr>", "[G]itsigns [R]eset hunk")
 
@@ -260,6 +240,8 @@ normal_map("<leader>dp", function()
   local widgets = require("dap.ui.widgets")
   widgets.centered_float(widgets.scopes)
 end, "[D]ebugger sco[P]es")
+
+vim.g.dispatch_no_tmux_make = 1
 
 vim.api.nvim_create_autocmd("LspAttach", {
   callback = function(ev)
@@ -291,7 +273,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
   end,
 })
 
-vim.lsp.enable({ "lua_ls", "pyright", "clangd" })
+vim.lsp.enable({ "lua_ls", "pyright", "clangd", "gdscript" })
 vim.lsp.config("lua_ls", {
   settings = {
     Lua = {
