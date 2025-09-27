@@ -110,7 +110,14 @@ require("nvim-treesitter.configs").setup({
   ensure_installed = { "lua", "cpp", "python" },
 })
 require("treesitter-context").setup({})
-require("fzf-lua").setup({ "telescope" })
+require("fzf-lua").setup({
+  "hide",
+  keymap = {
+    fzf = {
+      ["ctrl-q"] = "select-all+accept",
+    },
+  },
+})
 require("conform").setup({
   formatters = {
     stylua = {
@@ -182,6 +189,8 @@ fzf_map("<leader>/", "lgrep_curbuf", "Search buffer")
 fzf_map("<leader>dd", "diagnostics_document", "Search [D]iagnostics [D]ocument")
 fzf_map("<leader>dw", "diagnostics_workspace", "Search [D]iagnostics [W]orkspace")
 fzf_map("<leader>sb", "builtin", "[S]earch [B]uiltins")
+fzf_map("<leader>rp", "resume", "[R]esume [P]icker")
+
 normal_map("<leader>f", require("conform").format, "[F]ormat")
 normal_map("<leader>e", ":Oil<cr>", "[E]xplore")
 
