@@ -102,6 +102,10 @@ require("lazy").setup({
   },
 })
 
+require("gruvbox").setup({
+  transparent_mode = true,
+})
+
 o.background = "dark"
 vim.cmd("colorscheme gruvbox")
 
