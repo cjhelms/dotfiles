@@ -62,4 +62,4 @@ export PATH=~/bin:$PATH
 export PATH=~/.local/share/nvim/mason/bin:$PATH
 
 # Add Alacritty to path
-source ~/.alacritty/extra/completions/alacritty.bash
+[ -f ~/.alacritty/extra/completions/alacritty.bash ] && source ~/.alacritty/extra/completions/alacritty.bash
