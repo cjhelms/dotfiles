@@ -195,6 +195,39 @@ fzf_map("<leader>dw", "diagnostics_workspace", "Search [D]iagnostics [W]orkspace
 fzf_map("<leader>sb", "builtin", "[S]earch [B]uiltins")
 fzf_map("<leader>rp", "resume", "[R]esume [P]icker")
 
+local function push_to_gerrit()
+  require("fzf-lua").git_branches({
+    prompt = "Select branch> ",
+    actions = {
+      ["default"] = function(selected)
+        local branch = selected[1]:match("[^%s]+")
+        if not branch then return end
+        vim.ui.select(
+          {
+            { name = "Ready for review", value = "" },
+            { name = "Work-in-progress", value = "%wip" },
+            { name = "Private", value = "%private" },
+          },
+          { prompt = "Push type:", format_item = function(item) return item.name end },
+          function(choice)
+            if not choice then return end
+            local cmd = string.format("git push origin HEAD:refs/for/%s%s", branch, choice.value)
+            vim.ui.input({ prompt = string.format("Run '%s'? [y/N]: ", cmd) }, function(input)
+              if input and input:lower() == "y" then
+                vim.cmd("botright 10split | terminal " .. cmd)
+                vim.cmd("startinsert")
+              else
+                print("\nCanceled Gerrit push")
+              end
+            end)
+          end
+        )
+      end,
+    },
+  })
+end
+normal_map("<leader>pg", push_to_gerrit, "[P]ush to [G]errit")
+
 normal_map("<leader>f", require("conform").format, "[F]ormat")
 normal_map("<leader>e", ":Oil<cr>", "[E]xplore")
 
