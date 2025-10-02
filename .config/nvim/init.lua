@@ -31,6 +31,13 @@ vim.api.nvim_create_autocmd("TextYankPost", {
   callback = function() vim.hl.on_yank() end,
 })
 
+vim.api.nvim_create_autocmd("QuickFixCmdPost", {
+  pattern = "make",
+  callback = function()
+    if #vim.fn.getqflist() > 0 then vim.cmd("copen") end
+  end,
+})
+
 local function noremap_map(modes, key, command)
   vim.keymap.set(modes, key, command, { noremap = true, silent = true })
 end
@@ -48,6 +55,7 @@ local function normal_map(key, command, desc)
 end
 
 normal_map("<leader>ie", ":e $MYVIMRC<cr>", "[I]nit.lua [E]dit")
+normal_map("<leader>le", ":e .nvim.lua<cr>", "[L]ocal init.lua [E]dit")
 normal_map("<leader>is", ":source $MYVIMRC<cr>", "[I]nit.lua [S]ource")
 normal_map("<leader>co", ":copen<cr>", "[O]pen qui[C]kfix")
 normal_map("<leader>cc", ":cclose<cr>", "[C]lose qui[C]fix")
@@ -194,13 +202,14 @@ fzf_map("<leader>dd", "diagnostics_document", "Search [D]iagnostics [D]ocument")
 fzf_map("<leader>dw", "diagnostics_workspace", "Search [D]iagnostics [W]orkspace")
 fzf_map("<leader>sb", "builtin", "[S]earch [B]uiltins")
 fzf_map("<leader>rp", "resume", "[R]esume [P]icker")
+fzf_map("<leader>sp", "dap_breakpoints", "[S]earch DAP break[P]oints")
 
 local function push_to_gerrit()
   require("fzf-lua").git_branches({
     prompt = "Select branch> ",
     actions = {
       ["default"] = function(selected)
-        local branch = selected[1]:match("[^%s]+")
+        local branch = selected[1]:gsub("^%*%s*", "")
         if not branch then return end
         vim.ui.select(
           {
@@ -266,26 +275,27 @@ normal_map("<leader>gr", ":Gitsigns reset_hunk<cr>", "[G]itsigns [R]eset hunk")
 vim.api.nvim_set_hl(0, "EyelinerPrimary", { fg = "#ff77ff" })
 vim.api.nvim_set_hl(0, "EyelinerSecondary", { fg = "#55ffff" })
 
-normal_map("<leader>dc", function() require("dap").continue() end, "[D]ebugger [C]ontinue")
-normal_map("<leader>dt", function() require("dap").terminate() end, "[D]ebugger [T]erminate")
-normal_map("<leader>dn", function() require("dap").step_over() end, "[D]ebugger [N]ext (step over)")
-normal_map("<leader>di", function() require("dap").step_into() end, "[D]ebugger step [I]nto")
-normal_map("<leader>do", function() require("dap").step_out() end, "[D]ebugger step [O]ut")
-normal_map(
-  "<leader>db",
-  function() require("dap").toggle_breakpoint() end,
-  "[D]ebugger toggle [B]reakpoint"
-)
-normal_map("<leader>dr", function() require("dap").repl.open() end, "[D]ebugger [R]epl")
-normal_map("<leader>dh", function() require("dap.ui.widgets").hover() end, "[D]ebugger [H]over")
-normal_map("<leader>df", function()
-  local widgets = require("dap.ui.widgets")
-  widgets.centered_float(widgets.frames)
-end, "[D]ebugger [F]rames")
-normal_map("<leader>dp", function()
-  local widgets = require("dap.ui.widgets")
-  widgets.centered_float(widgets.scopes)
-end, "[D]ebugger sco[P]es")
+local dap = require("dap")
+local dap_ui = require("dap.ui.widgets")
+normal_map("<leader>dc", function() dap.continue() end, "[D]ebugger [C]ontinue")
+normal_map("<leader>dt", function() dap.terminate() end, "[D]ebugger [T]erminate")
+normal_map("<leader>dn", function() dap.step_over() end, "[D]ebugger [N]ext (step over)")
+normal_map("<leader>di", function() dap.step_into() end, "[D]ebugger step [I]nto")
+normal_map("<leader>do", function() dap.step_out() end, "[D]ebugger step [O]ut")
+normal_map("<leader>dl", function() dap.clear_breakpoints() end, "[D]ebugger c[L]ear breakpoints")
+normal_map("<leader>db", function() dap.toggle_breakpoint() end, "[D]ebugger toggle [B]reakpoint")
+normal_map("<leader>dn", function()
+  local condition = vim.fn.input("Enter condition: ")
+  local hit_condition = vim.fn.input("Enter hit condition: ")
+  dap.toggle_breakpoint(
+    condition ~= "" and condition or nil,
+    hit_condition ~= "" and hit_condition or nil
+  )
+end, "[D]ebugger toggle co[N]ditional breakpoint")
+normal_map("<leader>dr", function() dap.repl.open() end, "[D]ebugger [R]epl")
+normal_map("<leader>dh", function() dap_ui.hover() end, "[D]ebugger [H]over")
+normal_map("<leader>df", function() dap_ui.centered_float(dap_ui.frames) end, "[D]ebugger [F]rames")
+normal_map("<leader>dp", function() dap_ui.centered_float(dap_ui.scopes) end, "[D]ebugger sco[P]es")
 
 vim.g.dispatch_no_tmux_make = 1
 

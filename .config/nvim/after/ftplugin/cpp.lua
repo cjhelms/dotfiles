@@ -30,6 +30,9 @@ end
 vim.api.nvim_create_user_command("GTestRun", function(opts)
   local old_dir = vim.fn.getcwd()
   local temp_dir = opts.fargs[2]
+  if temp_dir == nil then
+    temp_dir = vim.g.gtest_temp_dir
+  end
   local has_temp_dir = temp_dir ~= nil and temp_dir ~= ""
   if has_temp_dir then vim.cmd("cd " .. temp_dir) end
 
