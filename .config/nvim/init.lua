@@ -204,38 +204,7 @@ fzf_map("<leader>sb", "builtin", "[S]earch [B]uiltins")
 fzf_map("<leader>rp", "resume", "[R]esume [P]icker")
 fzf_map("<leader>sp", "dap_breakpoints", "[S]earch DAP break[P]oints")
 
-local function push_to_gerrit()
-  require("fzf-lua").git_branches({
-    prompt = "Select branch> ",
-    actions = {
-      ["default"] = function(selected)
-        local branch = selected[1]:gsub("^[%*%s*]+", "")
-        if not branch then return end
-        local ready_for_review = "1. Ready for review"
-        local work_in_progress = "2. Work-in-progress"
-        local private = "3. Private"
-        require("fzf-lua").fzf_exec({ ready_for_review, work_in_progress, private }, {
-          prompt = "Push Type> ",
-          actions = {
-            ["default"] = function(selection)
-              local specifier = ""
-              if selection[1] == work_in_progress then
-                specifier = "%wip"
-              elseif selection[1] == private then
-                specifier = "%private"
-              end
-              local bufnr = vim.api.nvim_create_buf(true, false)
-              vim.api.nvim_open_win(bufnr, true, { split = "below", height = 10 })
-              vim.fn.termopen({ "git", "push", "origin", "HEAD:refs/for/" .. branch .. specifier })
-            end,
-          },
-        })
-      end,
-    },
-  })
-end
-normal_map("<leader>pg", push_to_gerrit, "[P]ush to [G]errit")
-
+normal_map("<leader>pg", require("utilities.gerrit").push_to_gerrit, "[P]ush to [G]errit")
 normal_map("<leader>f", require("conform").format, "[F]ormat")
 normal_map("<leader>e", ":Oil<cr>", "[E]xplore")
 
