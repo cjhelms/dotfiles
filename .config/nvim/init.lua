@@ -209,28 +209,24 @@ local function push_to_gerrit()
     prompt = "Select branch> ",
     actions = {
       ["default"] = function(selected)
-        local branch = selected[1]:gsub("^%*%s*", "")
+        local branch = selected[1]:gsub("^[%*%s*]+", "")
         if not branch then return end
-        vim.ui.select(
-          {
-            { name = "Ready for review", value = "" },
-            { name = "Work-in-progress", value = "%wip" },
-            { name = "Private", value = "%private" },
-          },
-          { prompt = "Push type:", format_item = function(item) return item.name end },
-          function(choice)
-            if not choice then return end
-            local cmd = string.format("git push origin HEAD:refs/for/%s%s", branch, choice.value)
-            vim.ui.input({ prompt = string.format("Run '%s'? [y/N]: ", cmd) }, function(input)
-              if input and input:lower() == "y" then
-                vim.cmd("botright 10split | terminal " .. cmd)
-                vim.cmd("startinsert")
-              else
-                print("\nCanceled Gerrit push")
+        require("fzf-lua").fzf_exec({ "Ready for review", "Work-in-progress", "Private" }, {
+          prompt = "Push Type> ",
+          actions = {
+            ["default"] = function(selection)
+              local specifier = ""
+              if selection[1] == "Work-in-progress" then
+                specifier = "%wip"
+              elseif selection[1] == "Private" then
+                specifier = "%private"
               end
-            end)
-          end
-        )
+              local bufnr = vim.api.nvim_create_buf(true, false)
+              vim.api.nvim_open_win(bufnr, true, { split = "below", height = 10 })
+              vim.fn.termopen({ "git", "push", "origin", "HEAD:refs/for/" .. branch .. specifier })
+            end,
+          },
+        })
       end,
     },
   })
