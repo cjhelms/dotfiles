@@ -15,7 +15,7 @@ o.expandtab = true
 o.softtabstop = 2
 o.shiftwidth = 2
 o.expandtab = true
-o.colorcolumn = "100"
+o.colorcolumn = "101"
 o.swapfile = false
 o.signcolumn = "yes"
 o.exrc = true
@@ -107,6 +107,8 @@ require("lazy").setup({
     "jinh0/eyeliner.nvim",
     "mfussenegger/nvim-dap",
     "tpope/vim-dispatch",
+    "j-hui/fidget.nvim",
+    { "shortcuts/no-neck-pain.nvim", version = "*" },
   },
 })
 
@@ -188,6 +190,18 @@ require("diffview").setup({
   use_icons = false,
 })
 require("gitsigns").setup({})
+require("fidget").setup({
+  notification = { window = { winblend = 0 } },
+})
+require("no-neck-pain").setup({
+  width = 108,
+  autocmds = { enableOnVimEnter = true, skipEnteringNoNeckPainBuffer = true },
+  buffers = {
+    wo = {
+      fillchars = "eob: ",
+    },
+  },
+})
 
 local function fzf_map(key, command, desc) normal_map(key, ":FzfLua " .. command .. "<cr>", desc) end
 
@@ -293,6 +307,9 @@ normal_map("<leader>dr", function() dap.repl.open() end, "[D]ebugger [R]epl")
 normal_map("<leader>dh", function() dap_ui.hover() end, "[D]ebugger [H]over")
 normal_map("<leader>df", function() dap_ui.centered_float(dap_ui.frames) end, "[D]ebugger [F]rames")
 normal_map("<leader>dp", function() dap_ui.centered_float(dap_ui.scopes) end, "[D]ebugger sco[P]es")
+
+local no_neck_pain = require("no-neck-pain")
+normal_map("<leader>np", function() no_neck_pain.toggle() end, "Toggle [N]oNeck[P]ain")
 
 vim.g.dispatch_no_tmux_make = 1
 
