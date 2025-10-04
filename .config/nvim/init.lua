@@ -294,6 +294,17 @@ vim.api.nvim_set_hl(0, "EyelinerPrimary", { fg = "#ff77ff" })
 vim.api.nvim_set_hl(0, "EyelinerSecondary", { fg = "#55ffff" })
 
 local dap = require("dap")
+dap.defaults.fallback.terminal_win_cmd = "botright 10new"
+local function clean_up_dap(session, body)
+  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+    if vim.api.nvim_buf_is_loaded(buf) then
+      local name = vim.api.nvim_buf_get_name(buf)
+      if name:lower():find("dap") then vim.api.nvim_buf_delete(buf, { force = true }) end
+    end
+  end
+end
+dap.listeners.after["event_terminated"]["config"] = clean_up_dap
+dap.listeners.after["event_exited"]["config"] = clean_up_dap
 local dap_ui = require("dap.ui.widgets")
 normal_map("<leader>dc", function() dap.continue() end, "[D]ebugger [C]ontinue")
 normal_map("<leader>dt", function() dap.terminate() end, "[D]ebugger [T]erminate")
