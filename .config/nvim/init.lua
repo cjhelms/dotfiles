@@ -59,7 +59,7 @@ normal_map("<leader>le", ":e .nvim.lua<cr>", "[L]ocal init.lua [E]dit")
 normal_map("<leader>is", ":source $MYVIMRC<cr>", "[I]nit.lua [S]ource")
 normal_map("<leader>co", ":copen<cr>", "[O]pen qui[C]kfix")
 normal_map("<leader>cc", ":cclose<cr>", "[C]lose qui[C]fix")
-normal_map("<leader>qw", ":bd<cr>", "[Q]uit [W]indow")
+normal_map("<leader>qw", ":bd<cr>", "[Q]uit buffer")
 normal_map("<leader>qf", ":fc<cr>", "[Q]uit [F]loating window")
 normal_map("<leader>qt", ":tabc<cr>", "[Q]uit [T]ab")
 normal_map("<C-s>", ":w<cr>", "[W]rite buffer")
@@ -129,6 +129,13 @@ require("fzf-lua").setup({
   keymap = {
     fzf = {
       ["ctrl-q"] = "select-all+accept",
+    },
+  },
+  actions = {
+    files = {
+      true, -- Inherit defaults
+      ["ctrl-s"] = require("fzf-lua").actions.file_vsplit,
+      ["ctrl-h"] = require("fzf-lua").actions.file_split,
     },
   },
 })
@@ -295,14 +302,18 @@ normal_map("<leader>di", function() dap.step_into() end, "[D]ebugger step [I]nto
 normal_map("<leader>do", function() dap.step_out() end, "[D]ebugger step [O]ut")
 normal_map("<leader>dl", function() dap.clear_breakpoints() end, "[D]ebugger c[L]ear breakpoints")
 normal_map("<leader>db", function() dap.toggle_breakpoint() end, "[D]ebugger toggle [B]reakpoint")
-normal_map("<leader>dn", function()
-  local condition = vim.fn.input("Enter condition: ")
-  local hit_condition = vim.fn.input("Enter hit condition: ")
+normal_map("<leader>d?", function()
+  local condition_status, condition = pcall(function() vim.fn.input("Enter condition: ") end)
+  if not condition_status then return end
+  local hit_condition_status, hit_condition = pcall(
+    function() vim.fn.input("Enter hit condition: ") end
+  )
+  if not hit_condition_status then return end
   dap.toggle_breakpoint(
     condition ~= "" and condition or nil,
     hit_condition ~= "" and hit_condition or nil
   )
-end, "[D]ebugger toggle co[N]ditional breakpoint")
+end, "[D]ebugger toggle conditional breakpoint")
 normal_map("<leader>dr", function() dap.repl.open() end, "[D]ebugger [R]epl")
 normal_map("<leader>dh", function() dap_ui.hover() end, "[D]ebugger [H]over")
 normal_map("<leader>df", function() dap_ui.centered_float(dap_ui.frames) end, "[D]ebugger [F]rames")
