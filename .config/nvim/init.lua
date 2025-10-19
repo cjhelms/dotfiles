@@ -62,6 +62,7 @@ normal_map("<leader>cc", ":cclose<cr>", "[C]lose qui[C]fix")
 normal_map("<leader>qb", ":bd<cr>", "[Q]uit [B]uffer")
 normal_map("<leader>qf", ":fc<cr>", "[Q]uit [F]loating window")
 normal_map("<leader>qt", ":tabc<cr>", "[Q]uit [T]ab")
+normal_map("<leader>qo", ":tabonly | only<cr>", "[Q]uit [O]thers")
 normal_map("<C-s>", ":w<cr>", "[W]rite buffer")
 normal_map("<C-w>t", ":tabonly<cr>", "[T]ab only")
 normal_map("<leader>li", ":LspInfo<cr>", "[L]SP [I]nfo")
@@ -322,6 +323,8 @@ normal_map("<leader>dr", function() dap.repl.open() end, "[D]ebugger [R]epl")
 normal_map("<leader>dh", function() dap_ui.hover() end, "[D]ebugger [H]over")
 normal_map("<leader>df", function() dap_ui.centered_float(dap_ui.frames) end, "[D]ebugger [F]rames")
 normal_map("<leader>dp", function() dap_ui.centered_float(dap_ui.scopes) end, "[D]ebugger sco[P]es")
+
+normal_map("<leader>gg", ":G<cr>", "Open fu[G]itive")
 
 vim.g.dispatch_no_tmux_make = 1
 
