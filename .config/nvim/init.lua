@@ -325,6 +325,7 @@ normal_map("<leader>df", function() dap_ui.centered_float(dap_ui.frames) end, "[
 normal_map("<leader>dp", function() dap_ui.centered_float(dap_ui.scopes) end, "[D]ebugger sco[P]es")
 
 normal_map("<leader>gg", ":G<cr>", "Open fu[G]itive")
+normal_map("<leader>gl", ":G log --all --decorate --oneline --graph<cr>", "[G]it [L]og")
 
 vim.g.dispatch_no_tmux_make = 1
 
