@@ -59,13 +59,17 @@ normal_map("<leader>le", ":e .nvim.lua<cr>", "[L]ocal init.lua [E]dit")
 normal_map("<leader>is", ":source $MYVIMRC<cr>", "[I]nit.lua [S]ource")
 normal_map("<leader>co", ":copen<cr>", "[O]pen qui[C]kfix")
 normal_map("<leader>cc", ":cclose<cr>", "[C]lose qui[C]fix")
-normal_map("<leader>qw", ":bd<cr>", "[Q]uit buffer")
+normal_map("<leader>qb", ":bd<cr>", "[Q]uit [B]uffer")
 normal_map("<leader>qf", ":fc<cr>", "[Q]uit [F]loating window")
 normal_map("<leader>qt", ":tabc<cr>", "[Q]uit [T]ab")
 normal_map("<C-s>", ":w<cr>", "[W]rite buffer")
 normal_map("<C-w>t", ":tabonly<cr>", "[T]ab only")
 normal_map("<leader>li", ":LspInfo<cr>", "[L]SP [I]nfo")
 normal_map("<leader>m", ":Make<cr>", "[M]ake")
+normal_map("<leader>bh", ":vnew | wincmd p<cr>", "[B]uffer left")
+normal_map("<leader>bj", ":new | wincmd J | wincmd p<cr>", "[B]uffer down")
+normal_map("<leader>bk", ":new | wincmd p<cr>", "[B]uffer up")
+normal_map("<leader>bl", ":vnew | wincmd L | wincmd p<cr>", "[B]uffer right")
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
@@ -100,15 +104,13 @@ require("lazy").setup({
     "stevearc/oil.nvim",
     "github/copilot.vim",
     "fang2hou/blink-copilot",
-    "NeogitOrg/neogit",
-    "sindrets/diffview.nvim",
     "nvim-lua/plenary.nvim",
     "lewis6991/gitsigns.nvim",
     "jinh0/eyeliner.nvim",
     "mfussenegger/nvim-dap",
     "tpope/vim-dispatch",
     "j-hui/fidget.nvim",
-    { "shortcuts/no-neck-pain.nvim", version = "*" },
+    "tpope/vim-fugitive",
   },
 })
 
@@ -187,29 +189,10 @@ require("oil").setup({
     ["q"] = { "actions.close", mode = "n" },
   },
 })
-require("neogit").setup({
-  integrations = {
-    fzf_lua = true,
-    diffview = true,
-  },
-})
-require("diffview").setup({
-  use_icons = false,
-})
 require("gitsigns").setup({})
 require("fidget").setup({
   notification = { window = { winblend = 0 } },
 })
-require("no-neck-pain").setup({
-  width = 108,
-  autocmds = { enableOnVimEnter = true, skipEnteringNoNeckPainBuffer = true },
-  buffers = {
-    wo = {
-      fillchars = "eob: ",
-    },
-  },
-})
-
 local function fzf_map(key, command, desc) normal_map(key, ":FzfLua " .. command .. "<cr>", desc) end
 
 fzf_map("<leader>sf", "files", "Search [F]iles")
@@ -257,6 +240,11 @@ normal_map("<leader>pg", function()
 end, "[P]ush to [G]errit")
 normal_map("<leader>f", require("conform").format, "[F]ormat")
 normal_map("<leader>e", ":Oil<cr>", "[E]xplore")
+normal_map(
+  "<leader>ct",
+  function() require("copilot.copilot").open_codex_terminal() end,
+  "[C]odex [T]erminal"
+)
 
 -- Block the normal Copilot suggestions
 vim.g.copilot_no_maps = true
@@ -266,8 +254,6 @@ vim.api.nvim_create_autocmd({ "FileType", "BufUnload" }, {
   callback = function(args) vim.fn["copilot#On" .. args.event]() end,
 })
 vim.fn["copilot#OnFileType"]()
-
-normal_map("<leader>ng", function() require("neogit").open({ kind = "split" }) end, "[N]eo[G]it")
 
 normal_map(
   "<leader>gb",
@@ -329,9 +315,6 @@ normal_map("<leader>dr", function() dap.repl.open() end, "[D]ebugger [R]epl")
 normal_map("<leader>dh", function() dap_ui.hover() end, "[D]ebugger [H]over")
 normal_map("<leader>df", function() dap_ui.centered_float(dap_ui.frames) end, "[D]ebugger [F]rames")
 normal_map("<leader>dp", function() dap_ui.centered_float(dap_ui.scopes) end, "[D]ebugger sco[P]es")
-
-local no_neck_pain = require("no-neck-pain")
-normal_map("<leader>np", function() no_neck_pain.toggle() end, "Toggle [N]oNeck[P]ain")
 
 vim.g.dispatch_no_tmux_make = 1
 
