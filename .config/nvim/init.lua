@@ -268,8 +268,8 @@ normal_map(
   "[G]it [B]lame"
 )
 normal_map("<leader>gf", ":Gitsigns blame<cr>", "[G]it blame [F]ile")
-normal_map("<leader>gj", function() require("gitsigns").nav_hunk("next") end, "[G]it next hunk")
-normal_map("<leader>gk", function() require("gitsigns").nav_hunk("prev") end, "[G]it previous hunk")
+normal_map("]c", function() require("gitsigns").nav_hunk("next") end, "Git next hunk")
+normal_map("[c", function() require("gitsigns").nav_hunk("prev") end, "Git previous hunk")
 normal_map("<leader>gp", ":Gitsigns preview_hunk<cr>", "[G]itsigns [P]review hunk")
 normal_map(
   "<leader>gqq",
