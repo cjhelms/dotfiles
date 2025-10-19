@@ -66,10 +66,17 @@ normal_map("<C-s>", ":w<cr>", "[W]rite buffer")
 normal_map("<C-w>t", ":tabonly<cr>", "[T]ab only")
 normal_map("<leader>li", ":LspInfo<cr>", "[L]SP [I]nfo")
 normal_map("<leader>m", ":Make<cr>", "[M]ake")
-normal_map("<leader>bh", ":vnew | wincmd p<cr>", "[B]uffer left")
-normal_map("<leader>bj", ":new | wincmd J | wincmd p<cr>", "[B]uffer down")
-normal_map("<leader>bk", ":new | wincmd p<cr>", "[B]uffer up")
-normal_map("<leader>bl", ":vnew | wincmd L | wincmd p<cr>", "[B]uffer right")
+vim.keymap.set("n", "<leader>bh", function()
+  local min_width = 100
+  local cur_width = vim.api.nvim_win_get_width(0)
+  vim.cmd("vnew")
+  if cur_width / 2 < min_width then
+    vim.cmd("vertical resize " .. (cur_width - min_width))
+  else
+    vim.cmd("vnew")
+  end
+  vim.cmd("wincmd p")
+end, { desc = "[B]uffer left" })
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
