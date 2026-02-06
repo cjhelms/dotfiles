@@ -206,9 +206,11 @@ require("gitsigns").setup({})
 require("fidget").setup({
   notification = { window = { winblend = 0 } },
 })
-
 require("neogit").setup({
   cmd = "Neogit",
+})
+require("diffview").setup({
+  use_icons = false,
 })
 
 local function fzf_map(key, command, desc) normal_map(key, ":FzfLua " .. command .. "<cr>", desc) end
