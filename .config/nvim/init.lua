@@ -32,7 +32,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 })
 
 vim.api.nvim_create_autocmd("QuickFixCmdPost", {
-  pattern = "make",
+  pattern = { "make" },
   callback = function()
     if #vim.fn.getqflist() > 0 then vim.cmd("copen") end
   end,
@@ -71,11 +71,7 @@ vim.keymap.set("n", "<leader>bh", function()
   local min_width = 100
   local cur_width = vim.api.nvim_win_get_width(0)
   vim.cmd("vnew")
-  if cur_width / 2 < min_width then
-    vim.cmd("vertical resize " .. (cur_width - min_width))
-  else
-    vim.cmd("vnew")
-  end
+  if cur_width / 2 < min_width then vim.cmd("vertical resize " .. (cur_width - min_width)) end
   vim.cmd("wincmd p")
 end, { desc = "[B]uffer left" })
 
@@ -118,7 +114,11 @@ require("lazy").setup({
     "mfussenegger/nvim-dap",
     "tpope/vim-dispatch",
     "j-hui/fidget.nvim",
-    "tpope/vim-fugitive",
+    "rafamadriz/friendly-snippets",
+    {
+      "NeogitOrg/neogit",
+      dependencies = { "nvim-lua/plenary.nvim", "sindrets/diffview.nvim", "ibhagwan/fzf-lua" },
+    },
   },
 })
 
@@ -136,6 +136,10 @@ require("nvim-treesitter.configs").setup({
 require("treesitter-context").setup({})
 require("fzf-lua").setup({
   "hide",
+  defaults = {
+    -- places file name first, making long paths easier to read
+    formatter = "path.filename_first",
+  },
   keymap = {
     fzf = {
       ["ctrl-q"] = "select-all+accept",
@@ -167,6 +171,7 @@ require("conform").setup({
   formatters_by_ft = {
     lua = { "stylua" },
     cpp = { "clang-format" },
+    python = { "black" },
   },
   default_format_opts = {
     lsp_format = "fallback",
@@ -181,7 +186,7 @@ require("blink.cmp").setup({
     documentation = { auto_show = true, auto_show_delay_ms = 0 },
   },
   sources = {
-    default = { "copilot", "lsp" },
+    default = { "snippets", "copilot", "lsp" },
     providers = {
       copilot = {
         name = "copilot",
@@ -201,6 +206,11 @@ require("gitsigns").setup({})
 require("fidget").setup({
   notification = { window = { winblend = 0 } },
 })
+
+require("neogit").setup({
+  cmd = "Neogit",
+})
+
 local function fzf_map(key, command, desc) normal_map(key, ":FzfLua " .. command .. "<cr>", desc) end
 
 fzf_map("<leader>sf", "files", "Search [F]iles")
@@ -216,36 +226,6 @@ fzf_map("<leader>sb", "builtin", "[S]earch [B]uiltins")
 fzf_map("<leader>rp", "resume", "[R]esume [P]icker")
 fzf_map("<leader>sp", "dap_breakpoints", "[S]earch DAP break[P]oints")
 
-normal_map("<leader>pg", function()
-  require("fzf-lua").git_branches({
-    prompt = "Select branch> ",
-    actions = {
-      ["default"] = function(selected)
-        local branch = selected[1]:gsub("^[%*%s*]+", "")
-        if not branch then return end
-        local ready_for_review = "1. Ready for review"
-        local work_in_progress = "2. Work-in-progress"
-        local private = "3. Private"
-        require("fzf-lua").fzf_exec({ ready_for_review, work_in_progress, private }, {
-          prompt = "Push Type> ",
-          actions = {
-            ["default"] = function(selection)
-              local specifier = ""
-              if selection[1] == work_in_progress then
-                specifier = "%wip"
-              elseif selection[1] == private then
-                specifier = "%private"
-              end
-              local bufnr = vim.api.nvim_create_buf(true, false)
-              vim.api.nvim_open_win(bufnr, true, { split = "below", height = 10 })
-              vim.fn.termopen({ "git", "push", "origin", "HEAD:refs/for/" .. branch .. specifier })
-            end,
-          },
-        })
-      end,
-    },
-  })
-end, "[P]ush to [G]errit")
 normal_map("<leader>f", require("conform").format, "[F]ormat")
 normal_map("<leader>e", ":Oil<cr>", "[E]xplore")
 normal_map(
@@ -324,10 +304,30 @@ normal_map("<leader>dh", function() dap_ui.hover() end, "[D]ebugger [H]over")
 normal_map("<leader>df", function() dap_ui.centered_float(dap_ui.frames) end, "[D]ebugger [F]rames")
 normal_map("<leader>dp", function() dap_ui.centered_float(dap_ui.scopes) end, "[D]ebugger sco[P]es")
 
-normal_map("<leader>gg", ":G<cr>", "Open fu[G]itive")
+normal_map("<leader>gg", ":Neogit<cr>", "[G]it [G]ui")
 normal_map("<leader>gl", ":G log --all --decorate --oneline --graph<cr>", "[G]it [L]og")
 
 vim.g.dispatch_no_tmux_make = 1
+
+local gh = require("copilot-cli.copilot-cli")
+
+vim.keymap.set("n", "<leader>gh", gh.CopilotTerminal, {
+  desc = "Copilot: Open/focus terminal",
+  silent = true,
+})
+
+vim.keymap.set("n", "<leader>gc", function()
+  local line = vim.api.nvim_get_current_line()
+  gh.CopilotSend(line)
+end, { desc = "Copilot: Send current line" })
+
+vim.keymap.set({ "v", "x" }, "<leader>gc", function()
+  local start_pos = vim.fn.getpos("'<")
+  local end_pos = vim.fn.getpos("'>")
+  local lines = vim.api.nvim_buf_get_lines(0, start_pos[2] - 1, end_pos[2], false)
+  local text = table.concat(lines, "\n")
+  gh.CopilotSend(text)
+end, { desc = "Copilot: Send selection" })
 
 vim.api.nvim_create_autocmd("LspAttach", {
   callback = function(ev)

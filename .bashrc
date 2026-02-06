@@ -42,7 +42,12 @@ function dev {
 # Save path on cd
 function cd {
     builtin cd "$@" || return
-    pwd > ~/.last_dir
+    if [ -n "$TMUX" ]; then
+        local window_id=$(tmux display-message -p '#I')
+        pwd > ~/.last_dir_tmux_"$window_id"
+    else
+        pwd > ~/.last_dir
+    fi
 }
 
 # cd to dotfiles directory
@@ -51,7 +56,12 @@ function dot {
 }
 
 # Restore last saved path when open bash
-if [ -f ~/.last_dir ]; then
+if [ -n "$TMUX" ]; then
+    window_id=$(tmux display-message -p '#I')
+    if [ -f ~/.last_dir_tmux_"$window_id" ]; then
+        cd "$(cat ~/.last_dir_tmux_"$window_id")" || return
+    fi
+elif [ -f ~/.last_dir ]; then
     cd "$(cat ~/.last_dir)" || return
 fi
 

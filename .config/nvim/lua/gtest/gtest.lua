@@ -43,33 +43,37 @@ function M.run_gtest(opts)
   end
   local cmd = vim.g.gtest_executable .. " --gtest_filter=" .. opts.fargs[1]
   vim.fn.setqflist({}, "r", { title = "GTest", lines = {}, efm = "%f:%l:%c: %m" })
+  local cur_win = vim.api.nvim_get_current_win()
+  vim.cmd("copen")
+  vim.cmd("cbottom")
+  vim.api.nvim_set_current_win(cur_win)
   vim.fn.jobstart(cmd, {
     stdout_buffered = true,
     on_stdout = function(_, data)
-      if data then vim.fn.setqflist({}, "a", { lines = data }) end
+      if data then
+        vim.fn.setqflist({}, "a", { lines = data })
+        vim.cmd("cbottom")
+      end
     end,
     on_stderr = function(_, data)
-      if data then vim.fn.setqflist({}, "a", { lines = data }) end
+      if data then
+        vim.fn.setqflist({}, "a", { lines = data })
+        vim.cmd("cbottom")
+      end
     end,
     on_exit = function(_, code)
+      if has_temp_dir then vim.cmd("cd " .. old_dir) end
       if code ~= 0 and code ~= 1 then
         print(vim.g.gtest_executable .. " failed with exit code: " .. code)
-        if has_temp_dir then vim.cmd("cd " .. old_dir) end
         return
       end
       if code == 0 then
         print(opts.fargs[1] .. " passed")
+        vim.cmd("cclose")
         if has_temp_dir then vim.cmd("cd " .. old_dir) end
         return
       end
-      vim.cmd("copen")
-      if has_temp_dir then
-        vim.api.nvim_create_autocmd("WinClosed", {
-          pattern = "*",
-          callback = function() vim.cmd("cd " .. old_dir) end,
-          once = true,
-        })
-      end
+      vim.cmd("cnext")
     end,
   })
 end
