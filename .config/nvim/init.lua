@@ -104,7 +104,11 @@ require("lazy").setup({
     "numToStr/Comment.nvim",
     "kylechui/nvim-surround",
     "neovim/nvim-lspconfig",
-    { "saghen/blink.cmp", version = "1.*" },
+    {
+      "saghen/blink.cmp",
+      version = "1.*",
+      dependencies = { "L3MON4D3/LuaSnip", dependencies = { "rafamadriz/friendly-snippets" } },
+    },
     "stevearc/oil.nvim",
     "github/copilot.vim",
     "fang2hou/blink-copilot",
@@ -114,11 +118,11 @@ require("lazy").setup({
     "mfussenegger/nvim-dap",
     "tpope/vim-dispatch",
     "j-hui/fidget.nvim",
-    "rafamadriz/friendly-snippets",
     {
       "NeogitOrg/neogit",
       dependencies = { "nvim-lua/plenary.nvim", "sindrets/diffview.nvim", "ibhagwan/fzf-lua" },
     },
+    "danymat/neogen",
   },
 })
 
@@ -182,6 +186,7 @@ require("Comment").setup()
 require("nvim-surround").setup({})
 require("blink.cmp").setup({
   keymap = { preset = "super-tab" },
+  snippets = { preset = "luasnip" },
   completion = {
     documentation = { auto_show = true, auto_show_delay_ms = 0 },
   },
@@ -206,12 +211,14 @@ require("gitsigns").setup({})
 require("fidget").setup({
   notification = { window = { winblend = 0 } },
 })
+require("luasnip.loaders.from_vscode").lazy_load()
 require("neogit").setup({
   cmd = "Neogit",
 })
 require("diffview").setup({
   use_icons = false,
 })
+require("neogen").setup({ snippet_engine = "luasnip" })
 
 local function fzf_map(key, command, desc) normal_map(key, ":FzfLua " .. command .. "<cr>", desc) end
 
@@ -306,7 +313,13 @@ normal_map("<leader>dh", function() dap_ui.hover() end, "[D]ebugger [H]over")
 normal_map("<leader>df", function() dap_ui.centered_float(dap_ui.frames) end, "[D]ebugger [F]rames")
 normal_map("<leader>dp", function() dap_ui.centered_float(dap_ui.scopes) end, "[D]ebugger sco[P]es")
 
+local ls = require("luasnip")
+vim.keymap.set({ "i", "s" }, "<C-J>", function() ls.jump(1) end, { silent = true })
+vim.keymap.set({ "i", "s" }, "<C-K>", function() ls.jump(-1) end, { silent = true })
+
 normal_map("<leader>gg", ":Neogit<cr>", "[G]it [G]ui")
+
+normal_map("<Leader>gd", ":lua require('neogen').generate()<CR>", "[G]enerate [D]ocumentation")
 
 vim.g.dispatch_no_tmux_make = 1
 
