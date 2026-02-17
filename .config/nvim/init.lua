@@ -147,6 +147,11 @@ require("lazy").setup({
       "danymat/neogen",
       dependencies = { "L3MON4D3/LuaSnip", dependencies = { "rafamadriz/friendly-snippets" } },
     },
+    {
+      "nvim-treesitter/nvim-treesitter-textobjects",
+      branch = "main",
+      init = function() vim.g.no_plugin_maps = true end,
+    },
   },
 })
 
@@ -374,6 +379,45 @@ normal_map("<leader>gg", ":Neogit<cr>", "[G]it [G]ui")
 require("neogen").setup({ snippet_engine = "luasnip" })
 
 normal_map("<Leader>gd", ":lua require('neogen').generate()<CR>", "[G]enerate [D]ocumentation")
+
+---------------------------------
+-- nvim-treesitter-textobjects --
+---------------------------------
+
+local function ts_select_map(key, object, desc)
+  vim.keymap.set(
+    { "x", "o" },
+    key,
+    function()
+      require("nvim-treesitter-textobjects.select").select_textobject(object, "textobjects")
+    end,
+    { desc = desc, silent = true }
+  )
+end
+
+ts_select_map("am", "@function.outer", "Select outer [M]ethod")
+ts_select_map("im", "@function.inner", "Select [I]nner [M]ethod")
+ts_select_map("ac", "@class.outer", "Select outer [C]lass")
+ts_select_map("ic", "@class.inner", "Select [I]nner [C]lass")
+
+local function ts_move_map(key, object, dir, edge, desc)
+  local fn_name = ("goto_%s_%s"):format(dir, edge)
+  vim.keymap.set(
+    { "n", "x", "o" },
+    key,
+    function() require("nvim-treesitter-textobjects.move")[fn_name](object, "textobjects") end,
+    { silent = true, desc = desc }
+  )
+end
+
+ts_move_map("]m", "@function.outer", "next", "start", "Jump to next [M]ethod start")
+ts_move_map("]M", "@function.outer", "next", "end", "Jump to next [M]ethod end")
+ts_move_map("[m", "@function.outer", "previous", "start", "Jump to previous [M]ethod start")
+ts_move_map("[M", "@function.outer", "previous", "end", "Jump to previous [M]ethod end")
+ts_move_map("]]", "@class.outer", "next", "start", "Jump to next class start")
+ts_move_map("][", "@class.outer", "next", "end", "Jump to next class end")
+ts_move_map("[[", "@class.outer", "previous", "start", "Jump to previous class start")
+ts_move_map("[]", "@class.outer", "previous", "end", "Jump to previous class end")
 
 ---------
 -- DAP --
