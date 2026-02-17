@@ -122,7 +122,10 @@ require("lazy").setup({
       "NeogitOrg/neogit",
       dependencies = { "nvim-lua/plenary.nvim", "sindrets/diffview.nvim", "ibhagwan/fzf-lua" },
     },
-    "danymat/neogen",
+    {
+      "danymat/neogen",
+      dependencies = { "L3MON4D3/LuaSnip", dependencies = { "rafamadriz/friendly-snippets" } },
+    },
   },
 })
 
