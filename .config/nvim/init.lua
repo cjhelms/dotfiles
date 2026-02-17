@@ -1,4 +1,9 @@
+----------------------
+-- General settings --
+----------------------
+
 vim.g.mapleader = " "
+vim.g.dispatch_no_tmux_make = 1
 
 local o = vim.o
 o.winborder = "rounded"
@@ -22,6 +27,10 @@ o.exrc = true
 o.hlsearch = false
 o.listchars = "trail:~"
 
+------------------
+-- Autocommands --
+------------------
+
 vim.api.nvim_create_autocmd("UIEnter", {
   callback = function() vim.o.clipboard = "unnamedplus" end,
 })
@@ -37,6 +46,10 @@ vim.api.nvim_create_autocmd("QuickFixCmdPost", {
     if #vim.fn.getqflist() > 0 then vim.cmd("copen") end
   end,
 })
+
+---------------------
+-- General keymaps --
+---------------------
 
 local function noremap_map(modes, key, command)
   vim.keymap.set(modes, key, command, { noremap = true, silent = true })
@@ -75,6 +88,10 @@ vim.keymap.set("n", "<leader>bh", function()
   vim.cmd("wincmd p")
 end, { desc = "[B]uffer left" })
 
+----------
+-- Lazy --
+----------
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
   local lazyrepo = "https://github.com/folke/lazy.nvim.git"
@@ -91,6 +108,10 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
   end
 end
 vim.opt.rtp:prepend(lazypath)
+
+------------------
+-- Plugin Specs --
+------------------
 
 require("lazy").setup({
   spec = {
@@ -129,18 +150,74 @@ require("lazy").setup({
   },
 })
 
-require("gruvbox").setup({
-  transparent_mode = true,
-})
-
-o.background = "dark"
-vim.cmd("colorscheme gruvbox")
+--------------------
+-- Simple Plugins --
+--------------------
 
 require("mason").setup({})
+require("treesitter-context").setup({})
 require("nvim-treesitter.configs").setup({
   ensure_installed = { "lua", "cpp", "python" },
 })
-require("treesitter-context").setup({})
+require("ibl").setup({ indent = { char = "┊" } })
+require("Comment").setup()
+require("nvim-surround").setup({})
+require("fidget").setup({
+  notification = { window = { winblend = 0 } },
+})
+require("luasnip.loaders.from_vscode").lazy_load()
+require("diffview").setup({
+  use_icons = false,
+})
+
+-------------
+-- Gruvbox --
+-------------
+
+require("gruvbox").setup({
+  transparent_mode = true,
+})
+o.background = "dark"
+vim.cmd("colorscheme gruvbox")
+
+--------------
+-- eyeliner --
+--------------
+
+vim.api.nvim_set_hl(0, "EyelinerPrimary", { fg = "#ff77ff" })
+vim.api.nvim_set_hl(0, "EyelinerSecondary", { fg = "#55ffff" })
+
+--------------
+-- gitsigns --
+--------------
+
+require("gitsigns").setup({})
+
+normal_map(
+  "<leader>gb",
+  function() require("gitsigns").blame_line({ full = true }) end,
+  "[G]it [B]lame"
+)
+normal_map("<leader>gf", ":Gitsigns blame<cr>", "[G]it blame [F]ile")
+normal_map("]c", function() require("gitsigns").nav_hunk("next") end, "Git next hunk")
+normal_map("[c", function() require("gitsigns").nav_hunk("prev") end, "Git previous hunk")
+normal_map("<leader>gp", ":Gitsigns preview_hunk<cr>", "[G]itsigns [P]review hunk")
+normal_map(
+  "<leader>gqq",
+  function() require("gitsigns").setqflist(0) end,
+  "[G]itsigns [Q]uickfix (current buffer)"
+)
+normal_map(
+  "<leader>gqa",
+  function() require("gitsigns").setqflist("all") end,
+  "[G]itsigns [Q]uickfix ([A]ll buffers)"
+)
+normal_map("<leader>gr", ":Gitsigns reset_hunk<cr>", "[G]itsigns [R]eset hunk")
+
+-------------
+-- fzf-lua --
+-------------
+
 require("fzf-lua").setup({
   "hide",
   defaults = {
@@ -160,6 +237,26 @@ require("fzf-lua").setup({
     },
   },
 })
+
+local function fzf_map(key, command, desc) normal_map(key, ":FzfLua " .. command .. "<cr>", desc) end
+
+fzf_map("<leader>sf", "files", "Search [F]iles")
+fzf_map("<leader><leader>", "buffers", "Search open buffers")
+fzf_map("<leader>sk", "keymaps", "Search [K]eymaps")
+fzf_map("<leader>sh", "helptags", "Search [H]elp")
+fzf_map("<leader>sg", "live_grep", "[S]earch ([G]rep) project")
+fzf_map("<leader>sw", "grep_cword", "[S]earch [W]ord")
+fzf_map("<leader>/", "lgrep_curbuf", "Search buffer")
+fzf_map("<leader>dd", "diagnostics_document", "Search [D]iagnostics [D]ocument")
+fzf_map("<leader>dw", "diagnostics_workspace", "Search [D]iagnostics [W]orkspace")
+fzf_map("<leader>sb", "builtin", "[S]earch [B]uiltins")
+fzf_map("<leader>rp", "resume", "[R]esume [P]icker")
+fzf_map("<leader>sp", "dap_breakpoints", "[S]earch DAP break[P]oints")
+
+-------------
+-- conform --
+-------------
+
 require("conform").setup({
   formatters = {
     stylua = {
@@ -184,9 +281,13 @@ require("conform").setup({
     lsp_format = "fallback",
   },
 })
-require("ibl").setup({ indent = { char = "┊" } })
-require("Comment").setup()
-require("nvim-surround").setup({})
+
+normal_map("<leader>f", require("conform").format, "[F]ormat")
+
+-----------
+-- blink --
+-----------
+
 require("blink.cmp").setup({
   keymap = { preset = "super-tab" },
   snippets = { preset = "luasnip" },
@@ -205,41 +306,31 @@ require("blink.cmp").setup({
     },
   },
 })
+
+---------
+-- oil --
+---------
+
 require("oil").setup({
   keymaps = {
     ["q"] = { "actions.close", mode = "n" },
   },
 })
-require("gitsigns").setup({})
-require("fidget").setup({
-  notification = { window = { winblend = 0 } },
-})
-require("luasnip.loaders.from_vscode").lazy_load()
-require("neogit").setup({
-  cmd = "Neogit",
-})
-require("diffview").setup({
-  use_icons = false,
-})
-require("neogen").setup({ snippet_engine = "luasnip" })
 
-local function fzf_map(key, command, desc) normal_map(key, ":FzfLua " .. command .. "<cr>", desc) end
-
-fzf_map("<leader>sf", "files", "Search [F]iles")
-fzf_map("<leader><leader>", "buffers", "Search open buffers")
-fzf_map("<leader>sk", "keymaps", "Search [K]eymaps")
-fzf_map("<leader>sh", "helptags", "Search [H]elp")
-fzf_map("<leader>sg", "live_grep", "[S]earch ([G]rep) project")
-fzf_map("<leader>sw", "grep_cword", "[S]earch [W]ord")
-fzf_map("<leader>/", "lgrep_curbuf", "Search buffer")
-fzf_map("<leader>dd", "diagnostics_document", "Search [D]iagnostics [D]ocument")
-fzf_map("<leader>dw", "diagnostics_workspace", "Search [D]iagnostics [W]orkspace")
-fzf_map("<leader>sb", "builtin", "[S]earch [B]uiltins")
-fzf_map("<leader>rp", "resume", "[R]esume [P]icker")
-fzf_map("<leader>sp", "dap_breakpoints", "[S]earch DAP break[P]oints")
-
-normal_map("<leader>f", require("conform").format, "[F]ormat")
 normal_map("<leader>e", ":Oil<cr>", "[E]xplore")
+
+-------------
+-- luasnip --
+-------------
+
+local ls = require("luasnip")
+vim.keymap.set({ "i", "s" }, "<C-J>", function() ls.jump(1) end, { silent = true })
+vim.keymap.set({ "i", "s" }, "<C-K>", function() ls.jump(-1) end, { silent = true })
+
+-------------
+-- copilot --
+-------------
+
 normal_map(
   "<leader>ct",
   function() require("copilot.copilot").open_codex_terminal() end,
@@ -255,32 +346,43 @@ vim.api.nvim_create_autocmd({ "FileType", "BufUnload" }, {
 })
 vim.fn["copilot#OnFileType"]()
 
-normal_map(
-  "<leader>gb",
-  function() require("gitsigns").blame_line({ full = true }) end,
-  "[G]it [B]lame"
-)
-normal_map("<leader>gf", ":Gitsigns blame<cr>", "[G]it blame [F]ile")
-normal_map("]c", function() require("gitsigns").nav_hunk("next") end, "Git next hunk")
-normal_map("[c", function() require("gitsigns").nav_hunk("prev") end, "Git previous hunk")
-normal_map("<leader>gp", ":Gitsigns preview_hunk<cr>", "[G]itsigns [P]review hunk")
-normal_map(
-  "<leader>gqq",
-  function() require("gitsigns").setqflist(0) end,
-  "[G]itsigns [Q]uickfix (current buffer)"
-)
-normal_map(
-  "<leader>gqa",
-  function() require("gitsigns").setqflist("all") end,
-  "[G]itsigns [Q]uickfix ([A]ll buffers)"
-)
-normal_map("<leader>gr", ":Gitsigns reset_hunk<cr>", "[G]itsigns [R]eset hunk")
+-----------------
+-- copilot-cli --
+-----------------
 
-vim.api.nvim_set_hl(0, "EyelinerPrimary", { fg = "#ff77ff" })
-vim.api.nvim_set_hl(0, "EyelinerSecondary", { fg = "#55ffff" })
+local gh = require("copilot-cli.copilot-cli")
+
+vim.keymap.set("n", "<leader>gh", gh.CopilotTerminal, {
+  desc = "Copilot: Open/focus terminal",
+  silent = true,
+})
+
+------------
+-- neogit --
+------------
+
+require("neogit").setup({
+  cmd = "Neogit",
+})
+
+normal_map("<leader>gg", ":Neogit<cr>", "[G]it [G]ui")
+
+------------
+-- neogen --
+------------
+
+require("neogen").setup({ snippet_engine = "luasnip" })
+
+normal_map("<Leader>gd", ":lua require('neogen').generate()<CR>", "[G]enerate [D]ocumentation")
+
+---------
+-- DAP --
+---------
 
 local dap = require("dap")
+
 dap.defaults.fallback.terminal_win_cmd = "botright 10new"
+
 local function clean_up_dap(session, body)
   for _, buf in ipairs(vim.api.nvim_list_bufs()) do
     if vim.api.nvim_buf_is_loaded(buf) then
@@ -289,9 +391,12 @@ local function clean_up_dap(session, body)
     end
   end
 end
+
 dap.listeners.after["event_terminated"]["config"] = clean_up_dap
 dap.listeners.after["event_exited"]["config"] = clean_up_dap
+
 local dap_ui = require("dap.ui.widgets")
+
 normal_map("<leader>dc", function() dap.continue() end, "[D]ebugger [C]ontinue")
 normal_map("<leader>dt", function() dap.terminate() end, "[D]ebugger [T]erminate")
 normal_map("<leader>dn", function() dap.step_over() end, "[D]ebugger [N]ext (step over)")
@@ -316,35 +421,9 @@ normal_map("<leader>dh", function() dap_ui.hover() end, "[D]ebugger [H]over")
 normal_map("<leader>df", function() dap_ui.centered_float(dap_ui.frames) end, "[D]ebugger [F]rames")
 normal_map("<leader>dp", function() dap_ui.centered_float(dap_ui.scopes) end, "[D]ebugger sco[P]es")
 
-local ls = require("luasnip")
-vim.keymap.set({ "i", "s" }, "<C-J>", function() ls.jump(1) end, { silent = true })
-vim.keymap.set({ "i", "s" }, "<C-K>", function() ls.jump(-1) end, { silent = true })
-
-normal_map("<leader>gg", ":Neogit<cr>", "[G]it [G]ui")
-
-normal_map("<Leader>gd", ":lua require('neogen').generate()<CR>", "[G]enerate [D]ocumentation")
-
-vim.g.dispatch_no_tmux_make = 1
-
-local gh = require("copilot-cli.copilot-cli")
-
-vim.keymap.set("n", "<leader>gh", gh.CopilotTerminal, {
-  desc = "Copilot: Open/focus terminal",
-  silent = true,
-})
-
-vim.keymap.set("n", "<leader>gc", function()
-  local line = vim.api.nvim_get_current_line()
-  gh.CopilotSend(line)
-end, { desc = "Copilot: Send current line" })
-
-vim.keymap.set({ "v", "x" }, "<leader>gc", function()
-  local start_pos = vim.fn.getpos("'<")
-  local end_pos = vim.fn.getpos("'>")
-  local lines = vim.api.nvim_buf_get_lines(0, start_pos[2] - 1, end_pos[2], false)
-  local text = table.concat(lines, "\n")
-  gh.CopilotSend(text)
-end, { desc = "Copilot: Send selection" })
+---------
+-- LSP --
+---------
 
 vim.api.nvim_create_autocmd("LspAttach", {
   callback = function(ev)
