@@ -148,6 +148,8 @@ require("lazy").setup({
       branch = "main",
       init = function() vim.g.no_plugin_maps = true end,
     },
+    "cohama/lexima.vim",
+    "abecodes/tabout.nvim",
   },
 })
 
@@ -170,6 +172,7 @@ require("luasnip.loaders.from_vscode").lazy_load()
 require("diffview").setup({
   use_icons = false,
 })
+require("tabout").setup({})
 
 -------------
 -- Gruvbox --
