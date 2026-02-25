@@ -31,10 +31,6 @@ o.listchars = "trail:~"
 -- Autocommands --
 ------------------
 
-vim.api.nvim_create_autocmd("UIEnter", {
-  callback = function() vim.o.clipboard = "unnamedplus" end,
-})
-
 vim.api.nvim_create_autocmd("TextYankPost", {
   desc = "Highlight when yanking (copying) text",
   callback = function() vim.hl.on_yank() end,
@@ -232,13 +228,6 @@ require("fzf-lua").setup({
   keymap = {
     fzf = {
       ["ctrl-q"] = "select-all+accept",
-    },
-  },
-  actions = {
-    files = {
-      true, -- Inherit defaults
-      ["ctrl-s"] = require("fzf-lua").actions.file_vsplit,
-      ["ctrl-h"] = require("fzf-lua").actions.file_split,
     },
   },
 })
