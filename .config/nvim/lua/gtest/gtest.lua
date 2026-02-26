@@ -74,6 +74,7 @@ function M.run_gtest(opts)
         return
       end
       vim.cmd("cfirst")
+      vim.cmd("cnext")
     end,
   })
 end
