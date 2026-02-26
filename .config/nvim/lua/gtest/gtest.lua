@@ -73,7 +73,7 @@ function M.run_gtest(opts)
         if has_temp_dir then vim.cmd("cd " .. old_dir) end
         return
       end
-      vim.cmd("cnext")
+      vim.cmd("cfirst")
     end,
   })
 end

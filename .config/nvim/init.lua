@@ -286,7 +286,7 @@ normal_map("<leader>f", require("conform").format, "[F]ormat")
 -----------
 
 require("blink.cmp").setup({
-  keymap = { preset = "super-tab" },
+  keymap = { preset = "default" },
   snippets = { preset = "luasnip" },
   completion = {
     documentation = { auto_show = true, auto_show_delay_ms = 0 },
@@ -360,6 +360,8 @@ vim.keymap.set("n", "<leader>gh", gh.CopilotTerminal, {
 
 require("neogit").setup({
   cmd = "Neogit",
+  process_spinner = true,
+  disable_line_numbers = false,
 })
 
 normal_map("<leader>gg", ":Neogit<cr>", "[G]it [G]ui")
@@ -411,6 +413,19 @@ ts_move_map("][", "@class.outer", "next", "end", "Jump to next class end")
 ts_move_map("[[", "@class.outer", "previous", "start", "Jump to previous class start")
 ts_move_map("[]", "@class.outer", "previous", "end", "Jump to previous class end")
 
+local function ts_swap_map(key, object, dir, desc)
+  local fn_name = ("swap_%s"):format(dir)
+  vim.keymap.set(
+    "n",
+    key,
+    function() require("nvim-treesitter-textobjects.swap")[fn_name](object) end,
+    { desc = desc, silent = true }
+  )
+end
+
+ts_swap_map("<leader>a", "@parameter.inner", "next", "Swap with next p[A]rameter")
+ts_swap_map("<leader>A", "@parameter.inner", "previous", "Swap with previous p[A]rameter")
+
 ---------
 -- DAP --
 ---------
@@ -441,16 +456,11 @@ normal_map("<leader>do", function() dap.step_out() end, "[D]ebugger step [O]ut")
 normal_map("<leader>dl", function() dap.clear_breakpoints() end, "[D]ebugger c[L]ear breakpoints")
 normal_map("<leader>db", function() dap.toggle_breakpoint() end, "[D]ebugger toggle [B]reakpoint")
 normal_map("<leader>d?", function()
-  local condition_status, condition = pcall(function() vim.fn.input("Enter condition: ") end)
-  if not condition_status then return end
-  local hit_condition_status, hit_condition = pcall(
-    function() vim.fn.input("Enter hit condition: ") end
-  )
-  if not hit_condition_status then return end
-  dap.toggle_breakpoint(
-    condition ~= "" and condition or nil,
-    hit_condition ~= "" and hit_condition or nil
-  )
+  local condition = vim.fn.input("Enter condition: ")
+  if condition == "" then condition = nil end
+  local hit_condition = vim.fn.input("Enter hit condition: ")
+  if hit_condition == "" then hit_condition = nil end
+  dap.toggle_breakpoint(condition, hit_condition)
 end, "[D]ebugger toggle conditional breakpoint")
 normal_map("<leader>dr", function() dap.repl.open() end, "[D]ebugger [R]epl")
 normal_map("<leader>dh", function() dap_ui.hover() end, "[D]ebugger [H]over")
