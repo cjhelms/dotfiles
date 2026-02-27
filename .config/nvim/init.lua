@@ -26,6 +26,9 @@ o.signcolumn = "yes"
 o.exrc = true
 o.hlsearch = false
 o.listchars = "trail:~"
+o.inccommand = "split"
+o.undofile = true
+o.undodir = vim.fn.stdpath("state") .. "/undo"
 
 ------------------
 -- Autocommands --
@@ -43,6 +46,21 @@ vim.api.nvim_create_autocmd("QuickFixCmdPost", {
   end,
 })
 
+local ts_languages = { "lua", "cpp", "python" }
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = ts_languages,
+  callback = function(args)
+    local buf = args.buf
+    local filetype = args.match
+
+    local language = vim.treesitter.language.get_lang(filetype) or filetype
+    if not vim.treesitter.language.add(language) then return end
+
+    vim.treesitter.start(buf, language)
+  end,
+})
+
 ---------------------
 -- General keymaps --
 ---------------------
@@ -57,7 +75,6 @@ noremap_map({ "n" }, "d", '"_d')
 noremap_map({ "n" }, "dd", '"_dd')
 noremap_map({ "n" }, "x", "d")
 noremap_map({ "n" }, "xx", "dd")
-noremap_map({ "n" }, "<leader>a", "<C-^>")
 
 local function normal_map(key, command, desc)
   vim.keymap.set({ "n" }, key, command, { desc = desc, silent = true })
@@ -76,13 +93,21 @@ normal_map("<C-s>", ":w<cr>", "[W]rite buffer")
 normal_map("<C-w>t", ":tabonly<cr>", "[T]ab only")
 normal_map("<leader>li", ":LspInfo<cr>", "[L]SP [I]nfo")
 normal_map("<leader>m", ":Make<cr>", "[M]ake")
-vim.keymap.set("n", "<leader>bh", function()
+normal_map("<leader>bh", function()
   local min_width = 100
   local cur_width = vim.api.nvim_win_get_width(0)
   vim.cmd("vnew")
   if cur_width / 2 < min_width then vim.cmd("vertical resize " .. (cur_width - min_width)) end
   vim.cmd("wincmd p")
-end, { desc = "[B]uffer left" })
+end, "[B]uffer left")
+normal_map("<leader>Ka", "mA", "Set A mar[K]")
+normal_map("<leader>Ks", "mS", "Set S mar[K]")
+normal_map("<leader>Kd", "mD", "Set D mar[K]")
+normal_map("<leader>Kf", "mF", "Set F mar[K]")
+normal_map("<leader>ka", "'A", "Jump to A mar[K]")
+normal_map("<leader>ks", "'S", "Jump to S mar[K]")
+normal_map("<leader>kd", "'D", "Jump to D mar[K]")
+normal_map("<leader>kf", "'F", "Jump to F mar[K]")
 
 ----------
 -- Lazy --
@@ -113,7 +138,7 @@ require("lazy").setup({
   spec = {
     "ellisonleao/gruvbox.nvim",
     "mason-org/mason.nvim",
-    "nvim-treesitter/nvim-treesitter",
+    { "nvim-treesitter/nvim-treesitter", branch = "main" },
     "nvim-treesitter/nvim-treesitter-context",
     "ibhagwan/fzf-lua",
     "stevearc/conform.nvim",
@@ -150,6 +175,10 @@ require("lazy").setup({
     },
     "cohama/lexima.vim",
     "abecodes/tabout.nvim",
+    {
+      "MeanderingProgrammer/treesitter-modules.nvim",
+      dependencies = { "nvim-treesitter/nvim-treesitter" },
+    },
   },
 })
 
@@ -159,9 +188,9 @@ require("lazy").setup({
 
 require("mason").setup({})
 require("treesitter-context").setup({})
-require("nvim-treesitter.configs").setup({
-  ensure_installed = { "lua", "cpp", "python" },
-})
+-- require("nvim-treesitter").setup({
+--   install_dir = "/home/chris/.local/share/nvim/site ",
+-- })
 require("ibl").setup({ indent = { char = "┊" } })
 require("Comment").setup()
 require("nvim-surround").setup({})
@@ -173,6 +202,24 @@ require("diffview").setup({
   use_icons = false,
 })
 require("tabout").setup({})
+
+------------------------
+-- Treesitter Modules --
+------------------------
+
+local tsm = require("treesitter-modules")
+
+tsm.setup({
+  incremental_search = { enable = true },
+})
+
+tsm.setup({
+  highlight = { enable = true },
+})
+vim.keymap.set("n", "<CR>", tsm.init_selection)
+vim.keymap.set("x", "<CR>", tsm.node_incremental)
+vim.keymap.set("x", "<S-Enter>", tsm.scope_incremental)
+vim.keymap.set("x", "<BS>", tsm.node_decremental)
 
 -------------
 -- Gruvbox --
@@ -389,10 +436,11 @@ local function ts_select_map(key, object, desc)
   )
 end
 
-ts_select_map("am", "@function.outer", "Select outer [M]ethod")
-ts_select_map("im", "@function.inner", "Select [I]nner [M]ethod")
-ts_select_map("ac", "@class.outer", "Select outer [C]lass")
-ts_select_map("ic", "@class.inner", "Select [I]nner [C]lass")
+ts_select_map("am", "@function.outer", "Select around [M]ethod")
+ts_select_map("im", "@function.inner", "Select [I]nside [M]ethod")
+ts_select_map("ac", "@class.outer", "Select around [C]lass")
+ts_select_map("ic", "@class.inner", "Select [I]nside [C]lass")
+ts_select_map("as", "@block.outer", "Select [A]round [S]cope")
 
 local function ts_move_map(key, object, dir, edge, desc)
   local fn_name = ("goto_%s_%s"):format(dir, edge)
@@ -412,6 +460,10 @@ ts_move_map("]]", "@class.outer", "next", "start", "Jump to next class start")
 ts_move_map("][", "@class.outer", "next", "end", "Jump to next class end")
 ts_move_map("[[", "@class.outer", "previous", "start", "Jump to previous class start")
 ts_move_map("[]", "@class.outer", "previous", "end", "Jump to previous class end")
+ts_move_map("]s", "@block.outer", "next", "start", "Jump to next [S]cope start")
+ts_move_map("]S", "@block.outer", "next", "end", "Jump to next [S]cope end")
+ts_move_map("[s", "@block.outer", "previous", "start", "Jump to previous [S]cope start")
+ts_move_map("[S", "@block.outer", "previous", "end", "Jump to previous [S]cope end")
 
 local function ts_swap_map(key, object, dir, desc)
   local fn_name = ("swap_%s"):format(dir)
