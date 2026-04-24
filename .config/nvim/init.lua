@@ -375,12 +375,6 @@ vim.keymap.set({ "i", "s" }, "<C-K>", function() ls.jump(-1) end, { silent = tru
 -- copilot --
 -------------
 
-normal_map(
-  "<leader>ct",
-  function() require("copilot.copilot").open_codex_terminal() end,
-  "[C]odex [T]erminal"
-)
-
 -- Block the normal Copilot suggestions
 vim.g.copilot_no_maps = true
 vim.api.nvim_create_augroup("github_copilot", { clear = true })
@@ -389,17 +383,6 @@ vim.api.nvim_create_autocmd({ "FileType", "BufUnload" }, {
   callback = function(args) vim.fn["copilot#On" .. args.event]() end,
 })
 vim.fn["copilot#OnFileType"]()
-
------------------
--- copilot-cli --
------------------
-
-local gh = require("copilot-cli.copilot-cli")
-
-vim.keymap.set("n", "<leader>gh", gh.CopilotTerminal, {
-  desc = "Copilot: Open/focus terminal",
-  silent = true,
-})
 
 ------------
 -- neogit --
