@@ -553,7 +553,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
   end,
 })
 
-vim.lsp.enable({ "lua_ls", "pyright", "clangd", "gdscript" })
+vim.lsp.enable({ "lua_ls", "pyright", "clangd" })
 vim.lsp.config("lua_ls", {
   settings = {
     Lua = {
