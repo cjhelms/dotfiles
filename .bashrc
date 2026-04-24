@@ -1,75 +1,67 @@
-# Short & sweet terminal prompt
+# Only configure interactive shells.
+case $- in
+    *i*) ;;
+    *) return ;;
+esac
+
+path_prepend() {
+    case ":${PATH}:" in
+        *":$1:"*) ;;
+        *) PATH="$1:${PATH}" ;;
+    esac
+}
+
 parse_git_branch() {
-    local branch=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/')
-    if [ -n "$branch" ]; then
-        echo " $branch"
+    local branch
+
+    branch=$(git branch --show-current 2>/dev/null) || return
+    [ -n "$branch" ] && printf ' (%s)' "$branch"
+}
+
+last_dir_file() {
+    if [ -n "${TMUX:-}" ] && command -v tmux >/dev/null 2>&1; then
+        printf '%s/.last_dir_tmux_%s' "${HOME}" "$(tmux display-message -p '#I')"
+    else
+        printf '%s/.last_dir' "${HOME}"
     fi
 }
-export PS1="\[\033[01;34m\]\w\[\e[91m\]\$(parse_git_branch)\[\033[00m\]\$ "
 
-PROMPT_DIRTRIM=1
+save_last_dir() {
+    local state_file
 
-# Enable fzf for command line fuzzy search, if installed
-if test -d ~/.fzf; then
-    [ -f ~/.fzf.bash ] && source "${HOME}/.fzf.bash"
+    state_file="$(last_dir_file)"
+    pwd > "$state_file"
+}
+
+restore_last_dir() {
+    local state_file
+
+    state_file="$(last_dir_file)"
+    [ -f "$state_file" ] && builtin cd "$(cat "$state_file")" 2>/dev/null || true
+}
+
+cd() {
+    builtin cd "$@" || return
+    save_last_dir
+}
+
+dot() {
+    cd "${HOME}/.dotfiles" || return
+}
+
+if [ -f "${HOME}/.fzf.bash" ]; then
+    source "${HOME}/.fzf.bash"
+elif [ -f "${HOME}/.fzf/shell/key-bindings.bash" ]; then
     source "${HOME}/.fzf/shell/key-bindings.bash"
 fi
 
-# Aliases
 alias lg='lazygit'
 
-# Launch dev container
-function dev {
-    IMAGE_ID="$(ls -id . | grep -Eo '[0-9]{1,}')"
-    if ! docker build . -t "${IMAGE_ID}"; then
-      echo "No Dockerfile for base image found! Using 'ubuntu' instead..."
-      IMAGE_ID="ubuntu"
-    fi
-    cd ~/.dotfiles/docker || return
-    docker build --build-arg IMAGE_ID="${IMAGE_ID}" -t "${IMAGE_ID}"-dev . 2>&1 | tee ~/.dotfiles/build-"${IMAGE_ID}".log
-    cd - > /dev/null 2>&1 || return
-    docker run --rm -it \
-       --workdir=/app \
-       --volume="$1":/app \
-       --volume="$HOME"/.gitconfig:/root/.gitconfig \
-       --volume="$HOME"/git-hooks:/root/git-hooks \
-       --volume="$HOME"/.ssh:/root/.ssh \
-       "${@:2}" \
-       "${IMAGE_ID}"-dev:latest \
-       bash
-}
+PROMPT_DIRTRIM=1
+PS1='\[\033[01;34m\]\w\[\e[91m\]$(parse_git_branch)\[\033[00m\]\$ '
 
-# Save path on cd
-function cd {
-    builtin cd "$@" || return
-    if [ -n "$TMUX" ]; then
-        local window_id=$(tmux display-message -p '#I')
-        pwd > ~/.last_dir_tmux_"$window_id"
-    else
-        pwd > ~/.last_dir
-    fi
-}
+path_prepend "${HOME}/bin"
+path_prepend "${HOME}/.local/share/nvim/mason/bin"
+export PATH
 
-# cd to dotfiles directory
-function dot {
-    cd ~/.dotfiles || return
-}
-
-# Restore last saved path when open bash
-if [ -n "$TMUX" ]; then
-    window_id=$(tmux display-message -p '#I')
-    if [ -f ~/.last_dir_tmux_"$window_id" ]; then
-        cd "$(cat ~/.last_dir_tmux_"$window_id")" || return
-    fi
-elif [ -f ~/.last_dir ]; then
-    cd "$(cat ~/.last_dir)" || return
-fi
-
-# Add custom installs to PATH
-export PATH=~/bin:$PATH
-
-# Add Mason language servers to path
-export PATH=~/.local/share/nvim/mason/bin:$PATH
-
-# Add Alacritty to path
-[ -f ~/.alacritty/extra/completions/alacritty.bash ] && source ~/.alacritty/extra/completions/alacritty.bash
+restore_last_dir
