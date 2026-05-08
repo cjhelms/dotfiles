@@ -166,6 +166,7 @@ local tsm = require("treesitter-modules")
 tsm.setup({
   incremental_search = { enable = true },
   highlight = { enable = true },
+  ensure_installed = { "python", "cpp", "lua", "css", "html" },
 })
 vim.keymap.set("n", "<CR>", tsm.init_selection)
 vim.keymap.set("x", "<CR>", tsm.node_incremental)

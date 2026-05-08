@@ -9,6 +9,13 @@ NAME="nvim-linux-x86_64"
 TARBALL="${NAME}.tar.gz"
 URL="https://github.com/neovim/neovim/releases/download/v${VERSION}/${TARBALL}"
 
+if ! has_cmd npm; then
+  echo "npm not found. Run scripts/bootstrap.sh node first." >&2
+  exit 1
+fi
+
+npm install -g tree-sitter-cli
+
 apt_install wget make build-essential xclip
 ensure_dir "${OPT_DIR}" "${BIN_DIR}"
 
