@@ -140,6 +140,7 @@ vim.pack.add({
   gh("danymat/neogen"),
   { src = gh("nvim-treesitter/nvim-treesitter-textobjects"), version = "main" },
   gh("MeanderingProgrammer/treesitter-modules.nvim"),
+  gh("iamcco/markdown-preview.nvim"),
 })
 
 --------------------
@@ -155,6 +156,7 @@ require("fidget").setup({
 require("diffview").setup({
   use_icons = false,
 })
+vim.fn["mkdp#util#install"]()
 
 ------------------------
 -- Treesitter Modules --
