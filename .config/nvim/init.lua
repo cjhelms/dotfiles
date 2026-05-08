@@ -24,10 +24,7 @@ o.swapfile = false
 o.signcolumn = "yes"
 o.exrc = true
 o.hlsearch = false
-vim.opt.listchars = {
-  trail = "~",
-  leadmultispace = "┊ ",
-}
+vim.opt.listchars = "trail:~"
 o.inccommand = "split"
 o.undofile = true
 o.undodir = vim.fn.stdpath("state") .. "/undo"
@@ -126,6 +123,7 @@ vim.pack.add({
   gh("nvim-treesitter/nvim-treesitter-context"),
   gh("ibhagwan/fzf-lua"),
   gh("stevearc/conform.nvim"),
+  gh("lukas-reineke/indent-blankline.nvim"),
   gh("kylechui/nvim-surround"),
   gh("neovim/nvim-lspconfig"),
   { src = gh("saghen/blink.cmp"), version = vim.version.range("1") },
@@ -149,6 +147,7 @@ vim.pack.add({
 --------------------
 
 require("treesitter-context").setup({})
+require("ibl").setup({ indent = { char = "┊" } })
 require("nvim-surround").setup({})
 require("fidget").setup({
   notification = { window = { winblend = 0 } },
@@ -209,6 +208,9 @@ require("fzf-lua").setup({
   defaults = {
     -- places file name first, making long paths easier to read
     formatter = "path.filename_first",
+  },
+  winopts = {
+    backdrop = false,
   },
   keymap = {
     fzf = {
