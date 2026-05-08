@@ -134,7 +134,6 @@ vim.pack.add({
   gh("fang2hou/blink-copilot"),
   gh("nvim-lua/plenary.nvim"),
   gh("lewis6991/gitsigns.nvim"),
-  gh("jinh0/eyeliner.nvim"),
   gh("mfussenegger/nvim-dap"),
   gh("tpope/vim-dispatch"),
   gh("j-hui/fidget.nvim"),
@@ -172,13 +171,6 @@ vim.keymap.set("n", "<CR>", tsm.init_selection)
 vim.keymap.set("x", "<CR>", tsm.node_incremental)
 vim.keymap.set("x", "<S-Enter>", tsm.scope_incremental)
 vim.keymap.set("x", "<BS>", tsm.node_decremental)
-
---------------
--- eyeliner --
---------------
-
-vim.api.nvim_set_hl(0, "EyelinerPrimary", { fg = "#ff77ff" })
-vim.api.nvim_set_hl(0, "EyelinerSecondary", { fg = "#55ffff" })
 
 --------------
 -- gitsigns --
