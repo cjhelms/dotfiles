@@ -1,7 +1,26 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+DOTFILES_DIR="${DOTFILES_DIR:-${HOME}/.dotfiles}"
+DOTFILES_REPO_URL="${DOTFILES_REPO_URL:-https://github.com/cjhelms/dotfiles.git}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+if [ ! -f "${SCRIPT_DIR}/lib.sh" ]; then
+  if ! command -v git >/dev/null 2>&1; then
+    sudo apt update
+    sudo apt install -yqq git
+  fi
+
+  if [ ! -e "${DOTFILES_DIR}" ]; then
+    git clone "${DOTFILES_REPO_URL}" "${DOTFILES_DIR}"
+  elif [ ! -d "${DOTFILES_DIR}/.git" ]; then
+    echo "${DOTFILES_DIR} exists but is not a git checkout" >&2
+    exit 1
+  fi
+
+  exec bash "${DOTFILES_DIR}/scripts/bootstrap.sh" "$@"
+fi
+
 source "${SCRIPT_DIR}/lib.sh"
 
 APT_STATE_DIR="$(make_temp_dir)"
@@ -14,13 +33,14 @@ usage: $0 [target ...]
 
 targets:
   all                install core and desktop tools
-  core               install git, tmux, fzf, node, neovim, and lazygit
+  core               install git, tmux, fzf, node, neovim, lazygit, and LSP tools
   desktop            install GNOME extension tools
   git                install git and configure identity/key
   tmux               install tmux
   fzf                install fzf
   node               install nvm and Node.js
   neovim             install Neovim
+  lsp                install common Neovim LSP servers and formatters
   lazygit            install lazygit
   gnome_extensions   install GNOME extension tools
 USAGE
@@ -45,12 +65,13 @@ run_target() {
       run_installer fzf
       run_installer node
       run_installer neovim
+      run_installer lsp
       run_installer lazygit
       ;;
     desktop)
       run_installer gnome_extensions
       ;;
-    git|tmux|fzf|node|neovim|lazygit|gnome_extensions)
+    git|tmux|fzf|node|neovim|lsp|lazygit|gnome_extensions)
       run_installer "$1"
       ;;
     -h|--help|help)

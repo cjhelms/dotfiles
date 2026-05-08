@@ -118,7 +118,6 @@ vim.g.no_plugin_maps = true
 
 vim.pack.add({
   gh("ellisonleao/gruvbox.nvim"),
-  gh("mason-org/mason.nvim"),
   { src = gh("nvim-treesitter/nvim-treesitter"), version = "main" },
   gh("nvim-treesitter/nvim-treesitter-context"),
   gh("ibhagwan/fzf-lua"),
@@ -149,7 +148,6 @@ vim.pack.add({
 -- Simple Plugins --
 --------------------
 
-require("mason").setup({})
 require("treesitter-context").setup({})
 require("ibl").setup({ indent = { char = "┊" } })
 require("nvim-surround").setup({})
