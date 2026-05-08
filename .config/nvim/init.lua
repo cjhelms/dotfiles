@@ -19,7 +19,6 @@ o.autoindent = true
 o.expandtab = true
 o.softtabstop = 2
 o.shiftwidth = 2
-o.expandtab = true
 o.colorcolumn = "101"
 o.swapfile = false
 o.signcolumn = "yes"
@@ -109,77 +108,41 @@ normal_map("<leader>ks", "'S", "Jump to S mar[K]")
 normal_map("<leader>kd", "'D", "Jump to D mar[K]")
 normal_map("<leader>kf", "'F", "Jump to F mar[K]")
 
-----------
--- Lazy --
-----------
-
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not (vim.uv or vim.loop).fs_stat(lazypath) then
-  local lazyrepo = "https://github.com/folke/lazy.nvim.git"
-  local out =
-    vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
-  if vim.v.shell_error ~= 0 then
-    vim.api.nvim_echo({
-      { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
-      { out, "WarningMsg" },
-      { "\nPress any key to exit..." },
-    }, true, {})
-    vim.fn.getchar()
-    os.exit(1)
-  end
-end
-vim.opt.rtp:prepend(lazypath)
-
 ------------------
 -- Plugin Specs --
 ------------------
 
-require("lazy").setup({
-  spec = {
-    "ellisonleao/gruvbox.nvim",
-    "mason-org/mason.nvim",
-    { "nvim-treesitter/nvim-treesitter", branch = "main" },
-    "nvim-treesitter/nvim-treesitter-context",
-    "ibhagwan/fzf-lua",
-    "stevearc/conform.nvim",
-    "lukas-reineke/indent-blankline.nvim",
-    "numToStr/Comment.nvim",
-    "kylechui/nvim-surround",
-    "neovim/nvim-lspconfig",
-    {
-      "saghen/blink.cmp",
-      version = "1.*",
-      dependencies = { "L3MON4D3/LuaSnip", dependencies = { "rafamadriz/friendly-snippets" } },
-    },
-    "stevearc/oil.nvim",
-    "github/copilot.vim",
-    "fang2hou/blink-copilot",
-    "nvim-lua/plenary.nvim",
-    "lewis6991/gitsigns.nvim",
-    "jinh0/eyeliner.nvim",
-    "mfussenegger/nvim-dap",
-    "tpope/vim-dispatch",
-    "j-hui/fidget.nvim",
-    {
-      "NeogitOrg/neogit",
-      dependencies = { "nvim-lua/plenary.nvim", "sindrets/diffview.nvim", "ibhagwan/fzf-lua" },
-    },
-    {
-      "danymat/neogen",
-      dependencies = { "L3MON4D3/LuaSnip", dependencies = { "rafamadriz/friendly-snippets" } },
-    },
-    {
-      "nvim-treesitter/nvim-treesitter-textobjects",
-      branch = "main",
-      init = function() vim.g.no_plugin_maps = true end,
-    },
-    "cohama/lexima.vim",
-    "abecodes/tabout.nvim",
-    {
-      "MeanderingProgrammer/treesitter-modules.nvim",
-      dependencies = { "nvim-treesitter/nvim-treesitter" },
-    },
-  },
+local function gh(repo) return "https://github.com/" .. repo end
+
+vim.g.no_plugin_maps = true
+
+vim.pack.add({
+  gh("ellisonleao/gruvbox.nvim"),
+  gh("mason-org/mason.nvim"),
+  { src = gh("nvim-treesitter/nvim-treesitter"), version = "main" },
+  gh("nvim-treesitter/nvim-treesitter-context"),
+  gh("ibhagwan/fzf-lua"),
+  gh("stevearc/conform.nvim"),
+  gh("lukas-reineke/indent-blankline.nvim"),
+  gh("kylechui/nvim-surround"),
+  gh("neovim/nvim-lspconfig"),
+  { src = gh("saghen/blink.cmp"), version = vim.version.range("1") },
+  gh("L3MON4D3/LuaSnip"),
+  gh("rafamadriz/friendly-snippets"),
+  gh("stevearc/oil.nvim"),
+  gh("github/copilot.vim"),
+  gh("fang2hou/blink-copilot"),
+  gh("nvim-lua/plenary.nvim"),
+  gh("lewis6991/gitsigns.nvim"),
+  gh("jinh0/eyeliner.nvim"),
+  gh("mfussenegger/nvim-dap"),
+  gh("tpope/vim-dispatch"),
+  gh("j-hui/fidget.nvim"),
+  gh("sindrets/diffview.nvim"),
+  gh("NeogitOrg/neogit"),
+  gh("danymat/neogen"),
+  { src = gh("nvim-treesitter/nvim-treesitter-textobjects"), version = "main" },
+  gh("MeanderingProgrammer/treesitter-modules.nvim"),
 })
 
 --------------------
@@ -188,11 +151,7 @@ require("lazy").setup({
 
 require("mason").setup({})
 require("treesitter-context").setup({})
--- require("nvim-treesitter").setup({
---   install_dir = "/home/chris/.local/share/nvim/site ",
--- })
 require("ibl").setup({ indent = { char = "┊" } })
-require("Comment").setup()
 require("nvim-surround").setup({})
 require("fidget").setup({
   notification = { window = { winblend = 0 } },
@@ -201,7 +160,6 @@ require("luasnip.loaders.from_vscode").lazy_load()
 require("diffview").setup({
   use_icons = false,
 })
-require("tabout").setup({})
 
 ------------------------
 -- Treesitter Modules --
@@ -211,9 +169,6 @@ local tsm = require("treesitter-modules")
 
 tsm.setup({
   incremental_search = { enable = true },
-})
-
-tsm.setup({
   highlight = { enable = true },
 })
 vim.keymap.set("n", "<CR>", tsm.init_selection)
