@@ -33,15 +33,18 @@ usage: $0 [target ...]
 
 targets:
   all                install core and desktop tools
-  core               install git, tmux, fzf, node, neovim, lazygit, and LSP tools
+  core               install dotfiles, git, tmux, fzf, ripgrep, node, neovim, lazygit, and LSP tools
   desktop            install GNOME extension tools
+  dotfiles           symlink dotfiles into the home directory with stow
   git                install git and configure identity/key
   tmux               install tmux
   fzf                install fzf
+  ripgrep            install ripgrep
   node               install nvm and Node.js
   neovim             install Neovim
   lsp                install common Neovim LSP servers and formatters
   lazygit            install lazygit
+  terminal_theme     configure GNOME Terminal habamax colors
   gnome_extensions   install GNOME extension tools
 USAGE
 }
@@ -60,18 +63,21 @@ run_target() {
       run_target desktop
       ;;
     core)
+      run_installer dotfiles
       run_installer git
       run_installer tmux
       run_installer fzf
+      run_installer ripgrep
       run_installer node
       run_installer neovim
       run_installer lsp
       run_installer lazygit
       ;;
     desktop)
+      run_installer terminal_theme
       run_installer gnome_extensions
       ;;
-    git|tmux|fzf|node|neovim|lsp|lazygit|gnome_extensions)
+    dotfiles|git|tmux|fzf|ripgrep|node|neovim|lsp|lazygit|terminal_theme|gnome_extensions)
       run_installer "$1"
       ;;
     -h|--help|help)

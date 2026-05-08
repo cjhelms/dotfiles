@@ -1,9 +1,5 @@
 {
   "plugins": {
-    "LuaSnip": {
-      "rev": "a62e1083a3cfe8b6b206e7d3d33a51091df25357",
-      "src": "https://github.com/L3MON4D3/LuaSnip"
-    },
     "blink-copilot": {
       "rev": "7ad8209b2f880a2840c94cdcd80ab4dc511d4f39",
       "src": "https://github.com/fang2hou/blink-copilot"
@@ -40,10 +36,6 @@
     "gitsigns.nvim": {
       "rev": "dd3f588bacbeb041be6facf1742e42097f62165d",
       "src": "https://github.com/lewis6991/gitsigns.nvim"
-    },
-    "gruvbox.nvim": {
-      "rev": "154eb5ff5b96d0641307113fa385eaf0d36d9796",
-      "src": "https://github.com/ellisonleao/gruvbox.nvim"
     },
     "mason.nvim": {
       "rev": "e54f5bf5f12c560da31c17eee5b3e1bd369f3ff9",

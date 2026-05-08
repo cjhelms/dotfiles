@@ -32,6 +32,8 @@ o.inccommand = "split"
 o.undofile = true
 o.undodir = vim.fn.stdpath("state") .. "/undo"
 
+vim.cmd("colorscheme habamax")
+
 ------------------
 -- Autocommands --
 ------------------
@@ -120,7 +122,6 @@ local function gh(repo) return "https://github.com/" .. repo end
 vim.g.no_plugin_maps = true
 
 vim.pack.add({
-  gh("ellisonleao/gruvbox.nvim"),
   { src = gh("nvim-treesitter/nvim-treesitter"), version = "main" },
   gh("nvim-treesitter/nvim-treesitter-context"),
   gh("ibhagwan/fzf-lua"),
@@ -128,7 +129,6 @@ vim.pack.add({
   gh("kylechui/nvim-surround"),
   gh("neovim/nvim-lspconfig"),
   { src = gh("saghen/blink.cmp"), version = vim.version.range("1") },
-  gh("L3MON4D3/LuaSnip"),
   gh("stevearc/oil.nvim"),
   gh("github/copilot.vim"),
   gh("fang2hou/blink-copilot"),
@@ -154,7 +154,6 @@ require("nvim-surround").setup({})
 require("fidget").setup({
   notification = { window = { winblend = 0 } },
 })
-require("luasnip.loaders.from_vscode").lazy_load()
 require("diffview").setup({
   use_icons = false,
 })
@@ -173,16 +172,6 @@ vim.keymap.set("n", "<CR>", tsm.init_selection)
 vim.keymap.set("x", "<CR>", tsm.node_incremental)
 vim.keymap.set("x", "<S-Enter>", tsm.scope_incremental)
 vim.keymap.set("x", "<BS>", tsm.node_decremental)
-
--------------
--- Gruvbox --
--------------
-
-require("gruvbox").setup({
-  transparent_mode = true,
-})
-o.background = "dark"
-vim.cmd("colorscheme gruvbox")
 
 --------------
 -- eyeliner --
@@ -287,12 +276,12 @@ normal_map("<leader>f", require("conform").format, "[F]ormat")
 
 require("blink.cmp").setup({
   keymap = { preset = "default" },
-  snippets = { preset = "luasnip" },
+  snippets = { preset = "default" },
   completion = {
     documentation = { auto_show = true, auto_show_delay_ms = 0 },
   },
   sources = {
-    default = { "snippets", "copilot", "lsp" },
+    default = { "copilot", "lsp" },
     providers = {
       copilot = {
         name = "copilot",
@@ -315,14 +304,6 @@ require("oil").setup({
 })
 
 normal_map("<leader>e", ":Oil<cr>", "[E]xplore")
-
--------------
--- luasnip --
--------------
-
-local ls = require("luasnip")
-vim.keymap.set({ "i", "s" }, "<C-J>", function() ls.jump(1) end, { silent = true })
-vim.keymap.set({ "i", "s" }, "<C-K>", function() ls.jump(-1) end, { silent = true })
 
 -------------
 -- copilot --
@@ -353,7 +334,7 @@ normal_map("<leader>gg", ":Neogit<cr>", "[G]it [G]ui")
 -- neogen --
 ------------
 
-require("neogen").setup({ snippet_engine = "luasnip" })
+require("neogen").setup({ snippet_engine = "nvim" })
 
 normal_map("<Leader>gd", ":lua require('neogen').generate()<CR>", "[G]enerate [D]ocumentation")
 

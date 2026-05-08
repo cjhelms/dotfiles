@@ -14,8 +14,8 @@ curl -fsSL https://raw.githubusercontent.com/cjhelms/dotfiles/main/scripts/boots
 
 Running without arguments installs all targets:
 
-- `core`: Git, tmux, fzf, Node.js, Neovim, common LSP tools, and lazygit
-- `desktop`: GNOME extension tools
+- `core`: dotfile symlinks, Git, tmux, fzf, ripgrep, Node.js, Neovim, common LSP tools, and lazygit
+- `desktop`: GNOME Terminal colors and GNOME extension tools
 
 ## Install a specific target
 
@@ -28,15 +28,18 @@ curl -fsSL https://raw.githubusercontent.com/cjhelms/dotfiles/main/scripts/boots
 Available targets:
 
 - `all`: install core and desktop tools
-- `core`: install Git, tmux, fzf, Node.js, Neovim, common LSP tools, and lazygit
+- `core`: install dotfile symlinks, Git, tmux, fzf, ripgrep, Node.js, Neovim, common LSP tools, and lazygit
 - `desktop`: install GNOME extension tools
+- `dotfiles`: symlink dotfiles into the home directory with GNU Stow
 - `git`: install Git and configure identity/key
 - `tmux`: install tmux
 - `fzf`: install fzf
+- `ripgrep`: install ripgrep
 - `node`: install nvm and Node.js
 - `neovim`: install Neovim
 - `lsp`: install common Neovim LSP servers and formatters
 - `lazygit`: install lazygit
+- `terminal_theme`: configure GNOME Terminal habamax colors
 - `gnome_extensions`: install GNOME extension tools
 
 ## How curl bootstrap works
@@ -57,5 +60,6 @@ bash ~/.dotfiles/scripts/bootstrap.sh core
 ## Notes
 
 - The scripts assume an `apt`-based Linux distribution and require `sudo`.
+- Dotfiles are symlinked with GNU Stow from `~/.dotfiles` into `~`.
 - Binaries are installed or linked under `~/bin`; make sure `~/bin` is on your `PATH`.
 - Some installers update shell configuration. Restart your shell after the bootstrap completes.
